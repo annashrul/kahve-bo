@@ -53,9 +53,8 @@ class CoinType extends Component{
 
 
     render(){
-        const centerStyle = {verticalAlign: "middle", textAlign: "center"};
-        const leftStyle = {verticalAlign: "middle", textAlign: "left"};
-        const columnStyle = {verticalAlign: "middle", textAlign: "center",};
+        const centerStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
+        const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {
             total,
             last_page,
@@ -97,74 +96,59 @@ class CoinType extends Component{
                                         </div>
                                     </div>
                                 </form>
-                                {
-                                    typeof data === 'object' ?
-                                        data.length>0?(
-                                            <div style={{overflowX: "auto"}}>
-                                                <table className="table table-hover table-bordered" style={{zoom:"80%"}}>
-                                                    <thead className="bg-light">
-                                                    <tr>
-                                                        <th className="text-black" style={centerStyle}>No</th>
-                                                        <th className="text-black" style={centerStyle}>Aksi</th>
-                                                        <th className="text-black" style={centerStyle}>Title</th>
-                                                        <th className="text-black" style={centerStyle}>Simbol</th>
-                                                        <th className="text-black" style={centerStyle}>Status</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
 
-                                                    {
-                                                        !this.props.isLoading ?
-                                                            (
-                                                                typeof data === 'object' ?
-                                                                    data.map((v,i)=>{
-                                                                        return(
-                                                                            <tr key={i}>
-                                                                                <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
-                                                                                <td style={columnStyle}>
-                                                                                    <div className="btn-group">
-                                                                                        <UncontrolledButtonDropdown>
-                                                                                            <DropdownToggle caret>
-                                                                                                Aksi
-                                                                                            </DropdownToggle>
-                                                                                            <DropdownMenu>
-                                                                                                <DropdownItem onClick={(e)=>this.handleModal(e,i)}>Edit</DropdownItem>
-                                                                                            </DropdownMenu>
-                                                                                        </UncontrolledButtonDropdown>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style={columnStyle}>{v.title}</td>
-                                                                                <td style={columnStyle}>{v.symbol}</td>
-                                                                                <td style={columnStyle}>{statusQ(v.status)}</td>
-                                                                            </tr>
-                                                                        )
-                                                                    })
-                                                                    : "No data."
-                                                            ) : (()=>{
-                                                                let container =[];
-                                                                for(let x=0; x<10; x++){
-                                                                    container.push(
-                                                                        <tr key={x}>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                        </tr>
-                                                                    )
-                                                                }
-                                                                return container;
-                                                            })()
+
+                                <div style={{overflowX: "auto"}}>
+                                    <table className="table table-hover">
+                                        <thead className="bg-light">
+                                        <tr>
+                                            <th className="text-black" style={centerStyle}>No</th>
+                                            <th className="text-black" style={centerStyle}>Aksi</th>
+                                            <th className="text-black" style={centerStyle}>Title</th>
+                                            <th className="text-black" style={centerStyle}>Simbol</th>
+                                            <th className="text-black" style={centerStyle}>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {
+                                            !this.props.isLoading ?
+                                                (
+                                                    typeof data === 'object' ? data.length>0?
+                                                        data.map((v,i)=>{
+                                                            return(
+                                                                <tr key={i}>
+                                                                    <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
+                                                                    <td style={columnStyle}>
+                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
+                                                                    </td>
+                                                                    <td style={columnStyle}>{v.title}</td>
+                                                                    <td style={columnStyle}>{v.symbol}</td>
+                                                                    <td style={columnStyle}>{statusQ(v.status)}</td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                        : "No data."
+                                                    : "No data."
+                                                ) : (()=>{
+                                                    let container =[];
+                                                    for(let x=0; x<10; x++){
+                                                        container.push(
+                                                            <tr key={x}>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            </tr>
+                                                        )
                                                     }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        ):(
-                                            <img style={{height:"50px"}} src={"https://i.pinimg.com/originals/88/36/65/8836650a57e0c941b4ccdc8a19dee887.png"} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/>
-                                        )
-                                        : <img style={{height:"50px"}} src={"https://i.pinimg.com/originals/88/36/65/8836650a57e0c941b4ccdc8a19dee887.png"} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/>
-
-                                }
+                                                    return container;
+                                                })()
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
 
                                 <div style={{"marginTop":"20px","float":"right"}}>
                                     <Paginationq

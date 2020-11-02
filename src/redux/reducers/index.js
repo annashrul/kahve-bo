@@ -7,6 +7,10 @@ import {siteReducer} from './site.reducer';
 import {userReducer} from "./user/user.reducer";
 import {coinTypeReducer} from "./coinType/coinType.reducer";
 import {faqReducer} from "./faq/faq.reducer";
+import {inboxReducer} from "./inbox/inbox.reducer";
+import {depositReducer} from "./deposit/deposit.reducer";
+import {penarikanReducer} from "./penarikan/penarikan.reducer";
+import {pengaturanReducer} from "./setting/setting.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -16,6 +20,10 @@ export default combineReducers({
     userReducer,
     coinTypeReducer,
     faqReducer,
+    inboxReducer,
+    depositReducer,
+    penarikanReducer,
+    pengaturanReducer,
     auth: authReducer,
     errors : errorsReducer
 });

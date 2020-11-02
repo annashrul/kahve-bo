@@ -4,12 +4,17 @@ import connect from "react-redux/es/connect/connect";
 import moment from "moment";
 import Swal from "sweetalert2";
 import ProfileImage from "assets/profile.png";
+import NoData from "assets/nodata.png";
 import Yes from "assets/status-Y.png";
 import No from "assets/status-T.png";
 
 
 export const noImage = ()=>{
     return ProfileImage;
+}
+
+export const noData = ()=>{
+    return NoData;
 }
 
 

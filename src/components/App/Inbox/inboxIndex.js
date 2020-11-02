@@ -2,59 +2,28 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import {deleteUser, FetchUser} from "../../../redux/actions/user/user.action";
 import FormFaq from "../../App/modals/faq/form_faq";
-import Paginationq, {statusQ} from "../../../helper";
-import {
-    UncontrolledButtonDropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle
-} from 'reactstrap';
+import Paginationq, {noData, statusQ} from "../../../helper";
 import {noImage} from "../../../helper";
 import moment from "moment";
-
-
-import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
-import {deleteFaq, FetchFaq} from "../../../redux/actions/faq/faq.action";
-
-class Faq extends Component{
+import {deleteInbox, FetchInbox} from "../../../redux/actions/inbox/inbox.action";
+class Inbox extends Component{
     constructor(props){
         super(props);
-        this.handleModal = this.handleModal.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.state={
             detail:{}
         }
     }
     componentWillMount(){
-        this.props.dispatch(FetchFaq('page=1'));
+        this.props.dispatch(FetchInbox('page=1'));
     }
-    handleModal(e,param) {
-        e.preventDefault();
-        const bool = !this.props.isOpen;
-        this.props.dispatch(ModalToggle(bool));
-        this.props.dispatch(ModalType("formFaq"));
-        if(param!==''){
-            const {data}=this.props.data;
-            this.setState({
-                detail:{
-                    id:data[param].id,
-                    question:data[param].question,
-                    answer:data[param].answer,
-                    status:data[param].status,
-                }
-            });
-        }
-        else{
-            this.setState({detail:undefined})
-        }
-    }
+
     handlePageChange(pageNumber){
         console.log(pageNumber);
-        this.props.dispatch(FetchFaq(`page=${pageNumber}`));
+        this.props.dispatch(FetchInbox(`page=${pageNumber}`));
     }
 
 
@@ -71,13 +40,12 @@ class Faq extends Component{
             cancelButtonText: 'Batal',
         }).then((result) => {
             if (result.value) {
-                this.props.dispatch(deleteFaq(id));
+                this.props.dispatch(deleteInbox(id));
             }
         })
     }
 
     render(){
-
         const {
             total,
             last_page,
@@ -88,11 +56,11 @@ class Faq extends Component{
             data
         } = this.props.data;
         return (
-            <Layout page={"faq"}>
+            <Layout page={"pesan masuk"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Faq</h5>
+                            <h5 className="mb-0 font-weight-bold">Pesan Masuk</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -119,44 +87,38 @@ class Faq extends Component{
                                         </div>
                                     </div>
                                 </form>
+
+
                                 {
                                     !this.props.isLoading ?
                                         (
-                                            typeof data === 'object' ?
+                                            typeof data === 'object' ? data.length > 0 ?
                                                 data.map((v, i) => {
                                                     return (
-                                                        <div className="ibox-content" id="ibox-content" key={i}>
-                                                            <div id="vertical-timeline" className="vertical-container light--timeline">
-                                                                <div className="vertical-timeline-block">
-                                                                    <div className="vertical-timeline-icon bg-info btn-floating pulse">
-                                                                        <i className="fa fa-briefcase"/>
-                                                                    </div>
-
-                                                                    <div className="vertical-timeline-content">
-                                                                        <p style={{fontWeight:"normal!important"}}>{v.question}</p>
-                                                                        <p style={{color:"grey"}}>{v.answer}</p>
-                                                                        <div className="single-browser-area d-flex align-items-center justify-content-between mb-4">
-                                                                            <div className="d-flex align-items-center mr-3">
-                                                                                <span className="vertical-date">
-                                                                                    <small>{moment(v.created_at).locale('id').format("LLLL")}</small>
-                                                                                </span>
-                                                                            </div>
-                                                                            <div className="row">
-                                                                                <div className="col-md-4">
-                                                                                    <button className={"btn btn-primary"} onClick={(e)=>this.handleModal(e,i)}>Edit</button>
-                                                                                </div>
-                                                                                <div className="col-md-4">
-                                                                                    <button className={"btn btn-danger"} onClick={(e)=>this.handleDelete(e,v.id)}>Hapus</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
+                                                        <div className="admi-mail-list mb-30" key={i}>
+                                                            <div className="admi-mail-item">
+                                                                <div className="admi-mail-checkbox" style={{marginRight:"5px"}}>
+                                                                    <div className="form-group mb-0">
+                                                                        <a href="javascript:void(0)" className="badge badge-danger" onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></a>
                                                                     </div>
                                                                 </div>
+                                                                <div className="admi-mail-body d-flex align-items-center mr-3">
+                                                                    <div className="mail-thumb flex-40-thubm mr-3">
+                                                                        <img className="border-radius-50" src={noImage()} alt=""/>
+                                                                    </div>
+                                                                    <div className="div">
+                                                                        <div className="admi-mail-from">{v.name} ( {v.email} )</div>
+                                                                        <div className="admi-mail-subject">
+                                                                            <p className="mb-0 mail-subject--text--">{v.title} <span>{v.message}</span></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="admi-mail-date">{moment(v.created_at).startOf('hour').fromNow()}</div>
                                                             </div>
                                                         </div>
                                                     );
                                                 })
+                                                : "No data."
                                             : "No data."
                                         )
                                     :
@@ -164,24 +126,38 @@ class Faq extends Component{
                                             let container =[];
                                             for(let x=0; x<10; x++){
                                                 container.push(
-                                                    <div className="ibox-content" id="ibox-content" key={x}>
-                                                        <div id="vertical-timeline" className="vertical-container light--timeline">
-                                                            <div className="vertical-timeline-block">
-                                                                <div className="vertical-timeline-icon bg-info btn-floating pulse">
-                                                                    <i className="fa fa-briefcase"/>
-                                                                </div>
-                                                                <div className="vertical-timeline-content">
-                                                                    <Skeleton/>
-                                                                    <Skeleton width={1000}/>
-                                                                    <Skeleton width={900}/>
+                                                    <div className="admi-mail-list mb-30" key={x}>
+                                                        <div className="admi-mail-item">
+                                                            <div className="admi-mail-checkbox">
+                                                                <div className="form-group mb-0">
+                                                                    <div className="checkbox d-inline">
+                                                                        <input type="checkbox" name="checkbox-1" id="checkbox-2"/>
+                                                                        <label for="checkbox-2" className="cr"/>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <div className="admi-mail-body d-flex align-items-center mr-3">
+                                                                <div className="mail-thumb flex-40-thubm mr-3">
+                                                                    <Skeleton circle={true} height={50} width={50}/>
+                                                                </div>
+                                                                <div className="div">
+                                                                    <div className="admi-mail-from">
+                                                                        <Skeleton width={500}/>
+                                                                    </div>
+                                                                    <div className="admi-mail-subject">
+                                                                        <Skeleton width={500}/>
+                                                                        <Skeleton width={1000}/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="admi-mail-date">11:30am</div>
                                                         </div>
                                                     </div>
                                                 )
                                             }
                                             return container;
                                         })()
+
 
                                 }
 
@@ -209,12 +185,12 @@ class Faq extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.faqReducer.isLoading,
+        isLoading: state.inboxReducer.isLoading,
         isOpen:state.modalReducer,
-        data:state.faqReducer.data
+        data:state.inboxReducer.data
 
     }
 }
 
 
-export default connect(mapStateToProps)(Faq);
+export default connect(mapStateToProps)(Inbox);

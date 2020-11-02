@@ -12,9 +12,9 @@
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
   <link id='favicon' rel="shortcut icon" href="%PUBLIC_URL%/favicon.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
-
+  <!--<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap" rel="stylesheet">-->
+  <!--<link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">-->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
   <!-- Master Stylesheet [If you remove this CSS file, your file will be broken undoubtedly.] -->
   <link rel="stylesheet" href="%PUBLIC_URL%/style.css">
 
@@ -31,85 +31,31 @@
 
 
   <style>
-    .custom-map-modal {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
+    img{
+      border-radius: 10%!important;
     }
-
-    .custom-map-modal>.modal-content {
-      height: auto;
-      min-height: 100%;
-      width: 100%;
-      min-width: 1520px;
-      border-radius: 0;
-    }
-
-
-    .customDatePickerWidth,
-    .customDatePickerWidth>div.react-datepicker-wrapper,
-    .customDatePickerWidth>div>div.react-datepicker__input-container .customDatePickerWidth>div>div.react-datepicker__input-container input {
-      width: 100%;
-      height: 100%;
-    }
-
-    .react-datepicker__input-container {
-      width: inherit;
-      height: inherit;
-    }
-
-    .react-datepicker__input-container input {
-      width: inherit;
-      height: 100%;
-    }
-
-    #date {
-      width: 183px !important;
-
-    }
-
-    .react-datepicker-wrapper {
-      width: 100%;
-    }
-
-    .react-datepicker-wrapper,
-    .react-datepicker__input-container,
-    .react-datepicker__input-container input {
-      display: block;
-      width: 100%;
-    }
-
-    .react-tabs__tab-list {
-      border-bottom: none !important;
-    }
-
-    .react-tabs__tab--selected {
-      /*background: #fff;*/
-      border-color: white !important;
-      /*color: black;*/
-      color: #fff !important;
-      background-color: #1e88e5 !important;
-      border-radius: 5px 5px 5px 5px !important;
-    }
-
-    .react-tabs__tab {
-      display: inline-block !important;
-      border: 1px solid #1e88e5 !important;
-      /*border-bottom: none!important;*/
-      bottom: -1px !important;
-      position: relative !important;
-      list-style: none !important;
-      padding: 6px 12px !important;
-      cursor: pointer !important;
-      border-radius: 5px 5px 5px 5px !important;
-      margin-right: 3px !important;
-    }
-
     .fade {
       transition: opacity .15s linear;
       width: 100% !important;
       height: 100% !important;
+    }
+
+    button.cancelBtn{
+      /*color*/
+      background-color: #5d78ff!important;
+      color: white!important;
+    }
+    button.cancelBtn,button.applyBtn{
+      font-family: 'Rubik', sans-serif !important;
+      font-weight: bold !important;
+    }
+    .off, .ends, .available,.month,.drp-selected{
+      font-family: 'Rubik', sans-serif !important;
+      font-weight: bold !important;
+    }
+    .calendar-table>table{
+      font-family: 'Rubik', sans-serif !important;
+      font-weight: bold !important;
     }
 
     html,
@@ -123,7 +69,7 @@
     p,
     li,
     a {
-      font-family: 'Comfortaa', cursive !important;
+      font-family: 'Rubik', sans-serif !important;
       font-weight: bold !important;
     }
 
@@ -131,47 +77,8 @@
     th,
     a {
       font-size: 12px !important;
+
     }
-
-    .btnBrg {
-      margin-top: 29px
-    }
-
-    /*.react-tabs [role=tab],*/
-    /*.react-tabs [role=tablist],*/
-    /*.react-tabs [role=tab]:focus,*/
-    /*.react-tabs [role=tablist]:focus {*/
-    /*border-top: none ;*/
-    /*border-left: none ;*/
-    /*border-right: none;*/
-    /*border-bottom: 2px solid #ddd;*/
-    /*outline: 0 !important;*/
-    /*}*/
-
-    .location-search-input,
-    .location-search-input:focus,
-    .location-search-input:active {
-      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-      border: honeydew;
-      display: block;
-      width: 100%;
-      padding: .375rem .75rem;
-      font-size: 12px;
-      border-radius: 2px;
-      outline: none;
-    }
-
-    .autocomplete-dropdown-container {
-      border-bottom: honeydew;
-      border-left: honeydew;
-      border-right: honeydew;
-      border-top: 1px solid #e6e6e6;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      position: absolute;
-      z-index: 1000;
-      border-radius: 0 0 2px 2px;
-    }
-
     .table-responsive {
       overflow: inherit !important;
     }

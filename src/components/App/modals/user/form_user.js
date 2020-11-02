@@ -11,7 +11,7 @@ import ProfileImage from "../../../../assets/profile.png";
 import FileBase64 from "react-file-base64";
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {stringifyFormData, validateEmail, validateForm} from "../../../../helper";
-import {storeUser} from "../../../../redux/actions/user/user.action";
+import {putUser, storeUser} from "../../../../redux/actions/user/user.action";
 
 class FormUser extends Component{
     constructor(props){
@@ -22,10 +22,12 @@ class FormUser extends Component{
         this.handleValidation = this.handleValidation.bind(this);
         this.handleShowPassword = this.handleShowPassword.bind(this);
         this.state={
+            id:"",
             name:"",
             email:"",
             password:"",
             conf_password:"",
+            status:"",
             id_card:"",
             selfie:"",
             foto:"",
@@ -34,6 +36,7 @@ class FormUser extends Component{
                 email:"",
                 password:"",
                 conf_password:"",
+                status:"",
                 id_card:"",
                 selfie:"",
                 foto:"",
@@ -45,13 +48,16 @@ class FormUser extends Component{
 
     getProps(param){
         console.log(param);
+        this.clearState();
         if(param.detail!==undefined){
             this.setState({
+                id:param.detail.id,
                 name:param.detail.name,
                 email:param.detail.email,
-                password:param.detail.password,
-                conf_password:param.detail.conf_password,
-                id_card:param.detail.id_card,
+                password:"",
+                status:param.detail.status,
+                // conf_password:param.detail.conf_password,
+                // id_card:param.detail.id_card,
                 // selfie:param.detail.selfie,
                 // foto:param.detail.foto,
             });
@@ -117,10 +123,11 @@ class FormUser extends Component{
         parseData['email'] = this.state.email;
         parseData['password'] = this.state.password;
         parseData['conf_password'] = this.state.conf_password;
-        parseData['id_card'] = this.state.id_card.base64!==undefined?this.state.id_card.base64:'-';
-        parseData['selfie'] = this.state.selfie.base64!==undefined?this.state.selfie.base64:'-';
-        parseData['foto'] = this.state.foto.base64!==undefined?this.state.foto.base64:'-';
-        console.log(this.state.foto.base64)
+        parseData['status'] = this.state.status;
+        parseData['id_card'] = this.state.id_card!==""?this.state.id_card.base64:'-';
+        parseData['selfie'] = this.state.selfie!==""?this.state.selfie.base64:'-';
+        parseData['foto'] = this.state.foto!==""?this.state.foto.base64:'-';
+        console.log("ID",this.state.id);
         if(parseData['name']===''){
             err = Object.assign({}, err, {name:"nama tidak boleh kosong"});
             this.setState({error: err});
@@ -133,21 +140,16 @@ class FormUser extends Component{
             err = Object.assign({}, err, {email:"format email tidak sesuai"});
             this.setState({error: err,email:''});
         }
-        else if(parseData['password']===''){
-            err = Object.assign({}, err, {password:"password tidak boleh kosong"});
-            this.setState({error: err});
-        }
-        else if(parseData['conf_password']===''){
-            err = Object.assign({}, err, {conf_password:"konfirmasi password tidak boleh kosong"});
-            this.setState({error: err});
+        else if(parseData['status']===""||parseData['email']===undefined){
+            err = Object.assign({}, err, {status:"status tidak sesuai"});
+            this.setState({error: err,status:''});
         }
         else if(parseData['password']!==parseData['conf_password']){
             err = Object.assign({}, err, {conf_password:"password tidak sama"});
             this.setState({error: err,conf_password:''});
         }
-
         else{
-         // this.handleSubmit(parseData);
+            this.handleSubmit(parseData);
         }
     }
     handleShowPassword(e,param){
@@ -159,7 +161,24 @@ class FormUser extends Component{
         }
     }
     handleSubmit(param){
-        this.props.dispatch(storeUser(param));
+        console.log(param);
+        if(this.props.detail!==undefined){
+            let parsedata={};
+            parsedata['name'] = param['name'];
+            parsedata['password'] = param['password']===''?"-":param['password'];
+            parsedata['status'] = param['status'];
+            parsedata['status'] = param['status'];
+            parsedata['id_card'] = param['id_card'];
+            parsedata['selfie'] = param['selfie'];
+            parsedata['foto'] = param['foto'];
+            console.log("PARAM",param);
+            console.log("PARSE DATA",parsedata);
+            this.props.dispatch(putUser(parsedata,this.state.id));
+        }
+        else{
+            this.props.dispatch(storeUser(param));
+        }
+
         if(this.props.isError===true){
             this.clearState();
         }
@@ -168,11 +187,11 @@ class FormUser extends Component{
     }
     render(){
         return (
-            <WrapperModal isOpen={this.props.isOpen && this.props.type === "formUser"} size="md">
+            <WrapperModal isOpen={this.props.isOpen && this.props.type === "formUser"} size="lg">
                 <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?"Tambah User":"Ubah User"}</ModalHeader>
                 <ModalBody>
                     <div className="row">
-                        <div className="col-md-12">
+                        <div className="col-md-6">
                             <div className="form-group">
                                 <label>Nama</label>
                                 <input type="text" className="form-control" name="name" value={this.state.name} onChange={this.handleChange} />
@@ -180,11 +199,11 @@ class FormUser extends Component{
                             </div>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="email" className="form-control" name="email" value={this.state.email} onChange={this.handleChange} />
+                                <input type="email" className="form-control" name="email" value={this.state.email} onChange={this.handleChange} readOnly={this.props.detail !== undefined} />
                                 <div className="invalid-feedback" style={this.state.error.email !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.email}</div>
                             </div>
                             <div className="form-group">
-                                <label>Password</label>
+                                <label>Password <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label>
                                 <div className="input-group mb-2">
                                     <input type={this.state.isShowPassword===true?"text":"password"} className="form-control" name="password" value={this.state.password} onChange={this.handleChange} />
                                     <div className="input-group-prepend" onClick={(e)=>this.handleShowPassword(e,'password')}>
@@ -192,11 +211,9 @@ class FormUser extends Component{
                                     </div>
                                 </div>
                                 <div className="invalid-feedback" style={this.state.error.password !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.password}</div>
-
                             </div>
-
                             <div className="form-group">
-                                <label>Konfirmasi Password</label>
+                                <label>Konfirmasi Password <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label>
                                 <div className="input-group mb-2">
                                     <input type={this.state.isShowConfPassword===true?"text":"password"} className="form-control" name="conf_password" value={this.state.conf_password} onChange={this.handleChange} />
                                     <div className="input-group-prepend" onClick={(e)=>this.handleShowPassword(e,'conf_password')}>
@@ -204,63 +221,30 @@ class FormUser extends Component{
                                     </div>
                                 </div>
                                 <div className="invalid-feedback" style={this.state.error.conf_password !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.conf_password}</div>
-
                             </div>
 
-
-
+                        </div>
+                        <div className="col-md-6">
                             <div className="form-group">
-                                <label>ID Card</label><br/>
+                                <label>ID Card <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label><br/>
                                 <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile1.bind(this) } />
-                                {/*<div className="row">*/}
-                                    {/*<div className="col-md-10">*/}
-                                        {/*<FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile1.bind(this) } />*/}
-                                    {/*</div>*/}
-                                    {/*<div className="col-md-2">*/}
-                                        {/*<div className="img-preview">*/}
-                                            {/*{*/}
-                                                {/*this.state.id_card.base64 !==undefined?(<img src={this.state.id_card.base64} style={{height:"30px"}} alt=""/>):<img  src={ProfileImage} style={{height:"30px"}} alt=""/>*/}
-                                            {/*}*/}
-                                        {/*</div>*/}
-                                    {/*</div>*/}
-                                {/*</div>*/}
-
                             </div>
                             <div className="form-group">
-                                <label>Selfie</label><br/>
+                                <label>Selfie <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label><br/>
                                 <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile2.bind(this) } />
-
-                                {/*<div className="row">*/}
-                                    {/*<div className="col-md-10">*/}
-                                        {/*<FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile2.bind(this) } />*/}
-                                    {/*</div>*/}
-                                    {/*<div className="col-md-2">*/}
-                                        {/*<div className="img-preview">*/}
-                                            {/*{*/}
-                                                {/*this.state.selfie.base64 !==undefined?(<img src={this.state.selfie.base64} style={{height:"30px"}} alt=""/>):<img  src={ProfileImage} style={{height:"30px"}} alt=""/>*/}
-                                            {/*}*/}
-                                        {/*</div>*/}
-                                    {/*</div>*/}
-                                {/*</div>*/}
-
                             </div>
                             <div className="form-group">
-                                <label>Foto</label><br/>
+                                <label>Foto <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label><br/>
                                 <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile3.bind(this) } />
-
-                                {/*<div className="row">*/}
-                                    {/*<div className="col-md-10">*/}
-                                        {/*<FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile3.bind(this) } />*/}
-                                    {/*</div>*/}
-                                    {/*<div className="col-md-2">*/}
-                                        {/*<div className="img-preview">*/}
-                                            {/*{*/}
-                                                {/*this.state.foto.base64 !==undefined?(<img src={this.state.foto.base64} style={{height:"30px"}} alt=""/>):<img  src={ProfileImage} style={{height:"30px"}} alt=""/>*/}
-                                            {/*}*/}
-                                        {/*</div>*/}
-                                    {/*</div>*/}
-                                {/*</div>*/}
-
+                            </div>
+                            <div className="form-group">
+                                <label>Status</label>
+                                <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
+                                    <option value="">=== Pilih ===</option>
+                                    <option value="1">Aktif</option>
+                                    <option value="0">Tidak Aktif</option>
+                                </select>
+                                <div className="invalid-feedback" style={this.state.error.status !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.status}</div>
                             </div>
                         </div>
                     </div>

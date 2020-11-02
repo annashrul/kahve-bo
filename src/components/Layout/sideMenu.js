@@ -75,23 +75,39 @@ class SideMenu extends Component {
             <nav>
                 <ul className="sidebar-menu" data-widget="tree">
                     {/* DASHBOARD MODUL START */}
-                    <li  className={path==='/'?"active":''}><Link to="/"> <i className="fa fa-dashboard" /><span> Dashboard</span></Link></li>
+                    <li  className={path==='/'?"active":''}><Link to="/"> <i className="fa fa-area-chart" /><span> Dashboard</span></Link></li>
                     {/* DASHBOARD MODUL END */}
 
                     {/* USER MODUL START */}
-                    <li  className={path==='/user'?"active":''}><Link to="/user"> <i className="fa fa-dashboard" /><span> User</span></Link></li>
+                    <li  className={path==='/user'?"active":''}><Link to="/user"> <i className="fa fa-users" /><span> Pengguna</span></Link></li>
                     {/* USER MODUL END */}
 
                     {/* COIN TYPE MODUL START */}
-                    <li  className={path==='/coin_type'?"active":''}><Link to="/coin_type"> <i className="fa fa-dashboard" /><span> Tipe Koin</span></Link></li>
+                    <li  className={path==='/coin_type'?"active":''}><Link to="/coin_type"> <i className="fa fa-bitcoin" /><span> Tipe Koin</span></Link></li>
                     {/* COIN TYPE MODUL END */}
 
                     {/* FAQ MODUL START */}
-                    <li  className={path==='/faq'?"active":''}><Link to="/faq"> <i className="fa fa-dashboard" /><span> Faq</span></Link></li>
+                    <li  className={path==='/faq'?"active":''}><Link to="/faq"> <i className="fa fa-info-circle" /><span> Faq</span></Link></li>
                     {/* FAQ MODUL END */}
 
+                    {/* INBOX MODUL START */}
+                    <li  className={path==='/inbox'?"active":''}><Link to="/inbox"> <i className="fa fa-inbox" /><span> Pesan Masuk</span></Link></li>
+                    {/* INBOX MODUL END */}
+
+                    {/* DEPOSIT MODUL START */}
+                    <li  className={path==='/deposit'?"active":''}><Link to="/deposit"> <i className="fa fa-exchange" /><span> Deposit</span></Link></li>
+                    {/* DEPOSIT MODUL END */}
+
+                    {/* PENARIKAN MODUL START */}
+                    <li  className={path==='/penarikan'?"active":''}><Link to="/penarikan"> <i className="fa fa-exchange" /><span> Penarikan</span></Link></li>
+                    {/* PENARIKAN MODUL END */}
+
+                    {/* PENGATURAN MODUL START */}
+                    <li  className={path==='/setting'?"active":''}><Link to="/setting"> <i className="fa fa-cogs" /><span> Pengaturan</span></Link></li>
+                    {/* PENGATURAN MODUL END */}
+
                     {/* LOGOUT MODUL START */}
-                    <li><a href={null} style={{cursor:'pointer',color:'#a6b6d0'}} onClick={(event)=>this.handleLogout(event)}> <i className="fa fa-chain-broken" /><span> Logout</span></a></li>
+                    <li><a href={null} style={{cursor:'pointer',color:'#a6b6d0'}} onClick={(event)=>this.handleLogout(event)}> <i className="fa fa-sign-out" /><span> Keluar</span></a></li>
                     {/* LOGOUT MODUL END */}
                 </ul>
             </nav>

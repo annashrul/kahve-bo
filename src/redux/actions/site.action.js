@@ -67,9 +67,10 @@ export function setLinkTxt(data=[]){
 export const FetchSite = () => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        axios.get(HEADERS.URL + `site/logo`)
+        axios.get(HEADERS.URL + `site/get`)
             .then(function (response) {
                 const data = response.data;
+                console.log("RESPONSE SITE",data);
                 dispatch(setSite(data));
                 dispatch(setLoading(false));
             })

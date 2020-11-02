@@ -121,7 +121,7 @@ class Header extends Component {
           <div className="left-side-content-area d-flex align-items-center">
               {/* Mobile Logo */}
                 <div className="mobile-logo mr-3 mr-sm-4">
-                    <Link to={'./'} ><img src="/favicon.png" onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt="Mobile Logo"/></Link>
+                    <Link to={'./'} ><img src={localStorage.getItem("logos")} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt="Mobile Logo"/></Link>
                 </div>
               {/* <!-- Triggers --> */}
               <div className="ecaps-triggers mr-1 mr-sm-3">
@@ -163,8 +163,8 @@ class Header extends Component {
                                             <img className="chat-img mr-2" src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>
                                         </div>
                                         <div className="profile-text">
-                                            <h6>{this.props.auth.user.username}</h6>
-                                            <span>{this.props.auth.user.lvl}</span>
+                                            <h6>{this.props.auth.user.name}</h6>
+                                            <span>{this.props.auth.user.email}</span>
                                         </div>
                                     </div>
                                     <DropdownItem  onClick={this.handleLogout}>
@@ -189,13 +189,13 @@ class Header extends Component {
                                         <table>
                                             <tr>
                                                 <td className="fs1">
-                                                    <p>{this.props.auth.user.username}</p>
-                                                    <span>{this.props.auth.user.lvl}</span>
+                                                    <p>{this.props.auth.user.name}</p>
+                                                    <span>{this.props.auth.user.email}</span>
 
                                                 </td>
                                                 <td className="fs1"  style={{paddingLeft:'10px'}}>
                                                     <p>
-                                                    <i class="fa fa-angle-down lnr"></i>
+                                                    <i class="fa fa-angle-down lnr"/>
                                                     </p>
 
                                                 </td>
@@ -210,8 +210,8 @@ class Header extends Component {
                                             <img className="chat-img mr-2" src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>
                                         </div>
                                         <div className="profile-text">
-                                            <h6>{this.props.auth.user.username}</h6>
-                                            <span>{this.props.auth.user.lvl}</span>
+                                            <h6>{this.props.auth.user.name}</h6>
+                                            <span>{this.props.auth.user.email}</span>
                                         </div>
                                     </div>
                                     <DropdownItem  onClick={this.handleLogout}>
@@ -239,7 +239,7 @@ Header.propTypes = {
 
 const mapStateToProps = ({auth,siteReducer}) =>{
      return{
-       auth: auth,
+        auth: auth,
         triggerEcaps: siteReducer.triggerEcaps,
         triggerMobileEcaps: siteReducer.triggerMobileEcaps
 

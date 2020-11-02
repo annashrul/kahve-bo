@@ -34,19 +34,19 @@ class Login extends Component {
     }
 
     initFetch(check){
-        fetch(HEADERS.URL + `site/logo`)
+        fetch(HEADERS.URL + `site/get`)
         .then(res => res.json())
         .then(
             (data) => {
                 localStorage.setItem("logos",data.result.logo)
-                localStorage.setItem("site_title", data.result.title)
-                document.title = `${data.result.title}`;
+                localStorage.setItem("site_title", data.result.site_name)
+                document.title = `${data.result.site_name}`;
                 this.setState({
                     logo: data.result.logo,
                     width:data.result.width
                 })
                 const favicon = this.getFaviconEl(); // Accessing favicon element
-                favicon.href = data.result.fav_icon;
+                favicon.href = data.result.logo;
             },
             (error) => {
                 this.setState({

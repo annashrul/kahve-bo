@@ -4,24 +4,19 @@ import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
 import {deleteUser, FetchUser} from "../../../redux/actions/user/user.action";
 import FormUser from "../../App/modals/user/form_user";
-import Paginationq from "../../../helper";
-
-import {
-    UncontrolledButtonDropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle
-} from 'reactstrap';
+import Paginationq, {statusQ} from "../../../helper";
 import {noImage} from "../../../helper";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
+import moment from "moment";
 
 class User extends Component{
     constructor(props){
         super(props);
         this.handleModal = this.handleModal.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleZoom = this.handleZoom.bind(this);
         this.state={
             detail:{}
         }
@@ -38,8 +33,10 @@ class User extends Component{
             const {data}=this.props.data;
             this.setState({
                 detail:{
+                    id:data[param].id,
                     name:data[param].name,
                     email:data[param].email,
+                    status:data[param].status,
                     password:data[param].password,
                     conf_password:data[param].password,
                     id_card:data[param].id_card,
@@ -56,8 +53,6 @@ class User extends Component{
        console.log(pageNumber);
         this.props.dispatch(FetchUser(`page=${pageNumber}`));
     }
-
-
     handleDelete(e,id){
         e.preventDefault();
         Swal.fire({
@@ -76,10 +71,19 @@ class User extends Component{
         })
     }
 
+    handleZoom(e,param){
+        e.preventDefault();
+        Swal.fire({
+            showClass   : {popup: 'animate__animated animate__fadeInDown'},
+            hideClass   : {popup: 'animate__animated animate__fadeOutUp'},
+            imageUrl    : param,
+            imageAlt    : 'gambar tidak tersedia'
+        })
+    }
+
     render(){
-        const centerStyle = {verticalAlign: "middle", textAlign: "center"};
-        const leftStyle = {verticalAlign: "middle", textAlign: "left"};
-        const columnStyle = {verticalAlign: "middle", textAlign: "center",};
+        const centerStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
+        const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {
             total,
             last_page,
@@ -90,11 +94,11 @@ class User extends Component{
             data
         } = this.props.data;
         return (
-            <Layout page={"user"}>
+            <Layout page={"pengguna"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Dashboard</h5>
+                            <h5 className="mb-0 font-weight-bold">Pengguna</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -121,81 +125,70 @@ class User extends Component{
                                         </div>
                                     </div>
                                 </form>
-                                {
-                                    typeof data === 'object' ?
-                                        data.length>0?(
-                                            <div style={{overflowX: "auto"}}>
-                                                <table className="table table-hover table-bordered" style={{zoom:"80%"}}>
-                                                    <thead className="bg-light">
-                                                    <tr>
-                                                        <th className="text-black" style={centerStyle}>No</th>
-                                                        <th className="text-black" style={centerStyle}>Aksi</th>
-                                                        <th className="text-black" style={centerStyle}>Nama</th>
-                                                        <th className="text-black" style={centerStyle}>Email</th>
-                                                        <th className="text-black" width="10%" style={centerStyle}>ID Card</th>
-                                                        <th className="text-black" width="10%" style={centerStyle}>Selfi</th>
-                                                        <th className="text-black" width="10%" style={centerStyle}>Photo</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
+                                <div style={{overflowX: "auto"}}>
+                                    <table className="table table-hover">
+                                        <thead className="bg-light">
+                                        <tr>
+                                            <th className="text-black" style={centerStyle}>No</th>
+                                            <th className="text-black" style={centerStyle}>Aksi</th>
+                                            <th className="text-black" style={centerStyle}>ID Card</th>
+                                            <th className="text-black" style={centerStyle}>Selfie</th>
+                                            <th className="text-black" style={centerStyle}>Photo</th>
+                                            <th className="text-black" style={centerStyle}>Nama</th>
+                                            <th className="text-black" style={centerStyle}>Email</th>
+                                            <th className="text-black" style={columnStyle}>Tanggal</th>
+                                            <th className="text-black" style={centerStyle}>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
-                                                    {
-                                                        !this.props.isLoading ?
-                                                            (
-                                                                typeof data === 'object' ?
-                                                                    data.map((v,i)=>{
-                                                                        return(
-                                                                            <tr key={i}>
-                                                                                <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
-                                                                                <td style={columnStyle}>
-                                                                                    <div className="btn-group">
-                                                                                        <UncontrolledButtonDropdown>
-                                                                                            <DropdownToggle caret>
-                                                                                                Aksi
-                                                                                            </DropdownToggle>
-                                                                                            <DropdownMenu>
-                                                                                                <DropdownItem onClick={(e)=>this.handleModal(e,i)}>Edit</DropdownItem>
-                                                                                                <DropdownItem onClick={(e)=>this.handleDelete(e,v.id)}>Delete</DropdownItem>
-                                                                                            </DropdownMenu>
-                                                                                        </UncontrolledButtonDropdown>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style={columnStyle}>{v.name}</td>
-                                                                                <td style={columnStyle}>{v.email}</td>
-                                                                                <td style={columnStyle}><img style={{height:"50px"}} src={v.id_card} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
-                                                                                <td style={columnStyle}><img style={{height:"50px"}} src={v.selfie} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
-                                                                                <td style={columnStyle}><img style={{height:"50px"}} src={v.foto} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
-                                                                            </tr>
-                                                                        )
-                                                                    })
-                                                                    : "No data."
-                                                            ) : (()=>{
-                                                                let container =[];
-                                                                for(let x=0; x<10; x++){
-                                                                    container.push(
-                                                                        <tr key={x}>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton count={2}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
-                                                                            <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
-                                                                        </tr>
-                                                                    )
-                                                                }
-                                                                return container;
-                                                            })()
+                                        {
+                                            !this.props.isLoading ?
+                                                (
+                                                    typeof data === 'object' ? data.length>0?
+                                                        data.map((v,i)=>{
+                                                            return(
+                                                                <tr key={i}>
+                                                                    <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
+                                                                    <td style={columnStyle}>
+                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
+                                                                        <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
+                                                                    </td>
+                                                                    <td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer"}} onClick={(e)=>this.handleZoom(e,v.id_card)} src={v.id_card} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
+                                                                    <td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer"}} onClick={(e)=>this.handleZoom(e,v.selfie)} src={v.selfie} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
+                                                                    <td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer"}} onClick={(e)=>this.handleZoom(e,v.foto)} src={v.foto} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
+                                                                    <td style={columnStyle}>{v.name}</td>
+                                                                    <td style={columnStyle}>{v.email}</td>
+                                                                    <td style={columnStyle}>{moment(v.created_at).locale('id').format("LLLL")}</td>
+                                                                    <td style={columnStyle}>{statusQ(v.status)}</td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                        : "No data."
+                                                    : "No data."
+                                                ) : (()=>{
+                                                    let container =[];
+                                                    for(let x=0; x<10; x++){
+                                                        container.push(
+                                                            <tr key={x}>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
+                                                            </tr>
+                                                        )
                                                     }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        ):(
-                                            <img style={{height:"50px"}} src={"https://i.pinimg.com/originals/88/36/65/8836650a57e0c941b4ccdc8a19dee887.png"} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/>
-                                        )
-                                    : <img style={{height:"50px"}} src={"https://i.pinimg.com/originals/88/36/65/8836650a57e0c941b4ccdc8a19dee887.png"} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/>
-
-                                }
+                                                    return container;
+                                                })()
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
 
                                 <div style={{"marginTop":"20px","float":"right"}}>
                                     <Paginationq
