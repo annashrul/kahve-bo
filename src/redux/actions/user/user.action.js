@@ -16,6 +16,12 @@ export function setLoadingPost(load) {
         load
     }
 }
+export function setLoadingDetail(load) {
+    return {
+        type: USER_LIST.LOADING_DETAIL,
+        load
+    }
+}
 export function setIsError(load) {
     return {
         type: USER_LIST.IS_ERROR,
@@ -61,7 +67,6 @@ export const FetchUser = (where) => {
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                console.log("REPONSE USER",data);
                 dispatch(setUserList(data));
                 dispatch(setLoading(false));
             })
@@ -72,7 +77,23 @@ export const FetchUser = (where) => {
 
     }
 };
+export const FetchDetailUser = (id) => {
+    return (dispatch) => {
+        dispatch(setLoadingDetail(true));
+        let url = `user/${id}`;
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setUserListDetail(data));
+                dispatch(setLoadingDetail(false));
+            })
+            .catch(function (error) {
+                // handle error
 
+            })
+
+    }
+};
 export const storeUser = (data) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
@@ -80,7 +101,6 @@ export const storeUser = (data) => {
         axios.post(url,data)
             .then(function (response) {
                 const data = (response.data);
-                console.log("ANYING",response.data);
                 if (data.status === 'success') {
                     Swal.fire({
                         title: 'Success',
@@ -89,7 +109,13 @@ export const storeUser = (data) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(FetchUser('page=1'));
+                    if(data['isadmin']===0){
+                        dispatch(FetchUser('page=1'));
+                    }
+                    else{
+                        dispatch(FetchUser('page=1&isadmin=1'));
+                    }
+
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -104,7 +130,6 @@ export const storeUser = (data) => {
 
             })
             .catch(function (error) {
-                console.log(error.response);
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
@@ -120,14 +145,14 @@ export const storeUser = (data) => {
             })
     }
 }
-export const putUser = (data,id) => {
+export const putUser = (data,id,where="") => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         const url = HEADERS.URL + `user/${id}`;
+        console.log(data['isadmin']);
         axios.put(url,data)
             .then(function (response) {
                 const data = (response.data);
-                console.log("ANYING",response.data);
                 if (data.status === 'success') {
                     Swal.fire({
                         title: 'Success',
@@ -136,7 +161,16 @@ export const putUser = (data,id) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(FetchUser('page=1'));
+                    if(data['isadmin']===1){
+                        console.log('page=1&isadmin=1');
+                        dispatch(FetchUser(where===""?"page=1&isadmin=1":where));
+                    }
+                    else{
+                        console.log('page=1');
+                        dispatch(FetchUser(where===""?"page=1":where));
+
+                        // dispatch(FetchUser(where));
+                    }
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -151,7 +185,6 @@ export const putUser = (data,id) => {
 
             })
             .catch(function (error) {
-                console.log(error.response);
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
@@ -169,7 +202,7 @@ export const putUser = (data,id) => {
 }
 
 
-export const deleteUser = (id) => {
+export const deleteUser = (id,param) => {
     return (dispatch) => {
         dispatch(setLoading(true));
         const url = HEADERS.URL + `user/${id}`;

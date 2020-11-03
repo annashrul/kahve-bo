@@ -11,7 +11,6 @@ import {HEADERS} from "./_constants";
 export const loginUser = (userData) =>
 
     async dispatch =>{
-        console.log("FORM DATA",userData);
         destroy('sess');
         Swal.fire({
             title: 'Please Wait.',
@@ -27,7 +26,6 @@ export const loginUser = (userData) =>
             setTimeout(
             function () {
                 Swal.close() ;
-                console.log("RESPON LOGIN",res);
                 // save token to localStorage
                 const token = res.data.result.token;
                 localStorage.setItem('npos', btoa(token));

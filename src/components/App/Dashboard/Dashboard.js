@@ -7,6 +7,8 @@ import {FetchStock} from 'redux/actions/dashboard/dashboard.action'
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import socketIOClient from "socket.io-client";
 import {HEADERS} from 'redux/actions/_constants'
+import Chart from "react-apexcharts";
+
 
 import Cards from './src/Cards'
 import Charts from './src/charts'
@@ -71,6 +73,27 @@ class Dashboard extends Component {
                         }
                     ],
                 },
+            hourly: {
+                options: {
+                    chart: {
+                        type: 'area'
+                    },
+                    xaxis: {
+                        categories: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'smooth'
+                    },
+                },
+                series: [{
+                    // name: "Bulan Lalu",
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                }],
+            },
+
         };
 
         socket.on('refresh_dashboard',(data)=>{
@@ -199,16 +222,27 @@ class Dashboard extends Component {
 
                 {/* Dashboard Widget Area */}
                 <div className="row">
-                    <Cards title="Gross Sales" data={this.state.grossSales} icon="fa fa-area-chart text-primary"/>                    
-                    <Cards title="NET Sales" data={this.state.netSales} icon="fa fa-area-chart text-primary"/>                    
-                    <Cards title="Number Of Transaction" data={this.state.trxNum} icon="fa fa-area-chart text-primary"/>                    
-                    <Cards title="Avg. Sales Per-Transaction" data={this.state.avgTrx} icon="fa fa-area-chart text-primary"/>                    
+                    <Cards title="TOTAL INVESTMENT" data={this.state.grossSales} icon="fa fa-area-chart text-primary"/>
+                    <Cards title="ACTIVE BALANCE" data={this.state.netSales} icon="fa fa-area-chart text-primary"/>
+                    <Cards title="TOTAL PAYMENT" data={this.state.trxNum} icon="fa fa-area-chart text-primary"/>
+                    <Cards title="MEMBER ACTIVE" data={this.state.avgTrx} icon="fa fa-area-chart text-primary"/>
                 </div>
-                <div className="row">
-                   <Charts title="Monthly Sales Amount" data={this.state.lokasi_sales}/>
-                </div>
-                <div className="row">
-                    <Charts title="MONTHLY TRANSACTIONS" data={this.state.lokasi_tr}/>
+                {/* Dashboard Widget Area */}
+                <div className="card">
+                    <div className="card-body">
+                        <div className="card-header bg-transparent text-center">
+                            <h4 className="card-title mt-3">ACTIVE BALANCE</h4>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <Chart
+                                    options={this.state.hourly.options}
+                                    series={this.state.hourly.series}
+                                    height="400"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
         </Layout>
        

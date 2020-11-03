@@ -3,7 +3,7 @@ import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
 import FormFaq from "../../App/modals/faq/form_faq";
-import Paginationq, {noData, statusQ} from "../../../helper";
+import Paginationq from "../../../helper";
 import {noImage} from "../../../helper";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
@@ -22,7 +22,6 @@ class Inbox extends Component{
     }
 
     handlePageChange(pageNumber){
-        console.log(pageNumber);
         this.props.dispatch(FetchInbox(`page=${pageNumber}`));
     }
 
@@ -48,11 +47,8 @@ class Inbox extends Component{
     render(){
         const {
             total,
-            last_page,
             per_page,
             current_page,
-            from,
-            to,
             data
         } = this.props.data;
         return (
@@ -82,7 +78,6 @@ class Inbox extends Component{
                                         <div className="col-2 col-xs-4 col-md-4">
                                             <div className="form-group">
                                                 <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"></i></button>
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"></i></button>
                                             </div>
                                         </div>
                                     </div>

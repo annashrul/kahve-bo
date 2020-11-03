@@ -61,7 +61,6 @@ export const FetchInbox = (where) => {
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                console.log("REPONSE INBOX",data);
                 dispatch(setData(data));
                 dispatch(setLoading(false));
             })
@@ -103,7 +102,6 @@ export const storeInbox = (data) => {
 
             })
             .catch(function (error) {
-                console.log(error.response);
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));

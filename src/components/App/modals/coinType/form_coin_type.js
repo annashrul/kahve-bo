@@ -35,7 +35,6 @@ class FormCoinType extends Component{
     }
 
     getProps(param){
-        console.log(param);
         this.clearState();
         if(param.detail!==undefined){
             this.setState({
@@ -53,7 +52,6 @@ class FormCoinType extends Component{
     }
 
     clearState(){
-        console.log("ABUS CLEAR STATE");
         this.setState({
             title:"",
             symbol:"",
@@ -90,7 +88,6 @@ class FormCoinType extends Component{
         parseData['title'] = this.state.title;
         parseData['symbol'] = this.state.symbol;
         parseData['status'] = this.state.status;
-        console.log(parseData['title']);
         if(parseData['title']===''||parseData['title']===undefined){
             err = Object.assign({}, err, {title:"title tidak boleh kosong"});
             this.setState({error: err});
@@ -117,7 +114,6 @@ class FormCoinType extends Component{
         if(this.props.isError===true){
             this.clearState();
         }
-        console.log(this.props.isError);
 
     }
     render(){
@@ -139,7 +135,7 @@ class FormCoinType extends Component{
                             </div>
                             <div className="form-group">
                                 <label>Status</label>
-                                <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
+                                <select className="form-control form-control-lg" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
                                     <option value="">=== Pilih ===</option>
                                     <option value="1">Aktif</option>
                                     <option value="0">Tidak Aktif</option>

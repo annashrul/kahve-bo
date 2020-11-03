@@ -3,13 +3,6 @@ import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
 import Paginationq, {statusQ} from "../../../helper";
-import {
-    UncontrolledButtonDropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle
-} from 'reactstrap';
-import {noImage} from "../../../helper";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import {FetchCoinType} from "../../../redux/actions/coinType/coinType.action";
@@ -19,7 +12,8 @@ class CoinType extends Component{
         super(props);
         this.handleModal = this.handleModal.bind(this);
         this.state={
-            detail:{}
+            detail:{},
+            any:""
         }
     }
     componentWillMount(){
@@ -46,22 +40,39 @@ class CoinType extends Component{
         }
     }
     handlePageChange(pageNumber){
-        console.log(pageNumber);
-        this.props.dispatch(FetchCoinType(`page=${pageNumber}`));
+        localStorage.setItem("pageTipeKoin",pageNumber);
+        let where = this.handleValidate();
+        this.props.dispatch(FetchCoinType(where));
+    }
+    handleChange = (event) => {
+        this.setState({[event.target.name]: event.target.value});
+    }
+    handleValidate(){
+        let where="";
+        let page = localStorage.getItem("pageTipeKoin");
+        let any = this.state.any;
+        if(page!==null&&page!==undefined&&page!==""){
+            where+=`page=${page}`;
+        }else{
+            where+="page=1";
+        }
+        if(any!==null&&any!==undefined&&any!==""){
+            where+=`&q=${any}`;
+        }
+        return where;
+    }
+    handleSearch(e){
+        e.preventDefault();
+        alert("fitur belum tersedia");
     }
 
 
-
     render(){
-        const centerStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {
             total,
-            last_page,
             per_page,
             current_page,
-            from,
-            to,
             data
         } = this.props.data;
         return (
@@ -80,33 +91,29 @@ class CoinType extends Component{
                         <div className="card">
 
                             <div className="card-body">
-                                <form onSubmit={this.handlesearch} noValidate>
-                                    <div className="row">
-                                        <div className="col-10 col-xs-10 col-md-3">
-                                            <div className="form-group">
-                                                <label>Search</label>
-                                                <input type="text" className="form-control" name="field_any" defaultValue={localStorage.getItem('any_customer')}/>
-                                            </div>
-                                        </div>
-                                        <div className="col-2 col-xs-4 col-md-4">
-                                            <div className="form-group">
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"></i></button>
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"></i></button>
-                                            </div>
+                                <div className="row">
+                                    <div className="col-6 col-xs-6 col-md-3">
+                                        <div className="form-group">
+                                            <label>Search</label>
+                                            <input type="text" className="form-control" name="any" defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                </form>
-
-
+                                    <div className="col-4 col-xs-4 col-md-4">
+                                        <div className="form-group">
+                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div style={{overflowX: "auto"}}>
                                     <table className="table table-hover">
                                         <thead className="bg-light">
                                         <tr>
-                                            <th className="text-black" style={centerStyle}>No</th>
-                                            <th className="text-black" style={centerStyle}>Aksi</th>
-                                            <th className="text-black" style={centerStyle}>Title</th>
-                                            <th className="text-black" style={centerStyle}>Simbol</th>
-                                            <th className="text-black" style={centerStyle}>Status</th>
+                                            <th className="text-black" style={columnStyle}>No</th>
+                                            <th className="text-black" style={columnStyle}>Aksi</th>
+                                            <th className="text-black" style={columnStyle}>Title</th>
+                                            <th className="text-black" style={columnStyle}>Simbol</th>
+                                            <th className="text-black" style={columnStyle}>Status</th>
                                         </tr>
                                         </thead>
                                         <tbody>

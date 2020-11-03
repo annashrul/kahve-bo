@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import WrapperModal from '../_wrapper.modal'
 import {
-    Button,
     ModalHeader,
     ModalBody,
     ModalFooter,
@@ -31,7 +30,6 @@ class FormFaq extends Component{
     }
 
     getProps(param){
-        console.log(param);
         this.clearState();
         if(param.detail!==undefined){
             this.setState({
@@ -49,7 +47,6 @@ class FormFaq extends Component{
     }
 
     clearState(){
-        console.log("ABUS CLEAR STATE");
         this.setState({
             question:"",
             answer:"",
@@ -86,7 +83,6 @@ class FormFaq extends Component{
         parseData['question'] = this.state.question;
         parseData['answer'] = this.state.answer;
         parseData['status'] = this.state.status;
-        console.log(parseData['question']);
         if(parseData['question']===''||parseData['question']===undefined){
             err = Object.assign({}, err, {question:"pertanyaan tidak boleh kosong"});
             this.setState({error: err});
@@ -113,7 +109,6 @@ class FormFaq extends Component{
         if(this.props.isError===true){
             this.clearState();
         }
-        console.log(this.props.isError);
 
     }
     render(){
@@ -135,7 +130,7 @@ class FormFaq extends Component{
                             </div>
                             <div className="form-group">
                                 <label>Status</label>
-                                <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
+                                <select className="form-control form-control-lg" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
                                     <option value="">=== Pilih ===</option>
                                     <option value="1">Aktif</option>
                                     <option value="0">Tidak Aktif</option>

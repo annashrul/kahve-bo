@@ -53,7 +53,6 @@ class Faq extends Component{
         }
     }
     handlePageChange(pageNumber){
-        console.log(pageNumber);
         this.props.dispatch(FetchFaq(`page=${pageNumber}`));
     }
 
@@ -105,13 +104,13 @@ class Faq extends Component{
                             <div className="card-body">
                                 <form onSubmit={this.handlesearch} noValidate>
                                     <div className="row">
-                                        <div className="col-10 col-xs-10 col-md-3">
+                                        <div className="col-6 col-xs-6 col-md-3">
                                             <div className="form-group">
                                                 <label>Search</label>
                                                 <input type="text" className="form-control" name="field_any" defaultValue={localStorage.getItem('any_customer')}/>
                                             </div>
                                         </div>
-                                        <div className="col-2 col-xs-4 col-md-4">
+                                        <div className="col-4 col-xs-4 col-md-4">
                                             <div className="form-group">
                                                 <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"></i></button>
                                                 <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"></i></button>
@@ -142,10 +141,10 @@ class Faq extends Component{
                                                                                 </span>
                                                                             </div>
                                                                             <div className="row">
-                                                                                <div className="col-md-4">
+                                                                                <div className="col-4 col-xs-4 col-md-4">
                                                                                     <button className={"btn btn-primary"} onClick={(e)=>this.handleModal(e,i)}>Edit</button>
                                                                                 </div>
-                                                                                <div className="col-md-4">
+                                                                                <div className="col-4 col-xs-4 col-md-4">
                                                                                     <button className={"btn btn-danger"} onClick={(e)=>this.handleDelete(e,v.id)}>Hapus</button>
                                                                                 </div>
                                                                             </div>

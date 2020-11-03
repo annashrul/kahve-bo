@@ -70,7 +70,6 @@ export const FetchSite = () => {
         axios.get(HEADERS.URL + `site/get`)
             .then(function (response) {
                 const data = response.data;
-                console.log("RESPONSE SITE",data);
                 dispatch(setSite(data));
                 dispatch(setLoading(false));
             })

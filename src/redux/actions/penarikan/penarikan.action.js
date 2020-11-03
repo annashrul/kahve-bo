@@ -61,7 +61,6 @@ export const FetchPenarikan = (where) => {
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                console.log("REPONSE PENARIKAN",data);
                 dispatch(setData(data));
                 dispatch(setLoading(false));
             })
@@ -103,7 +102,6 @@ export const approvalPenarikan = (data,id) => {
 
             })
             .catch(function (error) {
-                console.log(error.response);
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));

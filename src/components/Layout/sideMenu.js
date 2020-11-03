@@ -10,6 +10,9 @@ class SideMenu extends Component {
     constructor(props){
         super(props);
         this.state ={
+            isPengguna:false,
+            isAdmin:false,
+            isUser:false,
         }
         this.subChangeMenu = this.subChangeMenu.bind(this);
         this.changeMenu = this.changeMenu.bind(this);
@@ -22,6 +25,14 @@ class SideMenu extends Component {
 
     changeMenu(e,param){
         e.preventDefault();
+        if(param === 'pengguna'){
+            this.setState({
+                isPengguna : !this.state.isPengguna,
+            });
+            console.log('abus')
+
+        }
+
         this.forceUpdate();
         
     }
@@ -36,6 +47,12 @@ class SideMenu extends Component {
         this.getProps(this.props);
       
         const path = this.props.location.pathname;
+        if(path==='/admin' || path==='/user'){
+            this.setState({
+                isPengguna:true
+            })
+        }
+
 
     }
     componentWillReceiveProps = (nextProps) => {
@@ -79,7 +96,13 @@ class SideMenu extends Component {
                     {/* DASHBOARD MODUL END */}
 
                     {/* USER MODUL START */}
-                    <li  className={path==='/user'?"active":''}><Link to="/user"> <i className="fa fa-users" /><span> Pengguna</span></Link></li>
+                    <li className={"treeview" +(this.state.isPengguna===true || path==='/admin' || path==='/user' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'pengguna')}><i className="fa fa-gears" /> <span>Pengguna</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isPengguna===true?"block":"none"}}>
+                            <li className={path==='/admin'?"active":''} style={this.state.isAdmin==="0"?{"display":"none"}:{"display":"block"}}><Link to="/admin" style={{width:'fit-content'}}> <i className="fa fa-user-secret" />Admin</Link></li>
+                            <li className={path==='/user'?"active":''} style={this.state.isUser==="0"?{"display":"none"}:{"display":"block"}}><Link to="/user" style={{width:'fit-content'}}> <i className="fa fa-group" />Member</Link></li>
+                        </ul>
+                    </li>
                     {/* USER MODUL END */}
 
                     {/* COIN TYPE MODUL START */}

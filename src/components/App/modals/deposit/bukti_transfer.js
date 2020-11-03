@@ -2,16 +2,10 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import WrapperModal from '../_wrapper.modal'
 import {
-    Button,
     ModalHeader,
     ModalBody,
-    ModalFooter,
 } from 'reactstrap';
-import ProfileImage from "../../../../assets/profile.png";
-import FileBase64 from "react-file-base64";
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import {stringifyFormData, validateEmail, validateForm} from "../../../../helper";
-import {storeUser} from "../../../../redux/actions/user/user.action";
 
 class FormBuktiTransfer extends Component{
     constructor(props){
@@ -24,7 +18,6 @@ class FormBuktiTransfer extends Component{
     }
 
     getProps(param){
-        console.log(param);
         if(param.detail!==undefined){
             this.setState({
                 image:param.detail.image,
@@ -35,15 +28,12 @@ class FormBuktiTransfer extends Component{
 
     }
     componentWillReceiveProps(nextProps){
-        console.log("nextprops");
         this.getProps(nextProps);
     }
     componentWillMount(){
-        console.log("this props");
         this.getProps(this.props);
     }
     clearState(){
-        console.log("ABUS CLEAR STATE");
         this.setState({
             image:"",
             name:"",

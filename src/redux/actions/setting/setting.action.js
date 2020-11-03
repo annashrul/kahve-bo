@@ -96,7 +96,6 @@ export const putPengaturan = (data) => {
 
             })
             .catch(function (error) {
-                console.log(error.response);
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));

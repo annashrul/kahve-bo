@@ -86,10 +86,10 @@ export const toCurrency = (angka) => {
     let numbers=0;
     if(parseFloat(angka)<0){
         numbers = angka.toString().replace('-', '');
-        
+
     }else{
         numbers=angka;
-        
+
     }
     var number_string = (numbers===''||numbers===undefined)? String(0.0) : numbers.toString().replace(/,|\D/g,''),
         split = number_string.split('.'),
@@ -129,7 +129,7 @@ export const rmComma = (angka) => {
     return parseInt(rupiah,10);
 }
 // export const rmComma = (angka) => {
-//     
+//
 //     return parseInt(isEmpty(angka)?0:angka.toString().replace(/,/g,''),10);
 // }
 export const toPersen= (val1,val2) => {

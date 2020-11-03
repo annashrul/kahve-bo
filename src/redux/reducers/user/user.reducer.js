@@ -5,6 +5,7 @@ import {USER_LIST} from "../../actions/_constants";
 const initialState = {
     isLoading: true,
     isLoadingPost: false,
+    isLoadingDetail: false,
     isError: false,
     status: "",
     msg: "",
@@ -42,6 +43,10 @@ export const userReducer = (state = initialState, action) => {
         case USER_LIST.LOADING_POST:
             return Object.assign({}, state, {
                 isLoadingPost: action.load
+            });
+        case USER_LIST.LOADING_DETAIL:
+            return Object.assign({}, state, {
+                isLoadingDetail: action.load
             });
         case USER_LIST.IS_ERROR:
             return Object.assign({}, state, {

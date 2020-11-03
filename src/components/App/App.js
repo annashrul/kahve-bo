@@ -9,12 +9,18 @@ import Routes from 'components/Routes/Routes';
 import { DBConfig } from 'DBConfig';
 import { initDB } from 'react-indexed-db';
  import {get} from "components/model/app.model";
+import {HEADERS} from "../../redux/actions/_constants";
+import axios from 'axios';
 
 initDB(DBConfig);
 // Check token in localStorage
+axios.defaults.headers.common['identities'] = `${HEADERS.USERNAME}`;
+axios.defaults.headers.common['sercet-id'] = `${HEADERS.PASSWORD}`;
+axios.defaults.headers.common['connectifity-agent'] = `backoffice`;
+axios.defaults.headers.common['Content-Type'] = `application/x-www-form-urlencoded`;
   if (localStorage.npos) {
     setAuthToken(atob(localStorage.npos));
-    store.dispatch(setLoggedin(true))
+    store.dispatch(setLoggedin(true));
     const sess = get('sess');
       sess.then(res => {
         if (res.length!==0) {

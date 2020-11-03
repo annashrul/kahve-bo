@@ -61,7 +61,6 @@ export const FetchFaq = (where) => {
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                console.log("REPONSE FAQ",data);
                 dispatch(setFaq(data));
                 dispatch(setLoading(false));
             })
@@ -80,7 +79,6 @@ export const storeFaq = (data) => {
         axios.post(url,data)
             .then(function (response) {
                 const data = (response.data);
-                console.log("ANYING",response.data);
                 if (data.status === 'success') {
                     Swal.fire({
                         title: 'Success',
@@ -104,7 +102,6 @@ export const storeFaq = (data) => {
 
             })
             .catch(function (error) {
-                console.log(error.response);
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
@@ -151,7 +148,6 @@ export const putFaq = (data,id) => {
 
             })
             .catch(function (error) {
-                console.log(error.response);
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));

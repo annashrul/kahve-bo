@@ -28,7 +28,6 @@ class Deposit extends Component{
         this.props.dispatch(FetchDeposit('page=1'));
     }
     handlePageChange(pageNumber){
-        console.log(pageNumber);
         localStorage.setItem("pageDeposit",pageNumber);
         let where = this.handleValidate();
         this.props.dispatch(FetchDeposit(where));
@@ -113,7 +112,7 @@ class Deposit extends Component{
     }
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
-        const {total, last_page, per_page, current_page, from, to, data} = this.props.data;
+        const {total,per_page, current_page,data} = this.props.data;
         return (
             <Layout page={"deposit"}>
                 <div className="row align-items-center">
@@ -130,7 +129,7 @@ class Deposit extends Component{
 
                             <div className="card-body">
                                 <div className="row" style={{zoom:"90%"}}>
-                                    <div className="col-12 col-xs-12 col-md-2">
+                                    <div className="col-6 col-xs-6 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
                                             <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
@@ -138,7 +137,7 @@ class Deposit extends Component{
                                             </DateRangePicker>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-xs-12 col-md-2">
+                                    <div className="col-6 col-xs-6 col-md-2">
                                         <div className="form-group">
                                             <label>Status</label>
                                             <select name="status" className="form-control form-control-lg" defaultValue={this.state.status} value={this.state.status} onChange={this.handleChange}>
@@ -149,13 +148,13 @@ class Deposit extends Component{
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-xs-12 col-md-3">
+                                    <div className="col-10 col-xs-10 col-md-3">
                                         <div className="form-group">
                                             <label>Tulis sesuatu disini</label>
-                                            <input type="text" className="form-control" name="any" defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}/>
+                                            <input type="text" className="form-control" name="any" defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-xs-12 col-md-4">
+                                    <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                         </div>

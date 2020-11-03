@@ -11,9 +11,7 @@ class Info extends Component {
                         <div id="dashboardDate">{moment().format("dddd, Do MMM YYYY")}</div>
                         <Clock/>
                     </div>
-                    <div className="dashboard-btn-group d-flex align-items-center">
-                        <button type="button" onClick={(e)=>this.props.handleSubmit(e)} className="btn btn-primary ml-1 float-right"><i className="fa fa-refresh"></i></button>
-                    </div>
+
                 </div>
             </div>
         )

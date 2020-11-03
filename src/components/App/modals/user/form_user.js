@@ -2,15 +2,13 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import WrapperModal from '../_wrapper.modal'
 import {
-    Button,
     ModalHeader,
     ModalBody,
     ModalFooter,
 } from 'reactstrap';
-import ProfileImage from "../../../../assets/profile.png";
 import FileBase64 from "react-file-base64";
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import {stringifyFormData, validateEmail, validateForm} from "../../../../helper";
+import {validateEmail} from "../../../../helper";
 import {putUser, storeUser} from "../../../../redux/actions/user/user.action";
 
 class FormUser extends Component{
@@ -31,6 +29,8 @@ class FormUser extends Component{
             id_card:"",
             selfie:"",
             foto:"",
+            isAdmin:0,
+            where:"",
             error:{
                 name:"",
                 email:"",
@@ -47,34 +47,29 @@ class FormUser extends Component{
     }
 
     getProps(param){
-        console.log(param);
         this.clearState();
+        this.setState({
+            isAdmin:param.isAdmin
+        });
         if(param.detail!==undefined){
+            console.log(param.detail);
             this.setState({
                 id:param.detail.id,
                 name:param.detail.name,
                 email:param.detail.email,
                 password:"",
                 status:param.detail.status,
-                // conf_password:param.detail.conf_password,
-                // id_card:param.detail.id_card,
-                // selfie:param.detail.selfie,
-                // foto:param.detail.foto,
+                where:param.detail.where,
             });
 
         }
 
     }
     componentWillReceiveProps(nextProps){
-        console.log("nextprops");
         this.getProps(nextProps);
     }
-    componentWillMount(){
-        console.log("this props");
-        this.getProps(this.props);
-    }
+
     clearState(){
-        console.log("ABUS CLEAR STATE");
         this.setState({
             name:"",
             email:"",
@@ -96,7 +91,6 @@ class FormUser extends Component{
         })
     };
     handleFile1(files) {
-        console.log(files);
         this.setState({id_card: files});
     }
     handleFile2(files) {
@@ -116,7 +110,6 @@ class FormUser extends Component{
     }
     handleValidation(e){
         e.preventDefault();
-        e.preventDefault();
         let err = this.state.error;
         let parseData = {};
         parseData['name'] = this.state.name;
@@ -124,10 +117,10 @@ class FormUser extends Component{
         parseData['password'] = this.state.password;
         parseData['conf_password'] = this.state.conf_password;
         parseData['status'] = this.state.status;
-        parseData['id_card'] = this.state.id_card!==""?this.state.id_card.base64:'-';
-        parseData['selfie'] = this.state.selfie!==""?this.state.selfie.base64:'-';
+        parseData['id_card'] = this.state.isAdmin===1?'-':(this.state.id_card!==""?this.state.id_card.base64:'-');
+        parseData['selfie'] = this.state.isAdmin===1?'-':(this.state.selfie!==""?this.state.selfie.base64:'-');
         parseData['foto'] = this.state.foto!==""?this.state.foto.base64:'-';
-        console.log("ID",this.state.id);
+        parseData['isadmin'] = this.state.isAdmin;
         if(parseData['name']===''){
             err = Object.assign({}, err, {name:"nama tidak boleh kosong"});
             this.setState({error: err});
@@ -161,7 +154,6 @@ class FormUser extends Component{
         }
     }
     handleSubmit(param){
-        console.log(param);
         if(this.props.detail!==undefined){
             let parsedata={};
             parsedata['name'] = param['name'];
@@ -171,9 +163,8 @@ class FormUser extends Component{
             parsedata['id_card'] = param['id_card'];
             parsedata['selfie'] = param['selfie'];
             parsedata['foto'] = param['foto'];
-            console.log("PARAM",param);
-            console.log("PARSE DATA",parsedata);
-            this.props.dispatch(putUser(parsedata,this.state.id));
+            parsedata['isadmin'] = param['isadmin'];
+            this.props.dispatch(putUser(parsedata,this.state.id,this.state.where));
         }
         else{
             this.props.dispatch(storeUser(param));
@@ -182,13 +173,12 @@ class FormUser extends Component{
         if(this.props.isError===true){
             this.clearState();
         }
-        console.log(this.props.isError);
 
     }
     render(){
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formUser"} size="lg">
-                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?"Tambah User":"Ubah User"}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?"Tambah User":"Ubah User"} {this.state.isAdmin}</ModalHeader>
                 <ModalBody>
                     <div className="row">
                         <div className="col-md-6">
@@ -239,7 +229,7 @@ class FormUser extends Component{
                             </div>
                             <div className="form-group">
                                 <label>Status</label>
-                                <select className="form-control" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
+                                <select className="form-control form-control-lg" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
                                     <option value="">=== Pilih ===</option>
                                     <option value="1">Aktif</option>
                                     <option value="0">Tidak Aktif</option>

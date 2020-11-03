@@ -19,6 +19,7 @@ class Setting extends Component{
             number_of_month:"",
             referral_profit:"",
             email_admin:"",
+            wallet_address:"",
             error:{
                 email:""
             }
@@ -31,7 +32,6 @@ class Setting extends Component{
         this.props.dispatch(FetchPengaturan());
     }
     componentWillReceiveProps(nextProps){
-        console.log("componentWillReceiveProps",nextProps)
         this.setState({
             monthly_profit:nextProps.data.monthly_profit,
             contract:nextProps.data.contract,
@@ -42,6 +42,7 @@ class Setting extends Component{
             number_of_month:nextProps.data.number_of_month,
             referral_profit:nextProps.data.referral_profit,
             email_admin:nextProps.data.email_admin,
+            wallet_address:nextProps.data.wallet_address,
         })
     }
     handleFile1(files) {
@@ -69,6 +70,7 @@ class Setting extends Component{
         parsedata["number_of_month"]=this.state.number_of_month;
         parsedata["referral_profit"]=this.state.referral_profit;
         parsedata["email_admin"]=this.state.email_admin;
+        parsedata["wallet_address"]=this.state.wallet_address;
         if(validateEmail(parsedata["email_admin"])===false){
             err = Object.assign({}, err, {email_admin:"format email tidak sesuai"});
             this.setState({error: err});
@@ -99,6 +101,71 @@ class Setting extends Component{
                         <div className="card">
                             <div className="card-body">
                                 <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label>Nama Aplikasi</label>
+                                            {
+                                                this.props.isLoading?<Skeleton height={30}/>:
+                                                    <div className="input-group mb-2">
+                                                        <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
+                                                        <input type="text" className="form-control" name="site_name" value={this.state.site_name} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    </div>
+                                            }
+
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Link</label>
+                                            {
+                                                this.props.isLoading?<Skeleton height={30}/>:
+                                                    <div className="input-group mb-2">
+                                                        <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
+                                                        <input type="text" className="form-control" name="site_url" value={this.state.site_url} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    </div>
+                                            }
+
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label>Email</label>
+                                            {
+                                                this.props.isLoading?<Skeleton height={30}/>:
+                                                    <div className="input-group mb-2">
+                                                        <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
+                                                        <input type="text" className="form-control" name="email_admin" value={this.state.email_admin} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    </div>
+                                            }
+                                            <div className="invalid-feedback" style={this.state.error.email_admin !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.email_admin}</div>
+
+
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Logo</label><br/>
+                                            {
+                                                this.props.isLoading?<Skeleton height={30}/>:
+                                                    <div className="row">
+                                                        <div className="col-md-10">
+                                                            <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={this.handleFile1.bind(this) } />
+                                                        </div>
+                                                        <div className="col-md-2" style={{float:"right"}}>
+                                                            <img src={this.state.logo} alt="" onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} style={{height:"20px",float:"right"}}/>
+                                                        </div>
+                                                    </div>
+                                            }
+
+                                        </div>
+                                        <div className="form-group">
+                                            <label>No.Bulan</label>
+                                            {
+                                                this.props.isLoading?<Skeleton height={30}/>:
+                                                    <div className="input-group mb-2">
+                                                        <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
+                                                        <input type="text" className="form-control" name="number_of_month" value={this.state.number_of_month} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    </div>
+
+                                            }
+
+                                        </div>
+                                    </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label>Profit perbulan</label>
@@ -133,12 +200,12 @@ class Setting extends Component{
 
                                         </div>
                                         <div className="form-group">
-                                            <label>No.Bulan</label>
+                                            <label>Wallet Address</label>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                 <div className="input-group mb-2">
                                                     <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
-                                                    <input type="text" className="form-control" name="number_of_month" value={this.state.number_of_month} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    <input type="text" className="form-control" name="wallet_address" value={this.state.wallet_address} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
                                                 </div>
 
                                             }
@@ -156,60 +223,7 @@ class Setting extends Component{
 
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label>Nama Aplikasi</label>
-                                            {
-                                                this.props.isLoading?<Skeleton height={30}/>:
-                                                <div className="input-group mb-2">
-                                                    <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
-                                                    <input type="text" className="form-control" name="site_name" value={this.state.site_name} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
-                                                </div>
-                                            }
 
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Link</label>
-                                            {
-                                                this.props.isLoading?<Skeleton height={30}/>:
-                                                <div className="input-group mb-2">
-                                                    <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
-                                                    <input type="text" className="form-control" name="site_url" value={this.state.site_url} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
-                                                </div>
-                                            }
-
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label>Email</label>
-                                            {
-                                                this.props.isLoading?<Skeleton height={30}/>:
-                                                <div className="input-group mb-2">
-                                                    <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
-                                                    <input type="text" className="form-control" name="email_admin" value={this.state.email_admin} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
-                                                </div>
-                                            }
-                                            <div className="invalid-feedback" style={this.state.error.email_admin !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.email_admin}</div>
-
-
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Logo</label><br/>
-                                            {
-                                                this.props.isLoading?<Skeleton height={30}/>:
-                                                <div className="row">
-                                                    <div className="col-md-10">
-                                                        <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={this.handleFile1.bind(this) } />
-                                                    </div>
-                                                    <div className="col-md-2" style={{float:"right"}}>
-                                                        <img src={this.state.logo} alt="" onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} style={{height:"20px",float:"right"}}/>
-                                                    </div>
-                                                </div>
-                                            }
-
-                                        </div>
-
-                                    </div>
                                 </div>
                             </div>
                         </div>

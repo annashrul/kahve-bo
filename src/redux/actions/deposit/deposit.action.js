@@ -61,7 +61,6 @@ export const FetchDeposit = (where) => {
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
-                console.log("REPONSE DEPOSIT",data);
                 dispatch(setData(data));
                 dispatch(setLoading(false));
             })
@@ -103,7 +102,6 @@ export const approval = (data,id) => {
 
             })
             .catch(function (error) {
-                console.log(error.response);
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));

@@ -153,26 +153,26 @@ class Header extends Component {
               <div className="right-side-trigger" style={{width:'unset',height:'unset',marginRight:'unset'}} >
                 <li className="nav-item dropdown" style={{listStyleType:'none'}}>
                     <UncontrolledButtonDropdown nav inNavbar>
-                                <DropdownToggle caret inNavbar className="nohover">
-                                    <img src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>
-                                </DropdownToggle>
-                            <DropdownMenu right>
-                                <div className="user-profile-area">
-                                    <div className="user-profile-heading">
-                                        <div className="profile-img">
-                                            <img className="chat-img mr-2" src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>
-                                        </div>
-                                        <div className="profile-text">
-                                            <h6>{this.props.auth.user.name}</h6>
-                                            <span>{this.props.auth.user.email}</span>
-                                        </div>
+                        <DropdownToggle caret inNavbar className="nohover">
+                            <img src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>
+                        </DropdownToggle>
+                        <DropdownMenu right>
+                            <div className="user-profile-area">
+                                <div className="user-profile-heading">
+                                    <div className="profile-img">
+                                        <img className="chat-img mr-2" src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>
                                     </div>
-                                    <DropdownItem  onClick={this.handleLogout}>
-                                    <i className="fa fa-chain-broken profile-icon bg-warning" aria-hidden="true"/> Sign-out
-                                    </DropdownItem>
+                                    <div className="profile-text">
+                                        <h6>{this.props.auth.user.name}</h6>
+                                        <span>{this.props.auth.user.email}</span>
+                                    </div>
                                 </div>
-                            </DropdownMenu>
-                        </UncontrolledButtonDropdown>
+                                <DropdownItem  onClick={this.handleLogout}>
+                                <i className="fa fa-chain-broken profile-icon bg-warning" aria-hidden="true"/> Sign-out
+                                </DropdownItem>
+                            </div>
+                        </DropdownMenu>
+                    </UncontrolledButtonDropdown>
                 </li>
               </div>
               {/* <!-- END Mobile AREAAAAAA --> */}
@@ -195,7 +195,7 @@ class Header extends Component {
                                                 </td>
                                                 <td className="fs1"  style={{paddingLeft:'10px'}}>
                                                     <p>
-                                                    <i class="fa fa-angle-down lnr"/>
+                                                    <i className="fa fa-angle-down lnr"/>
                                                     </p>
 
                                                 </td>
@@ -227,7 +227,7 @@ class Header extends Component {
       </header>
       );
   }
-};
+}
 Header.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   setEcaps: PropTypes.func.isRequired,

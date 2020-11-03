@@ -32,7 +32,6 @@ class Layout extends Component {
         return document.getElementById("coolyeah").value;
     }
     componentWillReceiveProps = (nextProps) => {
-        console.log("RESPNSE NEXT PROPS",nextProps);
         if (nextProps.auth.user) {
             const favicon = this.getFaviconEl(); // Accessing favicon element
             favicon.href = nextProps.auth.user.fav_icon;
