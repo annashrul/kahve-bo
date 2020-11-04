@@ -76,11 +76,11 @@ class CoinType extends Component{
             data
         } = this.props.data;
         return (
-            <Layout page={"tipe koin"}>
+            <Layout page={"Coin Type"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Tipe Koin</h5>
+                            <h5 className="mb-0 font-weight-bold">Coin Type</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -94,7 +94,7 @@ class CoinType extends Component{
                                 <div className="row">
                                     <div className="col-6 col-xs-6 col-md-3">
                                         <div className="form-group">
-                                            <label>Search</label>
+                                            <label>Type something here ..</label>
                                             <input type="text" className="form-control" name="any" defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
@@ -112,7 +112,7 @@ class CoinType extends Component{
                                             <th className="text-black" style={columnStyle}>No</th>
                                             <th className="text-black" style={columnStyle}>Aksi</th>
                                             <th className="text-black" style={columnStyle}>Title</th>
-                                            <th className="text-black" style={columnStyle}>Simbol</th>
+                                            <th className="text-black" style={columnStyle}>Symbol</th>
                                             <th className="text-black" style={columnStyle}>Status</th>
                                         </tr>
                                         </thead>

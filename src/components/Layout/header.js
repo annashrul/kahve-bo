@@ -17,6 +17,7 @@ import {
     DropdownToggle
 } from 'reactstrap';
 import Default from 'assets/default.png';
+import {noImage} from "../../helper";
 
 class Header extends Component {
   constructor(props) {
@@ -179,12 +180,48 @@ class Header extends Component {
 
               {/* <!-- Top Bar Nav --> */}
               <ul className={"right-side-content d-flex align-items-center " + (this.state.toggleMobileNav === true? "active":"")}>
-               
+                  <li className="nav-item dropdown">
+                      <UncontrolledButtonDropdown nav inNavbar>
+                          <DropdownToggle caret inNavbar className="nohover">
+                              <i className="fa fa-bell-o"/>
+                              <span className="badge badge-pill badge-primary inbox ml-2">
+                                  10
+                              </span>
+                          </DropdownToggle>
+                          <DropdownMenu right>
+                              <div className="top-message-area">
+                                  <div className="top-message-heading">
+                                      <div className="heading-title">
+                                          <h6>Messages</h6>
+                                      </div>
+                                      <span>5 New</span>
+                                  </div>
+                                  <div className="message-box" id="messageBox">
+                                      <a href="#" className="dropdown-item">
+                                      <img src={noImage()} alt=""/>
+                                        <span className="message-text">
+                                            <span>annashrul join </span>
+                                            <span>3 min ago</span>
+                                        </span>
+                                      </a>
+                                  </div>
+                                  <div className="message-box" id="messageBox">
+                                      <a href="#" className="dropdown-item">
+                                          <img src={noImage()} alt=""/>
+                                          <span className="message-text">
+                                            <span>annashrul invest </span>
+                                            <span>3 min ago</span>
+                                        </span>
+                                      </a>
+                                  </div>
+                              </div>
+                          </DropdownMenu>
+                      </UncontrolledButtonDropdown>
+                  </li>
 
                   <li className="nav-item dropdown">
                         <UncontrolledButtonDropdown nav inNavbar>
                                 <DropdownToggle caret inNavbar className="nohover">
-                                    <img src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>
                                     <div className="user-name">
                                         <table>
                                             <tr>

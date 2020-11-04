@@ -72,7 +72,7 @@ export const FetchDeposit = (where) => {
     }
 };
 
-export const approval = (data,id) => {
+export const approval = (data,id,where) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         const url = HEADERS.URL + `topup/${id}`;
@@ -87,7 +87,7 @@ export const approval = (data,id) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(FetchDeposit('page=1'));
+                    dispatch(FetchDeposit(where));
                 } else {
                     Swal.fire({
                         title: 'failed',

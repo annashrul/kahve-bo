@@ -97,7 +97,7 @@ class SideMenu extends Component {
 
                     {/* USER MODUL START */}
                     <li className={"treeview" +(this.state.isPengguna===true || path==='/admin' || path==='/user' ?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'pengguna')}><i className="fa fa-gears" /> <span>Pengguna</span> <i className="fa fa-angle-right" /></a>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'pengguna')}><i className="fa fa-gears" /> <span>Users</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPengguna===true?"block":"none"}}>
                             <li className={path==='/admin'?"active":''} style={this.state.isAdmin==="0"?{"display":"none"}:{"display":"block"}}><Link to="/admin" style={{width:'fit-content'}}> <i className="fa fa-user-secret" />Admin</Link></li>
                             <li className={path==='/user'?"active":''} style={this.state.isUser==="0"?{"display":"none"}:{"display":"block"}}><Link to="/user" style={{width:'fit-content'}}> <i className="fa fa-group" />Member</Link></li>
@@ -106,7 +106,7 @@ class SideMenu extends Component {
                     {/* USER MODUL END */}
 
                     {/* COIN TYPE MODUL START */}
-                    <li  className={path==='/coin_type'?"active":''}><Link to="/coin_type"> <i className="fa fa-bitcoin" /><span> Tipe Koin</span></Link></li>
+                    <li  className={path==='/coin_type'?"active":''}><Link to="/coin_type"> <i className="fa fa-bitcoin" /><span> Coin Type</span></Link></li>
                     {/* COIN TYPE MODUL END */}
 
                     {/* FAQ MODUL START */}
@@ -114,23 +114,29 @@ class SideMenu extends Component {
                     {/* FAQ MODUL END */}
 
                     {/* INBOX MODUL START */}
-                    <li  className={path==='/inbox'?"active":''}><Link to="/inbox"> <i className="fa fa-inbox" /><span> Pesan Masuk</span></Link></li>
+                    <li  className={path==='/message'?"active":''}><Link to="/message"> <i className="fa fa-inbox" /><span> Messages</span></Link></li>
                     {/* INBOX MODUL END */}
 
                     {/* DEPOSIT MODUL START */}
-                    <li  className={path==='/deposit'?"active":''}><Link to="/deposit"> <i className="fa fa-exchange" /><span> Deposit</span></Link></li>
+                    <li  className={path==='/investment'?"active":''}><Link to="/investment"> <i className="fa fa-exchange" /><span> Investment</span></Link></li>
                     {/* DEPOSIT MODUL END */}
 
                     {/* PENARIKAN MODUL START */}
-                    <li  className={path==='/penarikan'?"active":''}><Link to="/penarikan"> <i className="fa fa-exchange" /><span> Penarikan</span></Link></li>
+                    <li  className={path==='/withdraw'?"active":''}><Link to="/withdraw"> <i className="fa fa-exchange" /><span> Withdraw</span></Link></li>
                     {/* PENARIKAN MODUL END */}
 
+                    {/* TRANSACTION MODUL START */}
+                    <li  className={path==='/transaction'?"active":''}><Link to="/transaction"> <i className="fa fa-history" /><span> Transaction</span></Link></li>
+                    {/* TRANSACTION MODUL END */}
+
                     {/* PENGATURAN MODUL START */}
-                    <li  className={path==='/setting'?"active":''}><Link to="/setting"> <i className="fa fa-cogs" /><span> Pengaturan</span></Link></li>
+                    <li  className={path==='/setting'?"active":''}><Link to="/setting"> <i className="fa fa-cogs" /><span> Setting</span></Link></li>
                     {/* PENGATURAN MODUL END */}
 
+
+
                     {/* LOGOUT MODUL START */}
-                    <li><a href={null} style={{cursor:'pointer',color:'#a6b6d0'}} onClick={(event)=>this.handleLogout(event)}> <i className="fa fa-sign-out" /><span> Keluar</span></a></li>
+                    <li><a href={null} style={{cursor:'pointer',color:'#a6b6d0'}} onClick={(event)=>this.handleLogout(event)}> <i className="fa fa-sign-out" /><span> Logout</span></a></li>
                     {/* LOGOUT MODUL END */}
                 </ul>
             </nav>

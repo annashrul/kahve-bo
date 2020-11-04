@@ -9,17 +9,16 @@ import * as Swal from "sweetalert2";
 import {approvalPenarikan, FetchPenarikan} from "../../../redux/actions/penarikan/penarikan.action";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import {CopyToClipboard} from "react-copy-to-clipboard";
+import {FetchTransaction} from "../../../redux/actions/transaction/transaction.action";
 
-class Penarikan extends Component{
+class Transaction extends Component{
     constructor(props){
         super(props);
-        this.handleApproval = this.handleApproval.bind(this);
         this.handleEvent    = this.handleEvent.bind(this);
         this.handleChange   = this.handleChange.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
         this.state={
             detail:{},
-            status:"",
             any:"",
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD")
@@ -27,46 +26,21 @@ class Penarikan extends Component{
         }
     }
     componentWillMount(){
-        this.props.dispatch(FetchPenarikan('page=1'));
+        this.props.dispatch(FetchTransaction('page=1'));
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
-        let err = Object.assign({}, this.state.error, {
-            [event.target.name]: ""
-        });
-        this.setState({
-            error: err
-        });
     }
     handlePageChange(pageNumber){
-        localStorage.setItem("pagePenarikan",pageNumber);
+        localStorage.setItem("pageTransaction",pageNumber);
         let where = this.handleValidate();
-        this.props.dispatch(FetchPenarikan(where));
-    }
-    handleApproval(e,id,status){
-        e.preventDefault();
-        Swal.fire({
-            title: 'Warning !!!',
-            text: `you are sure will ${status===1?"approve":"cancel"} this data ??`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: `Oke, ${status===1?"approve":"cancel"} now!`,
-            cancelButtonText: 'Cancel',
-        }).then((result) => {
-            if (result.value) {
-                let parsedata={"status":status};
-                let where = this.handleValidate();
-                this.props.dispatch(approvalPenarikan(parsedata,id,where));
-            }
-        })
+        this.props.dispatch(FetchTransaction(where));
     }
     handleEvent = (event, picker) => {
         const from = moment(picker.startDate._d).format('YYYY-MM-DD');
         const to = moment(picker.endDate._d).format('YYYY-MM-DD');
-        localStorage.setItem("dateFromPenarikan",`${from}`);
-        localStorage.setItem("dateToPenarikan",`${to}`);
+        localStorage.setItem("dateFromTransaction",`${from}`);
+        localStorage.setItem("dateToTransaction",`${to}`);
         this.setState({
             dateFrom:from,
             dateTo:to
@@ -74,10 +48,9 @@ class Penarikan extends Component{
     };
     handleValidate(){
         let where="";
-        let page = localStorage.getItem("pagePenarikan");
+        let page = localStorage.getItem("pageTransaction");
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
-        let status = this.state.status;
         let any = this.state.any;
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
@@ -87,9 +60,7 @@ class Penarikan extends Component{
         if(dateFrom!==null&&dateFrom!==undefined&&dateFrom!==""){
             where+=`&datefrom=${dateFrom}&dateto=${dateTo}`;
         }
-        if(status!==null&&status!==undefined&&status!==""){
-            where+=`&status=${status}`;
-        }
+
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${any}`;
         }
@@ -98,17 +69,20 @@ class Penarikan extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-        this.props.dispatch(FetchPenarikan(where));
+        this.props.dispatch(FetchTransaction(where));
     }
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
+        const rightStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
         const {total,per_page, current_page,data} = this.props.data;
+        let totPerIn=0;
+        let totPerOut=0;
         return (
-            <Layout page={"Withdraw"}>
+            <Layout page={"Transaction"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Withdraw</h5>
+                            <h5 className="mb-0 font-weight-bold">Transaction</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -128,21 +102,10 @@ class Penarikan extends Component{
                                             </DateRangePicker>
                                         </div>
                                     </div>
-                                    <div className="col-6 col-xs-6 col-md-2">
-                                        <div className="form-group">
-                                            <label>Status</label>
-                                            <select name="status" className="form-control form-control-lg" defaultValue={this.state.status} value={this.state.status} onChange={this.handleChange}>
-                                                <option value="">All Status</option>
-                                                <option value="0">Pending</option>
-                                                <option value="1">Success</option>
-                                                <option value="2">Cancel</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div className="col-10 col-xs-10 col-md-3">
                                         <div className="form-group">
                                             <label>Type something here ..</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"search by amount,wallet address"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                            <input type="text" className="form-control" name="any" placeholder={"search by transaction code, amount,name"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
@@ -156,13 +119,12 @@ class Penarikan extends Component{
                                         <thead className="bg-light">
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
-                                            <th className="text-black" style={columnStyle}>#</th>
                                             <th className="text-black" style={columnStyle}>Transaction Code</th>
                                             <th className="text-black" style={columnStyle}>Name</th>
-                                            <th className="text-black" style={columnStyle}>Wallet Address</th>
-                                            <th className="text-black" style={columnStyle}>Amount (Coin)</th>
-                                            <th className="text-black" style={columnStyle}>Withdraw Date</th>
-                                            <th className="text-black" style={columnStyle}>Status</th>
+                                            <th className="text-black" style={columnStyle}>Trx In (Coin)</th>
+                                            <th className="text-black" style={columnStyle}>Trx Out (Coin)</th>
+                                            <th className="text-black" style={columnStyle}>Note</th>
+                                            <th className="text-black" style={columnStyle}>Date</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -171,51 +133,44 @@ class Penarikan extends Component{
                                                 (
                                                     typeof data === 'object' ? data.length>0?
                                                         data.map((v,i)=>{
-                                                            let badge = "";
-                                                            let txt = "";
-                                                            if(v.status===0){badge="btn-warning";txt="Pending";}
-                                                            if(v.status===1){badge="btn-success";txt="Success";}
-                                                            if(v.status===2){badge="btn-danger";txt="Cancel";}
+                                                            totPerIn = totPerIn+parseFloat(v.amount_in);
+                                                            totPerOut = totPerOut+parseFloat(v.amount_out);
+                                                        // totPerOut = totPerOut+parseFloat(v.amount_out).toFixed(8);
                                                             return(
                                                                 <tr key={i}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1} onClick={(e)=>this.handleApproval(e,v.id,1)}><i className={"fa fa-check"}/></button>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
-                                                                    </td>
                                                                     <td style={columnStyle}>
                                                                         <CopyToClipboard text={v.kd_trx}
                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${v.kd_trx} copied successful.`})}>
                                                                             <span><i className="fa fa-copy" style={{color:"green"}}/> {v.kd_trx?v.kd_trx:'-'} </span>
                                                                         </CopyToClipboard>
                                                                     </td>
-                                                                    <td style={columnStyle}>{v.users}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <CopyToClipboard text={v.wallet}
-                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${v.wallet} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {v.wallet?v.wallet:'-'} </span>
-                                                                        </CopyToClipboard>
-                                                                    </td>
-                                                                    <td style={columnStyle}>
-                                                                        <CopyToClipboard text={v.amount}
-                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${v.amount} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {v.amount?v.amount:'0'} </span>
+                                                                    <td style={columnStyle}>{v.name}</td>
+                                                                    <td style={rightStyle}>
+                                                                        <CopyToClipboard text={parseFloat(v.amount_in).toFixed(8)}
+                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${parseFloat(v.amount_in).toFixed(8)} copied successful.`})}>
+                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {parseFloat(v.amount_in).toFixed(8)} </span>
                                                                         </CopyToClipboard> <span style={{color:"red"}}>({v.coin})</span>
                                                                     </td>
+                                                                    <td style={rightStyle}>
+                                                                        <CopyToClipboard text={parseFloat(v.amount_out).toFixed(8)}
+                                                                         onCopy={()=>ToastQ.fire({icon:'success',title:`${parseFloat(v.amount_out).toFixed(8)} copied successful.`})}>
+                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {parseFloat(v.amount_out).toFixed(8)} </span>
+                                                                        </CopyToClipboard> <span style={{color:"red"}}>({v.coin})</span>
+                                                                    </td>
+                                                                    <td style={columnStyle}>{v.note}</td>
                                                                     <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
-                                                                    <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
+
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={9} style={{textAlign:"center"}}>No Data.</td></tr>
-                                                    : <tr><td colSpan={9} style={{textAlign:"center"}}>No Data.</td></tr>
+                                                        : <tr><td colSpan={6} style={{textAlign:"center"}}>No Data.</td></tr>
+                                                        : <tr><td colSpan={6} style={{textAlign:"center"}}>No Data.</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
@@ -230,6 +185,12 @@ class Penarikan extends Component{
                                                 })()
                                         }
                                         </tbody>
+                                        <tfoot>
+                                            <th className="text-black" colspan={3}>Total Perpage</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totPerIn.toFixed(8)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totPerOut.toFixed(8)}</th>
+                                            <th className="text-black" colspan={2}/>
+                                        </tfoot>
                                     </table>
                                 </div>
                                 <div style={{"marginTop":"20px","float":"right"}}>
@@ -252,14 +213,11 @@ class Penarikan extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.penarikanReducer.isLoading,
+        isLoading: state.transactionReducer.isLoading,
         isOpen:state.modalReducer,
-        data:state.penarikanReducer.data,
-        isLoadingPost: state.penarikanReducer.isLoadingPost,
-        isError: state.penarikanReducer.isError,
-
+        data:state.transactionReducer.data,
     }
 }
 
 
-export default connect(mapStateToProps)(Penarikan);
+export default connect(mapStateToProps)(Transaction);

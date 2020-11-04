@@ -7,11 +7,10 @@ import {FetchStock} from 'redux/actions/dashboard/dashboard.action'
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import socketIOClient from "socket.io-client";
 import {HEADERS} from 'redux/actions/_constants'
-import Chart from "react-apexcharts";
+import ReactApexChart from "react-apexcharts";
 
 
 import Cards from './src/Cards'
-import Charts from './src/charts'
 import Filter from './src/Filter'
 import Info from './src/Info'
 const socket = socketIOClient(HEADERS.URL);
@@ -20,110 +19,102 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            startDate:localStorage.getItem("startDateDashboard")===null?moment(new Date()).format("yyyy-MM-DD"):localStorage.getItem("startDateDashboard"),
-            endDate:localStorage.getItem("endDateDashboard")===null?moment(new Date()).format("yyyy-MM-DD"):localStorage.getItem("endDateDashboard"),
-
-            grossSales:"0",
-            wGrossSales:110,
-            netSales:"0",
-            wNetSales:110,
-            trxNum:"0",
-            wTrxNum:110,
-            avgTrx:"0",
-            wAvgTrx:110,
-
+            startDate:moment(new Date()).format("yyyy-MM-DD"),
+            endDate:moment(new Date()).format("yyyy-MM-DD"),
+            totalBalance:"0",
+            totalInvest:"0",
+            totalWD:"0",
+            totalMember:"0",
             location_data:[],
             location:"-",
-
-            lokasi_sales: {
-                    options: {
-                        chart: {
-                            id: "basic-bar"
-                        },
-                        xaxis: {
-                            categories: []
-                        }
-                    },
-                    series: [{
-                            name: "Bulan Lalu",
-                            data: []
-                        },
-                        {
-                            name: "Bulan Sekarang",
-                            data: []
-                        }
-                    ],
+            series: [
+                {
+                    name: 'Active Balance',
+                    data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+                        min: 10,
+                        max: 60
+                    })
                 },
-            lokasi_tr: {
-                    options: {
-                        chart: {
-                            id: "basic-bar"
-                        },
-                        xaxis: {
-                            categories: []
-                        }
-                    },
-                    series: [{
-                            name: "Bulan Lalu",
-                            data: []
-                        },
-                        {
-                            name: "Bulan Sekarang",
-                            data: []
-                        }
-                    ],
+                {
+                    name: 'Investment',
+                    data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+                        min: 10,
+                        max: 20
+                    })
                 },
-            hourly: {
-                options: {
-                    chart: {
-                        type: 'area'
-                    },
-                    xaxis: {
-                        categories: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        curve: 'smooth'
+                {
+                    name: 'Withdraw',
+                    data: this.generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+                        min: 10,
+                        max: 15
+                    })
+                }
+            ],
+            options: {
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    stacked: true,
+                    events: {
+                        selection: function (chart, e) {
+                            console.log(new Date(e.xaxis.min))
+                        }
                     },
                 },
-                series: [{
-                    // name: "Bulan Lalu",
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                }],
+                colors: ['#008FFB', '#00E396', '#b71c1c'],
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth'
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        opacityFrom: 0.6,
+                        opacityTo: 1.0,
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left'
+                },
+                xaxis: {
+                    type: 'datetime'
+                },
             },
 
         };
 
         socket.on('refresh_dashboard',(data)=>{
+            console.log(data);
             this.refreshData();
         })
         
         socket.on("set_dashboard", (data) => {
+            console.log(data);
             this.setState({
-                grossSales:toRp(parseInt(data.header.penjualan,10)),
-                netSales:toRp(parseInt(data.header.net_sales,10)),
-                trxNum:data.header.transaksi,
-                avgTrx:toRp(parseInt(data.header.avg,10)),
-                lokasi_sales: data.lokasi_sales,
-                lokasi_tr: data.lokasi_tr,
-                hourly: data.hourly,
-                daily: data.daily,
-                top_item_qty: data.top_item_qty,
-                top_item_sale: data.top_item_sale,
-                top_cat_qty: data.top_cat_qty,
-                top_cat_sale: data.top_cat_sale,
-                top_sp_qty: data.top_sp_qty,
-                top_sp_sale: data.top_sp_sale,
-            });
+                series:data.series,
+                totalBalance:data.total_balance,
+                totalInvest:data.total_invest,
+                totalWD:data.total_wd,
+                totalMember:data.total_member,
+            })
         });
         this.HandleChangeLokasi = this.HandleChangeLokasi.bind(this);
     }
-
-    componentDidMount(){
-        this.props.dispatch(FetchStock());
+    generateDayWiseTimeSeries(baseval, count, yrange) {
+        let i = 0;
+        let series = [];
+        while (i < count) {
+            let y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+            series.push([baseval, y]);
+            baseval += 86400000;
+            i++;
+        }
+        return series;
     }
+
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.auth.user) {
@@ -149,11 +140,10 @@ class Dashboard extends Component {
         }
       }
 
-    refreshData(start=null,end=null,loc=null){
+    refreshData(start=null,end=null){
         socket.emit('get_dashboard', {
             datefrom: start!==null?start:this.state.startDate,
             dateto: end!==null?end:this.state.endDate,
-            location: loc!==null?loc:this.state.location
         })
     }
 
@@ -176,7 +166,7 @@ class Dashboard extends Component {
             startDate:awal,
             endDate:akhir
         });
-        this.refreshData(awal,akhir,null);
+        this.refreshData(awal,akhir);
     };
 
     handleSubmit = (event) => {
@@ -192,7 +182,7 @@ class Dashboard extends Component {
             location: lk.value,
             error: err
         })
-        this.refreshData(null, null, lk.value)
+        this.refreshData(null, null)
 
     }
 
@@ -222,10 +212,10 @@ class Dashboard extends Component {
 
                 {/* Dashboard Widget Area */}
                 <div className="row">
-                    <Cards title="TOTAL INVESTMENT" data={this.state.grossSales} icon="fa fa-area-chart text-primary"/>
-                    <Cards title="ACTIVE BALANCE" data={this.state.netSales} icon="fa fa-area-chart text-primary"/>
-                    <Cards title="TOTAL PAYMENT" data={this.state.trxNum} icon="fa fa-area-chart text-primary"/>
-                    <Cards title="MEMBER ACTIVE" data={this.state.avgTrx} icon="fa fa-area-chart text-primary"/>
+                    <Cards title="TOTAL INVESTMENT" data={this.state.totalInvest} icon="fa fa-area-chart text-primary"/>
+                    <Cards title="ACTIVE BALANCE" data={this.state.totalBalance} icon="fa fa-area-chart text-primary"/>
+                    <Cards title="TOTAL WITHDRAW" data={this.state.totalWD} icon="fa fa-area-chart text-primary"/>
+                    <Cards title="MEMBER ACTIVE" data={this.state.totalMember} icon="fa fa-area-chart text-primary"/>
                 </div>
                 {/* Dashboard Widget Area */}
                 <div className="card">
@@ -233,15 +223,17 @@ class Dashboard extends Component {
                         <div className="card-header bg-transparent text-center">
                             <h4 className="card-title mt-3">ACTIVE BALANCE</h4>
                         </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <Chart
-                                    options={this.state.hourly.options}
-                                    series={this.state.hourly.series}
-                                    height="400"
-                                />
-                            </div>
-                        </div>
+                        <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={350} />
+
+                        {/*<div className="row">*/}
+                            {/*<div className="col-md-12">*/}
+                                {/*<Chart*/}
+                                    {/*options={this.state.options}*/}
+                                    {/*series={this.state.series}*/}
+                                    {/*height="400"*/}
+                                {/*/>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
         </Layout>

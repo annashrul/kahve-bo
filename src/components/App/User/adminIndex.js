@@ -128,7 +128,7 @@ class Admin extends Component{
             data
         } = this.props.data;
         return (
-            <Layout page={"pengguna-admin"}>
+            <Layout page={"users-admin"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
@@ -146,7 +146,7 @@ class Admin extends Component{
                                 <div className="row">
                                     <div className="col-6 col-xs-6 col-md-3">
                                         <div className="form-group">
-                                            <label>Search</label>
+                                            <label>Type something here ..</label>
                                             <input type="text" className="form-control" name="any" value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
@@ -162,13 +162,13 @@ class Admin extends Component{
                                         <thead className="bg-light">
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
-                                            <th className="text-black" style={columnStyle}>Aksi</th>
+                                            <th className="text-black" style={columnStyle}>#</th>
                                             {/*<th className="text-black" style={columnStyle}>ID Card</th>*/}
                                             {/*<th className="text-black" style={columnStyle}>Selfie</th>*/}
                                             {/*<th className="text-black" style={columnStyle}>Photo</th>*/}
-                                            <th className="text-black" style={columnStyle}>Nama</th>
+                                            <th className="text-black" style={columnStyle}>Name</th>
                                             <th className="text-black" style={columnStyle}>Email</th>
-                                            <th className="text-black" style={columnStyle}>Tanggal</th>
+                                            <th className="text-black" style={columnStyle}>Date</th>
                                             <th className="text-black" style={columnStyle}>Status</th>
                                         </tr>
                                         </thead>

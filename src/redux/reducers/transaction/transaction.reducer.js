@@ -1,64 +1,49 @@
 
 
-import {USER_LIST} from "../../actions/_constants";
+import {TRANSACTION} from "../../actions/_constants";
 
 const initialState = {
     isLoading: true,
     isLoadingPost: false,
-    isLoadingDetail: false,
-    isLoadingSend: false,
     isError: false,
     status: "",
     msg: "",
     data: [],
-    dataAll: [],
     edit:[],
     detail:[]
 }
 
-export const userReducer = (state = initialState, action) => {
+export const transactionReducer = (state = initialState, action) => {
     switch (action.type) {
-        case USER_LIST.SUCCESS:
+        case TRANSACTION.SUCCESS:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.result,
             });
-        case USER_LIST.SUCCESS_ALL:
-            return Object.assign({}, state, {
-                dataAll: action.data.result,
-            });
-        case USER_LIST.EDIT:
+        case TRANSACTION.EDIT:
             return Object.assign({}, state, {
                 edit: action.data.result,
             });
-        case USER_LIST.DETAIL:
+        case TRANSACTION.DETAIL:
             return Object.assign({}, state, {
                 detail: action.data.result,
             });
-        case USER_LIST.FAILED:
+        case TRANSACTION.FAILED:
             return Object.assign({}, state, {
                 status: action.data.status,
                 msg: action.data.msg,
                 data: action.data.data,
             });
-        case USER_LIST.LOADING:
+        case TRANSACTION.LOADING:
             return Object.assign({}, state, {
                 isLoading: action.load
             });
-        case USER_LIST.LOADING_POST:
+        case TRANSACTION.LOADING_POST:
             return Object.assign({}, state, {
                 isLoadingPost: action.load
             });
-        case USER_LIST.LOADING_DETAIL:
-            return Object.assign({}, state, {
-                isLoadingDetail: action.load
-            });
-        case USER_LIST.LOADING_SEND:
-            return Object.assign({}, state, {
-                isLoadingSend: action.load
-            });
-        case USER_LIST.IS_ERROR:
+        case TRANSACTION.IS_ERROR:
             return Object.assign({}, state, {
                 isError: action.load
             });

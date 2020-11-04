@@ -106,14 +106,14 @@ class Faq extends Component{
                                     <div className="row">
                                         <div className="col-6 col-xs-6 col-md-3">
                                             <div className="form-group">
-                                                <label>Search</label>
-                                                <input type="text" className="form-control" name="field_any" defaultValue={localStorage.getItem('any_customer')}/>
+                                                <label>Type something here ..</label>
+                                                <input type="text" className="form-control" name="any"/>
                                             </div>
                                         </div>
                                         <div className="col-4 col-xs-4 col-md-4">
                                             <div className="form-group">
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"></i></button>
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"></i></button>
+                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"/></button>
+                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>
                                             </div>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@ class Faq extends Component{
                                                                                     <button className={"btn btn-primary"} onClick={(e)=>this.handleModal(e,i)}>Edit</button>
                                                                                 </div>
                                                                                 <div className="col-4 col-xs-4 col-md-4">
-                                                                                    <button className={"btn btn-danger"} onClick={(e)=>this.handleDelete(e,v.id)}>Hapus</button>
+                                                                                    <button className={"btn btn-danger"} onClick={(e)=>this.handleDelete(e,v.id)}>Delete</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

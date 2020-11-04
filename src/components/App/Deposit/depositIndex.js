@@ -2,12 +2,13 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import Paginationq, {rangeDate} from "../../../helper";
+import Paginationq, {rangeDate,ToastQ} from "../../../helper";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import {approval, FetchDeposit} from "../../../redux/actions/deposit/deposit.action";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
+import {CopyToClipboard} from "react-copy-to-clipboard";
 
 class Deposit extends Component{
     constructor(props){
@@ -43,21 +44,22 @@ class Deposit extends Component{
         });
     }
     handleApproval(e,id,status){
-
         e.preventDefault();
         Swal.fire({
-            title: 'Perhatian !!!',
-            text: `Anda yakin akan ${status===1?"approve":"menolak"} data ini ??`,
+            title: 'Warning !!!',
+            text: `You are sure ${status===1?"approve":"cancel"} this data ??`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: `Oke, ${status===1?"approve":"tolak"} sekarang!`,
+            confirmButtonText: `Oke, ${status===1?"approve":"cancel"} now!`,
             cancelButtonText: 'Batal',
         }).then((result) => {
             if (result.value) {
                 let parsedata={"status":status};
-                this.props.dispatch(approval(parsedata,id));
+                let where = this.handleValidate();
+                this.props.dispatch(FetchDeposit(where));
+                this.props.dispatch(approval(parsedata,id,where));
             }
         })
     }
@@ -114,11 +116,11 @@ class Deposit extends Component{
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {total,per_page, current_page,data} = this.props.data;
         return (
-            <Layout page={"deposit"}>
+            <Layout page={"Investment"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Deposit</h5>
+                            <h5 className="mb-0 font-weight-bold">Investment</h5>
                         </div>
                     </div>
                     <Info handleSubmit={this.handleSubmit}/>
@@ -141,17 +143,17 @@ class Deposit extends Component{
                                         <div className="form-group">
                                             <label>Status</label>
                                             <select name="status" className="form-control form-control-lg" defaultValue={this.state.status} value={this.state.status} onChange={this.handleChange}>
-                                                <option value="">Semua Status</option>
+                                                <option value="">All Status</option>
                                                 <option value="0">Pending</option>
-                                                <option value="1">Sukses</option>
-                                                <option value="2">Ditolak</option>
+                                                <option value="1">Success</option>
+                                                <option value="2">Cancel</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div className="col-10 col-xs-10 col-md-3">
                                         <div className="form-group">
-                                            <label>Tulis sesuatu disini</label>
-                                            <input type="text" className="form-control" name="any" defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                            <label>Type something here ..</label>
+                                            <input type="text" className="form-control" name="any" placeholder={"search by amount,name"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
@@ -165,12 +167,11 @@ class Deposit extends Component{
                                         <thead className="bg-light">
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
-                                            <th className="text-black" style={columnStyle}>Aksi</th>
-                                            <th className="text-black" style={columnStyle}>No.Slot</th>
-                                            <th className="text-black" style={columnStyle}>Nama</th>
-                                            <th className="text-black" style={columnStyle}>Koin</th>
-                                            <th className="text-black" style={columnStyle}>Jumlah</th>
-                                            <th className="text-black" style={columnStyle}>Tanggal Deposit</th>
+                                            <th className="text-black" style={columnStyle}>#</th>
+                                            <th className="text-black" style={columnStyle}>Slot No</th>
+                                            <th className="text-black" style={columnStyle}>Name</th>
+                                            <th className="text-black" style={columnStyle}>Amount (Coin)</th>
+                                            <th className="text-black" style={columnStyle}>Invest Date</th>
                                             <th className="text-black" style={columnStyle}>Status</th>
                                         </tr>
                                         </thead>
@@ -184,8 +185,8 @@ class Deposit extends Component{
                                                             let badge = "";
                                                             let txt = "";
                                                             if(v.status===0){badge="btn-warning";txt="Pending";}
-                                                            if(v.status===1){badge="btn-success";txt="Sukses";}
-                                                            if(v.status===2){badge="btn-danger";txt="Ditolak";}
+                                                            if(v.status===1){badge="btn-success";txt="Success";}
+                                                            if(v.status===2){badge="btn-danger";txt="Cancel";}
                                                             return(
                                                                 <tr key={i}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
@@ -196,9 +197,13 @@ class Deposit extends Component{
                                                                     </td>
                                                                     <td style={columnStyle}>{v.slot_no}</td>
                                                                     <td style={columnStyle}>{v.name}</td>
-                                                                    <td style={columnStyle}>{v.coin}</td>
-                                                                    <td style={columnStyle}>{v.amount}</td>
-                                                                    <td style={columnStyle}>{moment(v.created_at).locale('id').format("LLLL")}</td>
+                                                                    <td style={columnStyle}>
+                                                                        <CopyToClipboard text={v.amount}
+                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${v.amount} copied successful.`})}>
+                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {v.amount?v.amount:'0'} </span>
+                                                                        </CopyToClipboard> <span style={{color:"red"}}>({v.coin})</span>
+                                                                    </td>
+                                                                    <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
                                                                     <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
                                                                 </tr>
                                                             )

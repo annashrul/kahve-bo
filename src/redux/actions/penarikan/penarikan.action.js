@@ -72,7 +72,7 @@ export const FetchPenarikan = (where) => {
     }
 };
 
-export const approvalPenarikan = (data,id) => {
+export const approvalPenarikan = (data,id,where) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         const url = HEADERS.URL + `withdraw/${id}`;
@@ -87,7 +87,7 @@ export const approvalPenarikan = (data,id) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    dispatch(FetchPenarikan('page=1'));
+                    dispatch(FetchPenarikan(where));
                 } else {
                     Swal.fire({
                         title: 'failed',

@@ -16,6 +16,12 @@ export function setLoadingPost(load) {
         load
     }
 }
+export function setLoadingSend(load) {
+    return {
+        type: USER_LIST.LOADING_SEND,
+        load
+    }
+}
 export function setLoadingDetail(load) {
     return {
         type: USER_LIST.LOADING_DETAIL,
@@ -32,6 +38,13 @@ export function setIsError(load) {
 export function setUserList(data = []) {
     return {
         type: USER_LIST.SUCCESS,
+        data
+    }
+}
+
+export function setUserListAll(data = []) {
+    return {
+        type: USER_LIST.SUCCESS_ALL,
         data
     }
 }
@@ -77,6 +90,35 @@ export const FetchUser = (where) => {
 
     }
 };
+
+export const FetchAllUser = (where) => {
+    return (dispatch) => {
+        dispatch(setLoadingSend(true));
+        let url = 'user';
+        if(where){
+            url+=`?${where}`;
+        }
+        console.log(url);
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setUserListAll(data));
+                dispatch(setLoadingSend(false));
+                // let email=[];
+                // for(let i=0;i<data.result.data.length;i++){
+                //     email.push(data.result.data[i].email);
+                // }
+                // localStorage.setItem("email",email.toString());
+            })
+            .catch(function (error) {
+                // handle error
+
+            })
+
+    }
+};
+
+
 export const FetchDetailUser = (id) => {
     return (dispatch) => {
         dispatch(setLoadingDetail(true));

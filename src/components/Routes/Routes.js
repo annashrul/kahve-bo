@@ -12,6 +12,7 @@ import Faq from '../App/Faq/faqIndex';
 import Inbox from '../App/Inbox/inboxIndex';
 import Deposit from '../App/Deposit/depositIndex';
 import Penarikan from '../App/Penarikan/penarikanIndex';
+import Transaction from '../App/Transaction/transactionIndex';
 import Setting from '../App/Setting/settingIndex';
 const Routes = (
     <div>
@@ -32,14 +33,17 @@ const Routes = (
             <PrivateRoute path="/faq" exact strict component={Faq} />
             {/* FAQ SECTION END */}
             {/* INBOX SECTION START */}
-            <PrivateRoute path="/inbox" exact strict component={Inbox} />
+            <PrivateRoute path="/message" exact strict component={Inbox} />
             {/* INBOX SECTION END */}
             {/* DEPOSIT SECTION START */}
-            <PrivateRoute path="/deposit" exact strict component={Deposit} />
+            <PrivateRoute path="/investment" exact strict component={Deposit} />
             {/* DEPOSIT SECTION END */}
             {/* PENARIKAN SECTION START */}
-            <PrivateRoute path="/penarikan" exact strict component={Penarikan} />
+            <PrivateRoute path="/withdraw" exact strict component={Penarikan} />
             {/* PENARIKAN SECTION END */}
+            {/* TRANSACTION SECTION START */}
+            <PrivateRoute path="/transaction" exact strict component={Transaction} />
+            {/* TRANSACTION SECTION END */}
             {/* PENGATURAN SECTION START */}
             <PrivateRoute path="/setting" exact strict component={Setting} />
             {/* PENGATURAN SECTION END */}

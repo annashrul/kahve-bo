@@ -52,11 +52,11 @@ class Inbox extends Component{
             data
         } = this.props.data;
         return (
-            <Layout page={"pesan masuk"}>
+            <Layout page={"message"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Pesan Masuk</h5>
+                            <h5 className="mb-0 font-weight-bold">Message</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -71,13 +71,13 @@ class Inbox extends Component{
                                     <div className="row">
                                         <div className="col-10 col-xs-10 col-md-3">
                                             <div className="form-group">
-                                                <label>Search</label>
-                                                <input type="text" className="form-control" name="field_any" defaultValue={localStorage.getItem('any_customer')}/>
+                                                <label>Type something here ..</label>
+                                                <input type="text" className="form-control" name="any"/>
                                             </div>
                                         </div>
                                         <div className="col-2 col-xs-4 col-md-4">
                                             <div className="form-group">
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"></i></button>
+                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"/></button>
                                             </div>
                                         </div>
                                     </div>

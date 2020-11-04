@@ -2,15 +2,19 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import {deleteUser, FetchDetailUser, FetchUser, putUser} from "../../../redux/actions/user/user.action";
+import {
+    deleteUser, FetchAllUser, FetchDetailUser, FetchUser, putUser,
+    setUserListAll
+} from "../../../redux/actions/user/user.action";
 import FormUser from "../../App/modals/user/form_user";
 import DetailUser from "../../App/modals/user/detail_user";
-import Paginationq, {statusQ} from "../../../helper";
+import Paginationq, {statusQ, ToastQ} from "../../../helper";
 import {noImage} from "../../../helper";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import moment from "moment";
+import {CopyToClipboard} from "react-copy-to-clipboard";
 
 class User extends Component{
     constructor(props){
@@ -18,13 +22,28 @@ class User extends Component{
         this.handleModal = this.handleModal.bind(this);
         this.handleIsActive = this.handleIsActive.bind(this);
         this.handleZoom = this.handleZoom.bind(this);
+        this.handleSendEmail = this.handleSendEmail.bind(this);
+        this.handleCopy = this.handleCopy.bind(this);
         this.state={
             detail:{},
+            formatEmail:"",
+            email:"",
+            perpage:0,
+            lastpage:0,
             any:"",
         }
     }
     componentWillMount(){
+        console.log("component will mount");
         this.props.dispatch(FetchUser('page=1'));
+    }
+    componentDidMount(){
+        this.setState({
+            perpage:this.props.data.per_page,
+            lastpage:this.props.data.last_page,
+            // email:data.toString()
+        });
+        console.log("component did mount",`${this.props.data.per_page} ${this.props.data.last_page}`)
     }
     handleModal(e,param) {
         e.preventDefault();
@@ -53,6 +72,36 @@ class User extends Component{
         }
         else{
             this.setState({detail:undefined})
+        }
+    }
+
+    componentWillUnmount(){
+        this.props.dispatch(setUserListAll([]));
+    }
+
+    componentWillReceiveProps(nextProps){
+        // console.log(nextProps.dataAll);
+        // console.log("nextProps",nextProps);
+        // this.setState({
+        //     perpage:nextProps.data.per_page,
+        //     lastpage:nextProps.data.last_page,
+        //     // email:data.toString()
+        // });
+        // let pepage=this.state.perpage;
+        // let lastpage=this.state.lastpage;
+        // nextProps.dispatch(FetchAllUser(`page=1&perpage=${nextProps.data.per_page*nextProps.data.last_page}`));
+        let data = [];
+        // if(nextProps.dataAll!==undefined)
+        if(nextProps.dataAll!==undefined){
+            if(nextProps.dataAll.data!==undefined){
+                if(nextProps.dataAll.data.length>0){
+                    nextProps.dataAll.data.map((v,i)=>{
+                        data.push(v.email);
+                    });
+                    window.location = `mailto:${data.toString()}`;
+                }
+            }
+
         }
     }
 
@@ -106,6 +155,10 @@ class User extends Component{
         localStorage.setItem("pagePengguna",pageNumber);
         let where = this.handleValidate();
         this.props.dispatch(FetchUser(where));
+        this.props.dispatch(setUserListAll([]));
+
+        // this.props.dispatch(FetchAllUser(`page=1&perpage=0`));
+
     }
     handleValidate(){
         let where="";
@@ -126,14 +179,29 @@ class User extends Component{
         let where = this.handleValidate();
         this.props.dispatch(FetchUser(where));
     }
+    handleSendEmail(e,perpage,lastpage){
+        e.preventDefault();
+        this.props.dispatch(FetchAllUser(`page=1&perpage=${perpage*lastpage}`));
+    }
+    handleCopy = (e) => {
+        e.preventDefault();
+        console.log('abus');
+        e.clipboardData.setData('text/plain', 'Hello, world!');
+    }
     render(){
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
+        const rightStyle = {verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
         const {
             total,
+            last_page,
             per_page,
             current_page,
             data
         } = this.props.data;
+        let totalPerActiveBalance=0;
+        let totalPerActiveSlot=0;
+        let totalPerPayment=0;
+        let totalPerRef=0;
         return (
             <Layout page={"pengguna-member"}>
                 <div className="row align-items-center">
@@ -153,14 +221,15 @@ class User extends Component{
                                 <div className="row">
                                     <div className="col-6 col-xs-6 col-md-3">
                                         <div className="form-group">
-                                            <label>Search</label>
+                                            <label>Type something here ..</label>
                                             <input type="text" className="form-control" name="any" value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                    <div className="col-4 col-xs-4 col-md-4">
+                                    <div className="col-6 col-xs-6 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                             <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>
+                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}>{this.props.isLoadingSend?"loading ...":<i className="fa fa-send"/>}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -169,14 +238,15 @@ class User extends Component{
                                         <thead className="bg-light">
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
-                                            <th className="text-black" style={columnStyle}>Aksi</th>
-                                            <th className="text-black" style={columnStyle}>ID Card</th>
-                                            <th className="text-black" style={columnStyle}>Selfie</th>
-                                            <th className="text-black" style={columnStyle}>Photo</th>
-                                            <th className="text-black" style={columnStyle}>Nama</th>
+                                            <th className="text-black" style={columnStyle}>#</th>
+                                            <th className="text-black" style={columnStyle}>Id Wallet Indodax</th>
                                             <th className="text-black" style={columnStyle}>Email</th>
-                                            <th className="text-black" style={columnStyle}>Tanggal</th>
-                                            <th className="text-black" style={columnStyle}>Status</th>
+                                            <th className="text-black" style={columnStyle}>Active Balance</th>
+                                            <th className="text-black" style={columnStyle}>Active Slot</th>
+                                            <th className="text-black" style={columnStyle}>Payment</th>
+                                            <th className="text-black" style={columnStyle}>Total Ref</th>
+                                            <th className="text-black" style={columnStyle}>BEP</th>
+                                            <th className="text-black" style={columnStyle}>Send</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -186,8 +256,14 @@ class User extends Component{
                                                 (
                                                     typeof data === 'object' ? data.length>0?
                                                         data.map((v,i)=>{
+                                                            totalPerActiveBalance = totalPerActiveBalance+parseFloat(v.active_balance);
+                                                            totalPerActiveSlot = totalPerActiveSlot+parseFloat(v.active_slot);
+                                                            totalPerPayment = totalPerPayment+parseFloat(v.payment);
+                                                            totalPerRef = totalPerRef+parseFloat(v.reff);
                                                             let faIsActive="";
                                                             let isStatus=0;
+                                                            let bep;
+                                                            let address=v.address;
                                                             if(v.status===1){
                                                                 faIsActive="fa-ban";
                                                                 isStatus=0;
@@ -196,6 +272,12 @@ class User extends Component{
                                                                 faIsActive="fa-check";
                                                                 isStatus=1;
                                                             }
+                                                            if(v.bep===true){
+                                                                bep = 1;
+                                                            }else{
+                                                                bep = 0;
+                                                            }
+
                                                             return(
                                                                 <tr key={i}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
@@ -204,13 +286,21 @@ class User extends Component{
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-dark btn-sm"} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
                                                                     </td>
-                                                                    <td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer",objectFit:"cover",objectPosition:"center"}} onClick={(e)=>this.handleZoom(e,v.id_card)} src={v.id_card} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
-                                                                    <td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer",objectFit:"cover",objectPosition:"center"}} onClick={(e)=>this.handleZoom(e,v.selfie)} src={v.selfie} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
-                                                                    <td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer",objectFit:"cover",objectPosition:"center"}} onClick={(e)=>this.handleZoom(e,v.foto)} src={v.foto} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>
-                                                                    <td style={columnStyle}>{v.name}</td>
+                                                                    <td style={columnStyle}>
+                                                                        <CopyToClipboard text={address?address:'-'}
+                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${address} berhasil disalin.`})}>
+                                                                            <span>{address?address:'-'} <i className="fa fa-copy" style={{color:"green"}}/></span>
+                                                                        </CopyToClipboard>
+                                                                    </td>
                                                                     <td style={columnStyle}>{v.email}</td>
-                                                                    <td style={columnStyle}>{moment(v.created_at).locale('id').format("LLLL")}</td>
-                                                                    <td style={columnStyle}>{statusQ(v.status)}</td>
+                                                                    <td style={rightStyle}>{parseFloat(v.active_balance).toFixed(8)}</td>
+                                                                    <td style={rightStyle}>{v.active_slot}</td>
+                                                                    <td style={rightStyle}>{parseFloat(v.payment).toFixed(8)}</td>
+                                                                    <td style={rightStyle}>{parseFloat(v.reff)}</td>
+                                                                    <td style={columnStyle}>{statusQ(bep)}</td>
+                                                                    <td style={columnStyle}>
+                                                                        <a href={`mailto:${v.email}`} className="btn btn-primary btn-sm"><i className="fa fa-send"/></a>
+                                                                    </td>
                                                                 </tr>
                                                             )
                                                         })
@@ -221,15 +311,17 @@ class User extends Component{
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
-                                                                <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50} duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50} duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50} duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50} duration={0.5}/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
+
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
                                                             </tr>
                                                         )
                                                     }
@@ -237,6 +329,23 @@ class User extends Component{
                                                 })()
                                         }
                                         </tbody>
+                                        <tfoot>
+                                            <th className="text-black" colspan={4}>Total Allpage</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
+                                            <th className="text-black" colspan={2}/>
+                                        </tfoot>
+                                        <tfoot>
+                                            <th className="text-black" colspan={4}>Total Perpage</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance.toFixed(8)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment.toFixed(8)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
+                                            <th className="text-black" colspan={2}/>
+                                        </tfoot>
+
                                     </table>
                                 </div>
 
@@ -265,8 +374,10 @@ const mapStateToProps = (state) => {
     return {
         isLoading: state.userReducer.isLoading,
         isLoadingDetail: state.userReducer.isLoadingDetail,
+        isLoadingSend: state.userReducer.isLoadingSend,
         isOpen:state.modalReducer,
         data:state.userReducer.data,
+        dataAll:state.userReducer.dataAll,
         detail:state.userReducer.detail
     }
 }

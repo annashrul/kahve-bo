@@ -3,13 +3,16 @@ import Layout from 'components/Layout';
 import connect from "react-redux/es/connect/connect";
 import FileBase64 from "react-file-base64";
 import {FetchPengaturan, putPengaturan} from "../../../redux/actions/setting/setting.action";
-import {noImage, validateEmail} from "../../../helper";
+import {noImage, rangeDate, validateEmail} from "../../../helper";
 import Skeleton from 'react-loading-skeleton';
+import {DateRangePicker} from "react-bootstrap-daterangepicker";
+import moment from "moment";
 
 class Setting extends Component{
     constructor(props){
         super(props);
         this.state={
+            hari:['monday','tuesday','wednesday','thursday','friday','saturday','sunday'],
             monthly_profit:"",
             contract:"",
             charge:"",
@@ -20,18 +23,34 @@ class Setting extends Component{
             referral_profit:"",
             email_admin:"",
             wallet_address:"",
+            hariInvest1:"",
+            hariInvest2:"",
+            jamInvestFrom1:"",
+            jamInvestFrom2:"",
+            jamInvestTo1:"",
+            jamInvestTo2:"",
+
+            hariWD1:"",
+            hariWD2:"",
+            jamWDFrom1:"",
+            jamWDFrom2:"",
+            jamWDTo1:"",
+            jamWDTo2:"",
+
             error:{
                 email:""
             }
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     componentWillMount(){
         this.props.dispatch(FetchPengaturan());
     }
     componentWillReceiveProps(nextProps){
+        console.log(nextProps.data.schedule_invest.time[0].split("-")[0]);
         this.setState({
             monthly_profit:nextProps.data.monthly_profit,
             contract:nextProps.data.contract,
@@ -43,6 +62,19 @@ class Setting extends Component{
             referral_profit:nextProps.data.referral_profit,
             email_admin:nextProps.data.email_admin,
             wallet_address:nextProps.data.wallet_address,
+            hariInvest1:nextProps.data.schedule_invest.days[0],
+            hariInvest2:nextProps.data.schedule_invest.days[1],
+            jamInvestFrom1:nextProps.data.schedule_invest.time[0].split("-")[0],
+            jamInvestFrom2:nextProps.data.schedule_invest.time[0].split("-")[1],
+            jamInvestTo1:nextProps.data.schedule_invest.time[1].split("-")[0],
+            jamInvestTo2:nextProps.data.schedule_invest.time[1].split("-")[1],
+
+            hariWD1:nextProps.data.schedule_wd.days[0],
+            hariWD2:nextProps.data.schedule_wd.days[1],
+            jamWDFrom1:nextProps.data.schedule_wd.time[0].split("-")[0],
+            jamWDFrom2:nextProps.data.schedule_wd.time[0].split("-")[1],
+            jamWDTo1:nextProps.data.schedule_wd.time[1].split("-")[0],
+            jamWDTo2:nextProps.data.schedule_wd.time[1].split("-")[1],
         })
     }
     handleFile1(files) {
@@ -71,6 +103,14 @@ class Setting extends Component{
         parsedata["referral_profit"]=this.state.referral_profit;
         parsedata["email_admin"]=this.state.email_admin;
         parsedata["wallet_address"]=this.state.wallet_address;
+        parsedata["schedule_invest"] =  {
+            "days": [this.state.hariInvest1, this.state.hariInvest2],
+            "time": [`${this.state.jamInvestFrom1}-${this.state.jamInvestFrom2}`, `${this.state.jamInvestTo1}-${this.state.jamInvestTo2}`]
+        };
+        parsedata["schedule_wd"] ={
+            "days": [this.state.hariWD1,this.state.hariWD2],
+            "time": [`${this.state.jamWDFrom1}-${this.state.jamWDFrom2}`, `${this.state.jamWDTo1}-${this.state.jamWDTo2}`]
+        };
         if(validateEmail(parsedata["email_admin"])===false){
             err = Object.assign({}, err, {email_admin:"format email tidak sesuai"});
             this.setState({error: err});
@@ -79,13 +119,14 @@ class Setting extends Component{
             this.props.dispatch(putPengaturan(parsedata));
         }
     }
+
     render(){
         return (
-            <Layout page={"Pengaturan"}>
+            <Layout page={"Setting"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Pengaturan Umum</h5>
+                            <h5 className="mb-0 font-weight-bold">Setting</h5>
                         </div>
                     </div>
                     <div className="col-6">
@@ -101,9 +142,9 @@ class Setting extends Component{
                         <div className="card">
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-4">
                                         <div className="form-group">
-                                            <label>Nama Aplikasi</label>
+                                            <label>App Name</label>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                     <div className="input-group mb-2">
@@ -114,7 +155,7 @@ class Setting extends Component{
 
                                         </div>
                                         <div className="form-group">
-                                            <label>Link</label>
+                                            <label>App Link</label>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                     <div className="input-group mb-2">
@@ -124,7 +165,6 @@ class Setting extends Component{
                                             }
 
                                         </div>
-
                                         <div className="form-group">
                                             <label>Email</label>
                                             {
@@ -154,7 +194,7 @@ class Setting extends Component{
 
                                         </div>
                                         <div className="form-group">
-                                            <label>No.Bulan</label>
+                                            <label>Number of Month</label>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                     <div className="input-group mb-2">
@@ -166,9 +206,9 @@ class Setting extends Component{
 
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-4">
                                         <div className="form-group">
-                                            <label>Profit perbulan</label>
+                                            <label>Profit Month</label>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                 <div className="input-group mb-2">
@@ -178,7 +218,7 @@ class Setting extends Component{
                                             }
                                         </div>
                                         <div className="form-group">
-                                            <label>Kontrak</label>
+                                            <label>Contract</label>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                 <div className="input-group mb-2">
@@ -189,7 +229,7 @@ class Setting extends Component{
 
                                         </div>
                                         <div className="form-group">
-                                            <label>Biaya</label>
+                                            <label>Fee charge</label>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                 <div className="input-group mb-2">
@@ -221,6 +261,162 @@ class Setting extends Component{
                                                 </div>
                                             }
 
+                                        </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <label>Schedule Invest</label><br/>
+                                                <label style={{color:"#e8ebf1"}}>From</label>
+                                            </div>
+                                            <div className="col-md-6" style={{paddingRight:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                        <select name="hariInvest1" className="form-control form-control-lg" defaultValue={this.state.hariInvest1} value={this.state.hariInvest1} onChange={this.handleChange}>
+                                                            {
+                                                                this.state.hari.map((v,i)=>{
+                                                                    return (
+                                                                        <option value={v}>{v}</option>
+                                                                    );
+                                                                })
+                                                            }
+                                                        </select>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3" style={{padding:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                        <input type="time" className="form-control" name={"jamInvestFrom1"} value={this.state.jamInvestFrom1} onChange={this.handleChange}/>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3" style={{paddingLeft:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                        <input type="time" className="form-control" name={"jamInvestFrom2"} value={this.state.jamInvestFrom2} onChange={this.handleChange}/>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-12">
+                                                <label style={{color:"#e8ebf1"}}>To</label>
+                                            </div>
+                                            <div className="col-md-6" style={{paddingRight:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <select name="hariInvest2" className="form-control form-control-lg" defaultValue={this.state.hariInvest2} value={this.state.hariInvest2} onChange={this.handleChange}>
+                                                                {
+                                                                    this.state.hari.map((v,i)=>{
+                                                                        return (
+                                                                            <option value={v}>{v}</option>
+                                                                        );
+                                                                    })
+                                                                }
+                                                            </select>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3" style={{padding:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <input type="time" className="form-control" name={"jamInvestTo1"} value={this.state.jamInvestTo1} onChange={this.handleChange}/>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3" style={{paddingLeft:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <input type="time" className="form-control" name={"jamInvestTo2"} value={this.state.jamInvestTo2} onChange={this.handleChange}/>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <label>Schedule Withdraw</label><br/>
+                                                <label style={{color:"#e8ebf1"}}>From</label>
+                                            </div>
+                                            <div className="col-md-6" style={{paddingRight:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <select name="hariWD1" className="form-control form-control-lg" defaultValue={this.state.hariWD1} value={this.state.hariWD1} onChange={this.handleChange}>
+                                                                {
+                                                                    this.state.hari.map((v,i)=>{
+                                                                        return (
+                                                                            <option value={v}>{v}</option>
+                                                                        );
+                                                                    })
+                                                                }
+                                                            </select>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3" style={{padding:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <input type="time" className="form-control" name={"jamWDFrom1"} value={this.state.jamWDFrom1} onChange={this.handleChange}/>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3" style={{paddingLeft:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <input type="time" className="form-control" name={"jamWDFrom2"} value={this.state.jamWDFrom2} onChange={this.handleChange}/>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-12">
+                                                <label style={{color:"#e8ebf1"}}>To</label>
+                                            </div>
+                                            <div className="col-md-6" style={{paddingRight:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <select name="hariWD2" className="form-control form-control-lg" defaultValue={this.state.hariWD2} value={this.state.hariWD2} onChange={this.handleChange}>
+                                                                {
+                                                                    this.state.hari.map((v,i)=>{
+                                                                        return (
+                                                                            <option value={v}>{v}</option>
+                                                                        );
+                                                                    })
+                                                                }
+                                                            </select>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3" style={{padding:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <input type="time" className="form-control" name={"jamWDTo1"} value={this.state.jamWDTo1} onChange={this.handleChange}/>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3" style={{paddingLeft:"0px"}}>
+                                                <div className="form-group">
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <input type="time" className="form-control" name={"jamWDTo2"} value={this.state.jamWDTo2} onChange={this.handleChange}/>
+
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 

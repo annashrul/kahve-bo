@@ -18,21 +18,21 @@ class Charts extends Component {
                         </DateRangePicker>
                     </div>
                 </div>
-                <div className="col-md-2 col-sm-2 col-lg-2">
-                    <div className="form-group">
-                        <Select 
-                            options={this.props.location_data} 
-                            placeholder = "Pilih Lokasi"
-                            defaultValue={{ label: "Select Location", value: "-" }}
-                            onChange={this.props.HandleChangeLokasi}
-                            value = {
-                                this.props.location_data.find(op => {
-                                    return op.value === this.props.location
-                                })
-                            }
-                            />
-                    </div>
-                </div>
+                {/*<div className="col-md-2 col-sm-2 col-lg-2">*/}
+                    {/*<div className="form-group">*/}
+                        {/*<Select */}
+                            {/*options={this.props.location_data} */}
+                            {/*placeholder = "Pilih Lokasi"*/}
+                            {/*defaultValue={{ label: "Select Location", value: "-" }}*/}
+                            {/*onChange={this.props.HandleChangeLokasi}*/}
+                            {/*value = {*/}
+                                {/*this.props.location_data.find(op => {*/}
+                                    {/*return op.value === this.props.location*/}
+                                {/*})*/}
+                            {/*}*/}
+                            {/*/>*/}
+                    {/*</div>*/}
+                {/*</div>*/}
             </div>
         )
     }
