@@ -66,7 +66,14 @@ export const FetchFaq = (where) => {
             })
             .catch(function (error) {
                 // handle error
-
+                dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
             })
 
     }
@@ -105,6 +112,13 @@ export const storeFaq = (data) => {
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
                 Swal.fire({
                     title: 'failed',
                     icon: 'error',
@@ -151,6 +165,14 @@ export const putFaq = (data,id) => {
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
+
                 Swal.fire({
                     title: 'failed',
                     icon: 'error',
@@ -188,6 +210,13 @@ export const deleteFaq = (id) => {
             })
             .catch(function (error) {
                 dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
                 Swal.fire({
                     title: 'failed',
                     icon: 'error',

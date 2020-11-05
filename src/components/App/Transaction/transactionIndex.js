@@ -2,14 +2,14 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import Paginationq, {rangeDate, ToastQ} from "../../../helper";
+import Paginationq, {copyTxt, rangeDate, ToastQ} from "../../../helper";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
-import * as Swal from "sweetalert2";
-import {approvalPenarikan, FetchPenarikan} from "../../../redux/actions/penarikan/penarikan.action";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import {CopyToClipboard} from "react-copy-to-clipboard";
-import {FetchTransaction} from "../../../redux/actions/transaction/transaction.action";
+import {FetchDetailTransaction, FetchTransaction} from "../../../redux/actions/transaction/transaction.action";
+import DetailTransaction from "../../App/modals/transaction/detail_transaction";
+import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 
 class Transaction extends Component{
     constructor(props){
@@ -17,12 +17,13 @@ class Transaction extends Component{
         this.handleEvent    = this.handleEvent.bind(this);
         this.handleChange   = this.handleChange.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
+        this.handleDetail   = this.handleDetail.bind(this);
         this.state={
             detail:{},
             any:"",
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
-            dateTo:moment(new Date()).format("yyyy-MM-DD")
-
+            dateTo:moment(new Date()).format("yyyy-MM-DD"),
+            id:""
         }
     }
     componentWillMount(){
@@ -39,12 +40,13 @@ class Transaction extends Component{
     handleEvent = (event, picker) => {
         const from = moment(picker.startDate._d).format('YYYY-MM-DD');
         const to = moment(picker.endDate._d).format('YYYY-MM-DD');
-        localStorage.setItem("dateFromTransaction",`${from}`);
-        localStorage.setItem("dateToTransaction",`${to}`);
+
         this.setState({
             dateFrom:from,
             dateTo:to
         });
+        localStorage.setItem("dateFromTransaction",`${this.state.dateFrom}`);
+        localStorage.setItem("dateToTransaction",`${this.state.dateTo}`);
     };
     handleValidate(){
         let where="";
@@ -68,15 +70,27 @@ class Transaction extends Component{
     }
     handleSearch(e){
         e.preventDefault();
+        localStorage.removeItem("pageTransaction");
         let where = this.handleValidate();
         this.props.dispatch(FetchTransaction(where));
     }
+    handleDetail(e,id,name){
+        this.setState({detail:{id:id,name:name}});
+        // this.props.dispatch(FetchDetailTransaction(id));
+        e.preventDefault();
+        const bool = !this.props.isOpen;
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("detailTransaction"));
+    }
+
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const rightStyle ={verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
-        const {total,per_page, current_page,data} = this.props.data;
+        const {total,per_page, current_page,data,total_amount} = this.props.data;
         let totPerIn=0;
         let totPerOut=0;
+        let totPerSaldoAwal=0;
+        let totPerSaldoAkhir=0;
         return (
             <Layout page={"Transaction"}>
                 <div className="row align-items-center">
@@ -92,9 +106,9 @@ class Transaction extends Component{
                     <div className="col-12 box-margin">
                         <div className="card">
 
-                            <div className="card-body">
-                                <div className="row" style={{zoom:"90%"}}>
-                                    <div className="col-6 col-xs-6 col-md-2">
+                            <div className="card-body" style={{zoom:"90%"}}>
+                                <div className="row">
+                                    <div className="col-5 col-xs-5 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
                                             <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
@@ -102,13 +116,13 @@ class Transaction extends Component{
                                             </DateRangePicker>
                                         </div>
                                     </div>
-                                    <div className="col-10 col-xs-10 col-md-3">
+                                    <div className="col-6 col-xs-6 col-md-3">
                                         <div className="form-group">
                                             <label>Type something here ..</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"search by transaction code, amount,name"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                            <input type="text" className="form-control" name="any" placeholder={"search by wallet address, name, email"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                    <div className="col-2 col-xs-2 col-md-4">
+                                    <div className="col-1 col-xs-1 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                         </div>
@@ -119,12 +133,15 @@ class Transaction extends Component{
                                         <thead className="bg-light">
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
-                                            <th className="text-black" style={columnStyle}>Transaction Code</th>
+                                            <th className="text-black" style={columnStyle}>#</th>
+                                            <th className="text-black" style={columnStyle}>Wallet Address</th>
+                                            <th className="text-black" style={columnStyle}>Kd Referral</th>
                                             <th className="text-black" style={columnStyle}>Name</th>
-                                            <th className="text-black" style={columnStyle}>Trx In (Coin)</th>
-                                            <th className="text-black" style={columnStyle}>Trx Out (Coin)</th>
-                                            <th className="text-black" style={columnStyle}>Note</th>
-                                            <th className="text-black" style={columnStyle}>Date</th>
+                                            <th className="text-black" style={columnStyle}>Email</th>
+                                            <th className="text-black" style={columnStyle}>First Saldo</th>
+                                            <th className="text-black" style={columnStyle}>Trx In</th>
+                                            <th className="text-black" style={columnStyle}>Trx Out</th>
+                                            <th className="text-black" style={columnStyle}>Total</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -135,42 +152,36 @@ class Transaction extends Component{
                                                         data.map((v,i)=>{
                                                             totPerIn = totPerIn+parseFloat(v.amount_in);
                                                             totPerOut = totPerOut+parseFloat(v.amount_out);
-                                                        // totPerOut = totPerOut+parseFloat(v.amount_out).toFixed(8);
+                                                            totPerSaldoAwal = totPerSaldoAwal+parseFloat(v.saldo_awal);
+                                                            totPerSaldoAkhir = totPerSaldoAkhir+parseFloat(v.saldo_akhr);
                                                             return(
                                                                 <tr key={i}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                                     <td style={columnStyle}>
-                                                                        <CopyToClipboard text={v.kd_trx}
-                                                                            onCopy={()=>ToastQ.fire({icon:'success',title:`${v.kd_trx} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {v.kd_trx?v.kd_trx:'-'} </span>
-                                                                        </CopyToClipboard>
+                                                                        <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id,v.name)}><i className={"fa fa-eye"}/></button>
                                                                     </td>
+                                                                    <td style={columnStyle}>{copyTxt(v.wallet)}</td>
+                                                                    <td style={columnStyle}>{copyTxt(v.kd_referral)}</td>
                                                                     <td style={columnStyle}>{v.name}</td>
-                                                                    <td style={rightStyle}>
-                                                                        <CopyToClipboard text={parseFloat(v.amount_in).toFixed(8)}
-                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${parseFloat(v.amount_in).toFixed(8)} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {parseFloat(v.amount_in).toFixed(8)} </span>
-                                                                        </CopyToClipboard> <span style={{color:"red"}}>({v.coin})</span>
-                                                                    </td>
-                                                                    <td style={rightStyle}>
-                                                                        <CopyToClipboard text={parseFloat(v.amount_out).toFixed(8)}
-                                                                         onCopy={()=>ToastQ.fire({icon:'success',title:`${parseFloat(v.amount_out).toFixed(8)} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {parseFloat(v.amount_out).toFixed(8)} </span>
-                                                                        </CopyToClipboard> <span style={{color:"red"}}>({v.coin})</span>
-                                                                    </td>
-                                                                    <td style={columnStyle}>{v.note}</td>
-                                                                    <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
+                                                                    <td style={columnStyle}>{v.email}</td>
+                                                                    <td style={rightStyle}>{parseFloat(v.saldo_awal).toFixed(8)}</td>
+                                                                    <td style={rightStyle}>{copyTxt(parseFloat(v.amount_in).toFixed(8))}</td>
+                                                                    <td style={rightStyle}>{copyTxt(parseFloat(v.amount_out).toFixed(8))}</td>
+                                                                    <td style={rightStyle}>{parseFloat(v.saldo_akhr).toFixed(8)}</td>
 
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={6} style={{textAlign:"center"}}>No Data.</td></tr>
-                                                        : <tr><td colSpan={6} style={{textAlign:"center"}}>No Data.</td></tr>
+                                                        : <tr><td colSpan={10} style={{textAlign:"center"}}>No Data.</td></tr>
+                                                        : <tr><td colSpan={10} style={{textAlign:"center"}}>No Data.</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}><Skeleton height={30} width={30}/></td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
@@ -185,11 +196,23 @@ class Transaction extends Component{
                                                 })()
                                         }
                                         </tbody>
+
+
                                         <tfoot>
-                                            <th className="text-black" colspan={3}>Total Perpage</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totPerIn.toFixed(8)}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totPerOut.toFixed(8)}</th>
-                                            <th className="text-black" colspan={2}/>
+                                        <tr style={{backgroundColor:this.props.isLoading?"white":"#EEEEEE"}}>
+                                            <th className="text-black" colspan={6}>TOTAL ALLPAGE</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.saldo_awal}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.amount_in}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.amount_out}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.saldo_akhir}</th>
+                                        </tr>
+                                        <tr style={{backgroundColor:this.props.isLoading?"white":"#EEEEEE"}}>
+                                            <th className="text-black" colspan={6}>TOTAL PERPAGE</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:totPerSaldoAwal.toFixed(8)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:totPerIn.toFixed(8)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:totPerOut.toFixed(8)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:totPerSaldoAkhir.toFixed(8)}</th>
+                                        </tr>
                                         </tfoot>
                                     </table>
                                 </div>
@@ -205,6 +228,7 @@ class Transaction extends Component{
                         </div>
                     </div>
                 </div>
+                <DetailTransaction detail={this.state.detail}/>
 
             </Layout>
         );
@@ -216,6 +240,7 @@ const mapStateToProps = (state) => {
         isLoading: state.transactionReducer.isLoading,
         isOpen:state.modalReducer,
         data:state.transactionReducer.data,
+        detail:state.transactionReducer.detail
     }
 }
 

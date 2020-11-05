@@ -114,7 +114,7 @@ class SideMenu extends Component {
                     {/* FAQ MODUL END */}
 
                     {/* INBOX MODUL START */}
-                    <li  className={path==='/message'?"active":''}><Link to="/message"> <i className="fa fa-inbox" /><span> Messages</span></Link></li>
+                    <li  className={path==='/contact'?"active":''}><Link to="/contact"> <i className="fa fa-inbox" /><span> Contact</span></Link></li>
                     {/* INBOX MODUL END */}
 
                     {/* DEPOSIT MODUL START */}

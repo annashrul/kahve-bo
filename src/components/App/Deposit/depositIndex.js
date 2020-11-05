@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import Paginationq, {rangeDate,ToastQ} from "../../../helper";
+import Paginationq, {copyTxt, rangeDate, ToastQ} from "../../../helper";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
@@ -197,10 +197,8 @@ class Deposit extends Component{
                                                                     <td style={columnStyle}>{v.slot_no}</td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>
-                                                                        <CopyToClipboard text={v.amount}
-                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${v.amount} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {v.amount?v.amount:'0'} </span>
-                                                                        </CopyToClipboard> <span style={{color:"red"}}>({v.coin})</span>
+                                                                        {copyTxt(parseFloat(v.amount).toFixed(8))}
+                                                                        <span style={{color:"red"}}>({v.coin})</span>
                                                                     </td>
                                                                     <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
                                                                     <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
@@ -215,8 +213,9 @@ class Deposit extends Component{
                                                         container.push(
                                                             <tr key={x}>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>
+                                                                    <Skeleton height={30} width={30}/>
+                                                                </td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>

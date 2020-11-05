@@ -65,8 +65,15 @@ export const FetchPenarikan = (where) => {
                 dispatch(setLoading(false));
             })
             .catch(function (error) {
+                dispatch(setLoading(false));
                 // handle error
-
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
             })
 
     }
@@ -105,6 +112,13 @@ export const approvalPenarikan = (data,id,where) => {
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
                 Swal.fire({
                     title: 'failed',
                     icon: 'error',

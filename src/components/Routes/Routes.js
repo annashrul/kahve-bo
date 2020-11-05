@@ -33,7 +33,7 @@ const Routes = (
             <PrivateRoute path="/faq" exact strict component={Faq} />
             {/* FAQ SECTION END */}
             {/* INBOX SECTION START */}
-            <PrivateRoute path="/message" exact strict component={Inbox} />
+            <PrivateRoute path="/contact" exact strict component={Inbox} />
             {/* INBOX SECTION END */}
             {/* DEPOSIT SECTION START */}
             <PrivateRoute path="/investment" exact strict component={Deposit} />

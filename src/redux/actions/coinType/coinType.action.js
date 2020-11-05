@@ -66,7 +66,14 @@ export const FetchCoinType = (where) => {
             })
             .catch(function (error) {
                 // handle error
-
+                dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
             })
 
     }
@@ -105,6 +112,13 @@ export const storeCoinType = (data) => {
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
                 Swal.fire({
                     title: 'failed',
                     icon: 'error',
@@ -150,15 +164,25 @@ export const putCoinType = (data,id) => {
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
-                Swal.fire({
-                    title: 'failed',
-                    icon: 'error',
-                    text: error.response.data.msg,
-                });
-
-                if (error.response) {
-
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
                 }
+                else{
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
+
+                    if (error.response) {
+
+                    }
+                }
+
             })
     }
 }

@@ -37,6 +37,8 @@ class Setting extends Component{
             jamWDTo1:"",
             jamWDTo2:"",
 
+            invest_min:"",
+            invest_max:"",
             error:{
                 email:""
             }
@@ -50,32 +52,38 @@ class Setting extends Component{
         this.props.dispatch(FetchPengaturan());
     }
     componentWillReceiveProps(nextProps){
-        console.log(nextProps.data.schedule_invest.time[0].split("-")[0]);
-        this.setState({
-            monthly_profit:nextProps.data.monthly_profit,
-            contract:nextProps.data.contract,
-            charge:nextProps.data.charge,
-            site_name:nextProps.data.site_name,
-            logo:nextProps.data.logo,
-            site_url:nextProps.data.site_url,
-            number_of_month:nextProps.data.number_of_month,
-            referral_profit:nextProps.data.referral_profit,
-            email_admin:nextProps.data.email_admin,
-            wallet_address:nextProps.data.wallet_address,
-            hariInvest1:nextProps.data.schedule_invest.days[0],
-            hariInvest2:nextProps.data.schedule_invest.days[1],
-            jamInvestFrom1:nextProps.data.schedule_invest.time[0].split("-")[0],
-            jamInvestFrom2:nextProps.data.schedule_invest.time[0].split("-")[1],
-            jamInvestTo1:nextProps.data.schedule_invest.time[1].split("-")[0],
-            jamInvestTo2:nextProps.data.schedule_invest.time[1].split("-")[1],
+        console.log(nextProps.data.length)
+        if(nextProps.data.length>0||nextProps.data.length==undefined){
+            this.setState({
+                monthly_profit:nextProps.data.monthly_profit,
+                contract:nextProps.data.contract,
+                charge:nextProps.data.charge,
+                site_name:nextProps.data.site_name,
+                logo:nextProps.data.logo,
+                site_url:nextProps.data.site_url,
+                number_of_month:nextProps.data.number_of_month,
+                referral_profit:nextProps.data.referral_profit,
+                email_admin:nextProps.data.email_admin,
+                wallet_address:nextProps.data.wallet_address,
+                hariInvest1:nextProps.data.schedule_invest.days[0],
+                hariInvest2:nextProps.data.schedule_invest.days[1],
+                jamInvestFrom1:nextProps.data.schedule_invest.time[0].split("-")[0],
+                jamInvestFrom2:nextProps.data.schedule_invest.time[0].split("-")[1],
+                jamInvestTo1:nextProps.data.schedule_invest.time[1].split("-")[0],
+                jamInvestTo2:nextProps.data.schedule_invest.time[1].split("-")[1],
 
-            hariWD1:nextProps.data.schedule_wd.days[0],
-            hariWD2:nextProps.data.schedule_wd.days[1],
-            jamWDFrom1:nextProps.data.schedule_wd.time[0].split("-")[0],
-            jamWDFrom2:nextProps.data.schedule_wd.time[0].split("-")[1],
-            jamWDTo1:nextProps.data.schedule_wd.time[1].split("-")[0],
-            jamWDTo2:nextProps.data.schedule_wd.time[1].split("-")[1],
-        })
+                hariWD1:nextProps.data.schedule_wd.days[0],
+                hariWD2:nextProps.data.schedule_wd.days[1],
+                jamWDFrom1:nextProps.data.schedule_wd.time[0].split("-")[0],
+                jamWDFrom2:nextProps.data.schedule_wd.time[0].split("-")[1],
+                jamWDTo1:nextProps.data.schedule_wd.time[1].split("-")[0],
+                jamWDTo2:nextProps.data.schedule_wd.time[1].split("-")[1],
+
+                invest_min:nextProps.data.invest_min,
+                invest_max:nextProps.data.invest_max,
+            })
+        }
+
     }
     handleFile1(files) {
         this.setState({logo: files});
@@ -103,6 +111,8 @@ class Setting extends Component{
         parsedata["referral_profit"]=this.state.referral_profit;
         parsedata["email_admin"]=this.state.email_admin;
         parsedata["wallet_address"]=this.state.wallet_address;
+        parsedata["invest_min"]=this.state.invest_min;
+        parsedata["invest_max"]=this.state.invest_max;
         parsedata["schedule_invest"] =  {
             "days": [this.state.hariInvest1, this.state.hariInvest2],
             "time": [`${this.state.jamInvestFrom1}-${this.state.jamInvestFrom2}`, `${this.state.jamInvestTo1}-${this.state.jamInvestTo2}`]
@@ -265,9 +275,37 @@ class Setting extends Component{
                                     </div>
                                     <div className="col-md-4">
                                         <div className="row">
-                                            <div className="col-md-12">
-                                                <label>Schedule Invest</label><br/>
-                                                <label style={{color:"#e8ebf1"}}>From</label>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label>Invest Min</label>
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <div className="input-group mb-2">
+                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
+                                                                <input type="text" className="form-control" name="invest_min" value={this.state.invest_min} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                            </div>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label>Invest Max</label>
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <div className="input-group mb-2">
+                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
+                                                                <input type="text" className="form-control" name="invest_max" value={this.state.invest_max} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                            </div>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <label>Schedule Invest</label>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <label style={{color:"#e8ebf1",float:"right"}}>From</label>
                                             </div>
                                             <div className="col-md-6" style={{paddingRight:"0px"}}>
                                                 <div className="form-group">
@@ -304,7 +342,7 @@ class Setting extends Component{
                                                 </div>
                                             </div>
                                             <div className="col-md-12">
-                                                <label style={{color:"#e8ebf1"}}>To</label>
+                                                <label style={{color:"#e8ebf1",float:"right"}}>To</label>
                                             </div>
                                             <div className="col-md-6" style={{paddingRight:"0px"}}>
                                                 <div className="form-group">
@@ -342,9 +380,12 @@ class Setting extends Component{
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <div className="col-md-12">
-                                                <label>Schedule Withdraw</label><br/>
-                                                <label style={{color:"#e8ebf1"}}>From</label>
+
+                                            <div className="col-md-6">
+                                                <label>Schedule Withdraw</label>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <label style={{color:"#e8ebf1",float:"right"}}>From</label>
                                             </div>
                                             <div className="col-md-6" style={{paddingRight:"0px"}}>
                                                 <div className="form-group">
@@ -381,7 +422,7 @@ class Setting extends Component{
                                                 </div>
                                             </div>
                                             <div className="col-md-12">
-                                                <label style={{color:"#e8ebf1"}}>To</label>
+                                                <label style={{color:"#e8ebf1",float:"right"}}>To</label>
                                             </div>
                                             <div className="col-md-6" style={{paddingRight:"0px"}}>
                                                 <div className="form-group">

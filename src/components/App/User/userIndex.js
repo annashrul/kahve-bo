@@ -50,6 +50,8 @@ class User extends Component{
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("formUser"));
+        this.props.dispatch(setUserListAll([]));
+
 
         if(param!==''){
             const {data}=this.props.data;
@@ -107,6 +109,7 @@ class User extends Component{
 
     handleDetail(e,param) {
         e.preventDefault();
+        this.props.dispatch(setUserListAll([]));
         this.props.dispatch(FetchDetailUser(param));
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
@@ -156,8 +159,6 @@ class User extends Component{
         let where = this.handleValidate();
         this.props.dispatch(FetchUser(where));
         this.props.dispatch(setUserListAll([]));
-
-        // this.props.dispatch(FetchAllUser(`page=1&perpage=0`));
 
     }
     handleValidate(){
@@ -312,16 +313,21 @@ class User extends Component{
                                                         container.push(
                                                             <tr key={x}>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>
+                                                                    <div className="row">
+                                                                        <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
+                                                                        <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
+                                                                        <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
+                                                                    </div>
+                                                                </td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50}/>}</td>
-
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton height={30} width={30}/>}</td>
                                                             </tr>
                                                         )
                                                     }
@@ -348,7 +354,6 @@ class User extends Component{
 
                                     </table>
                                 </div>
-
                                 <div style={{"marginTop":"20px","float":"right"}}>
                                     <Paginationq
                                         current_page={current_page}
@@ -357,12 +362,11 @@ class User extends Component{
                                         callback={this.handlePageChange.bind(this)}
                                     />
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-                <FormUser detail={this.state.detail} isAdmin={1}/>
+                <FormUser detail={this.state.detail} isAdmin={0}/>
                 <DetailUser detail={this.props.detail}/>
 
             </Layout>

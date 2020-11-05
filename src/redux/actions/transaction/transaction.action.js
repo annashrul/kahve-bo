@@ -66,7 +66,49 @@ export const FetchTransaction = (where) => {
             })
             .catch(function (error) {
                 // handle error
+                dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
 
+
+                }
+
+
+            })
+
+    }
+};
+
+
+export const FetchDetailTransaction = (id,where) => {
+    return (dispatch) => {
+        dispatch(setLoadingPost(true));
+        let url = `transaction/detail/${id}`;
+        if(where){
+            url+=`?${where}`;
+        }
+        console.log(url)
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setDataDetail(data));
+                dispatch(setLoadingPost(false));
+            })
+            .catch(function (error) {
+                // handle error
+                dispatch(setLoadingPost(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+
+                }
             })
 
     }

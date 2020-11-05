@@ -4,7 +4,7 @@ import {TRANSACTION} from "../../actions/_constants";
 
 const initialState = {
     isLoading: true,
-    isLoadingPost: false,
+    isLoadingPost: true,
     isError: false,
     status: "",
     msg: "",

@@ -7,10 +7,17 @@ import ProfileImage from "assets/profile.png";
 import NoData from "assets/nodata.png";
 import Yes from "assets/status-Y.png";
 import No from "assets/status-T.png";
+import {CopyToClipboard} from "react-copy-to-clipboard";
 
 
 export const noImage = ()=>{
     return ProfileImage;
+}
+export const copyTxt = (txt)=>{
+    return <CopyToClipboard text={txt} style={{cursor:"copy"}}
+         onCopy={()=>ToastQ.fire({icon:'success',title:`${txt} copied successful.`})}>
+        <span><i className="fa fa-copy" style={{color:"green"}}/> {txt} </span>
+    </CopyToClipboard>
 }
 
 export const noData = ()=>{
@@ -64,8 +71,8 @@ export const addFooters = doc => {
 var date = new Date();
 date.setDate(date.getDate());
 export const rangeDate = {
-    'Hari Ini'          : [date.setDate(date.getDate()+1), moment()],
-    'Kemarin'           : [date.setDate(date.getDate()-1), date.setDate(date.getDate()-1)],
+    'Hari Ini'          : [moment(),moment()],
+    'Kemarin'           : [date.setDate(date.getDate()-1), date.setDate(date.getDate())],
     '7 Hari Terakhir'   : [moment().subtract(6, 'days'), moment()],
     '30 Hari Terakhir'  : [moment().subtract(29, 'days'), moment()],
     'Minggu Ini'        : [moment().startOf('isoWeek'), moment().endOf('isoWeek')],

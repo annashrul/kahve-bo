@@ -97,18 +97,18 @@ class Inbox extends Component{
                                                                         <a href="javascript:void(0)" className="badge badge-danger" onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></a>
                                                                     </div>
                                                                 </div>
-                                                                <div className="admi-mail-body d-flex align-items-center mr-3">
+                                                                <div className="admi-mail-body d-flex align-items-center mr-3" style={{width:"70%"}}>
                                                                     <div className="mail-thumb flex-40-thubm mr-3">
                                                                         <img className="border-radius-50" src={noImage()} alt=""/>
                                                                     </div>
                                                                     <div className="div">
-                                                                        <div className="admi-mail-from">{v.name} ( {v.email} )</div>
+                                                                        <div className="admi-mail-from"style={{color:"green"}}>{v.name} ( {v.email} )</div>
                                                                         <div className="admi-mail-subject">
-                                                                            <p className="mb-0 mail-subject--text--">{v.title} <span>{v.message}</span></p>
+                                                                            <p className="mb-0 mail-subject--text--">{v.title} - <span>{v.message.length>200?v.message.substr(0,200)+" [..]":v.message}</span></p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="admi-mail-date">{moment(v.created_at).startOf('hour').fromNow()}</div>
+                                                                <div className="admi-mail-date" style={{color:"rgba(0,0,0,.125)"}}>{moment(v.created_at).startOf('hour').fromNow()}</div>
                                                             </div>
                                                         </div>
                                                     );
@@ -145,7 +145,6 @@ class Inbox extends Component{
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="admi-mail-date">11:30am</div>
                                                         </div>
                                                     </div>
                                                 )

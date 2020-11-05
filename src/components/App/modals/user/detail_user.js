@@ -70,7 +70,6 @@ class DetailUser extends Component{
                         <table className="table table-hover">
                             <thead className="bg-light">
                             <tr>
-                                <th className="text-black" style={columnStyle}>No</th>
                                 <th className="text-black" style={columnStyle}>Slot No</th>
                                 <th className="text-black" style={columnStyle}>Id Coin</th>
                                 <th className="text-black" style={columnStyle}>Amount</th>
@@ -87,14 +86,13 @@ class DetailUser extends Component{
                                 this.state.detail.length>0?
                                 this.state.detail.map((v,i)=>{
                                     return (
-                                        <tr>
-                                            <td style={columnStyle}>{i+1}</td>
+                                        <tr key={i}>
                                             <td style={columnStyle}>{v.slot_no}</td>
                                             <td style={columnStyle}>{v.id_coin}</td>
-                                            <td style={columnStyle}>{v.amount}</td>
-                                            <td style={columnStyle}>{v.daily_earning}</td>
+                                            <td style={columnStyle}>{parseFloat(v.amount).toFixed(8)}</td>
+                                            <td style={columnStyle}>{v.daily_earning!==undefined&&v.daily_earning!==null&&v.daily_earning!=='-'?parseFloat(v.daily_earning).toFixed(8):"0.00000000"}</td>
                                             <td style={columnStyle}>{v.contract}</td>
-                                            <td style={columnStyle}>{v.monthly_profit}</td>
+                                            <td style={columnStyle}>{parseFloat(v.monthly_profit).toFixed(8)}</td>
                                             <td style={columnStyle}>{v.status}</td>
                                             <td style={columnStyle}>{v.start_date}</td>
 

@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import Paginationq, {rangeDate, ToastQ} from "../../../helper";
+import Paginationq, {copyTxt, rangeDate, ToastQ} from "../../../helper";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
@@ -184,23 +184,15 @@ class Penarikan extends Component{
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1||v.status === 2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
                                                                     </td>
                                                                     <td style={columnStyle}>
-                                                                        <CopyToClipboard text={v.kd_trx}
-                                                                            onCopy={()=>ToastQ.fire({icon:'success',title:`${v.kd_trx} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {v.kd_trx?v.kd_trx:'-'} </span>
-                                                                        </CopyToClipboard>
+                                                                        {copyTxt(v.kd_trx?v.kd_trx:'-')}
                                                                     </td>
                                                                     <td style={columnStyle}>{v.users}</td>
                                                                     <td style={columnStyle}>
-                                                                        <CopyToClipboard text={v.wallet}
-                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${v.wallet} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {v.wallet?v.wallet:'-'} </span>
-                                                                        </CopyToClipboard>
+                                                                        {copyTxt(v.wallet?v.wallet:'-')}
                                                                     </td>
                                                                     <td style={columnStyle}>
-                                                                        <CopyToClipboard text={v.amount}
-                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${v.amount} copied successful.`})}>
-                                                                            <span><i className="fa fa-copy" style={{color:"green"}}/> {v.amount?v.amount:'0'} </span>
-                                                                        </CopyToClipboard> <span style={{color:"red"}}>({v.coin})</span>
+                                                                        {copyTxt(v.amount?v.amount:'0')}
+                                                                        <span style={{color:"red"}}>({v.coin})</span>
                                                                     </td>
                                                                     <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
                                                                     <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
@@ -214,7 +206,6 @@ class Penarikan extends Component{
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
@@ -254,6 +245,7 @@ const mapStateToProps = (state) => {
     return {
         isLoading: state.penarikanReducer.isLoading,
         isOpen:state.modalReducer,
+
         data:state.penarikanReducer.data,
         isLoadingPost: state.penarikanReducer.isLoadingPost,
         isError: state.penarikanReducer.isError,

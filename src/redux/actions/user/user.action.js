@@ -85,7 +85,15 @@ export const FetchUser = (where) => {
             })
             .catch(function (error) {
                 // handle error
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
 
+                    dispatch(setLoading(false));
+                }
             })
 
     }
@@ -104,15 +112,18 @@ export const FetchAllUser = (where) => {
                 const data = response.data;
                 dispatch(setUserListAll(data));
                 dispatch(setLoadingSend(false));
-                // let email=[];
-                // for(let i=0;i<data.result.data.length;i++){
-                //     email.push(data.result.data[i].email);
-                // }
-                // localStorage.setItem("email",email.toString());
             })
             .catch(function (error) {
                 // handle error
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
 
+                    dispatch(setLoadingSend(false));
+                }
             })
 
     }
@@ -123,6 +134,7 @@ export const FetchDetailUser = (id) => {
     return (dispatch) => {
         dispatch(setLoadingDetail(true));
         let url = `user/${id}`;
+        console.log(url)
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
@@ -131,7 +143,15 @@ export const FetchDetailUser = (id) => {
             })
             .catch(function (error) {
                 // handle error
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
 
+                    dispatch(setLoadingDetail(false));
+                }
             })
 
     }
@@ -173,6 +193,13 @@ export const storeUser = (data) => {
             })
             .catch(function (error) {
                 dispatch(setLoadingPost(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
                 Swal.fire({
@@ -230,6 +257,13 @@ export const putUser = (data,id,where="") => {
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
                 dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
                 Swal.fire({
                     title: 'failed',
                     icon: 'error',
@@ -269,6 +303,13 @@ export const deleteUser = (id,param) => {
             })
             .catch(function (error) {
                 dispatch(setLoading(false));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
                 Swal.fire({
                     title: 'failed',
                     icon: 'error',

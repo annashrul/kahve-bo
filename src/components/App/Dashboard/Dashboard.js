@@ -13,6 +13,7 @@ import ReactApexChart from "react-apexcharts";
 import Cards from './src/Cards'
 import Filter from './src/Filter'
 import Info from './src/Info'
+import Clock from "../../common/clock";
 const socket = socketIOClient(HEADERS.URL);
 
 class Dashboard extends Component {
@@ -196,7 +197,19 @@ class Dashboard extends Component {
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
-                    <Info handleSubmit={this.handleSubmit}/>
+                    <div className="col-6">
+                        <div className="dashboard-infor-mation d-flex flex-wrap align-items-center mb-3">
+                            <div className="dashboard-clock">
+                                <div id="dashboardDate">{moment().format("dddd, Do MMM YYYY")}</div>
+                                <Clock/>
+                            </div>
+                            <div className="dashboard-btn-group d-flex align-items-center">
+                                <button type="button" onClick={(e)=>this.handleSubmit(e)} className="btn btn-primary ml-1 float-right"><i className="fa fa-refresh"></i></button>
+                            </div>
+
+                        </div>
+                    </div>
+                    {/*<Info handleSubmit={this.handleSubmit}/>*/}
                 </div>
 
                 {/* Dashboard Filter Area */}

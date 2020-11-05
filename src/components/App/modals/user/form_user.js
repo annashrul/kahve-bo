@@ -178,7 +178,7 @@ class FormUser extends Component{
     render(){
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formUser"} size="lg">
-                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?"Tambah User":"Ubah User"} {this.state.isAdmin}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?`Add ${this.state.isAdmin===1?"Admin":"Member"}`:`Update ${this.state.isAdmin===1?"Admin":"Member"}`}</ModalHeader>
                 <ModalBody>
                     <div className="row">
                         <div className="col-md-6">
@@ -203,7 +203,7 @@ class FormUser extends Component{
                                 <div className="invalid-feedback" style={this.state.error.password !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.password}</div>
                             </div>
                             <div className="form-group">
-                                <label>Konfirmasi Password <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label>
+                                <label>Confirm Password <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label>
                                 <div className="input-group mb-2">
                                     <input type={this.state.isShowConfPassword===true?"text":"password"} className="form-control" name="conf_password" value={this.state.conf_password} onChange={this.handleChange} />
                                     <div className="input-group-prepend" onClick={(e)=>this.handleShowPassword(e,'conf_password')}>
@@ -216,20 +216,20 @@ class FormUser extends Component{
                         </div>
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label>ID Card <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label><br/>
+                                <label>ID Card <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>
                                 <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile1.bind(this) } />
                             </div>
                             <div className="form-group">
-                                <label>Selfie <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label><br/>
+                                <label>Selfie <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>
                                 <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile2.bind(this) } />
                             </div>
                             <div className="form-group">
-                                <label>Foto <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label><br/>
+                                <label>Photo <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>
                                 <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile3.bind(this) } />
                             </div>
                             <div className="form-group">
                                 <label>Status</label>
-                                <select className="form-control form-control-lg" name="status" value={this.state.status} onChange={this.handleChange} defaultValue={this.state.status}>
+                                <select className="form-control form-control-lg" name="status" value={this.state.status} onChange={this.handleChange}>
                                     <option value="">=== Pilih ===</option>
                                     <option value="1">Aktif</option>
                                     <option value="0">Tidak Aktif</option>
@@ -241,8 +241,8 @@ class FormUser extends Component{
                 </ModalBody>
                 <ModalFooter>
                     <div className="form-group" style={{textAlign:"right"}}>
-                        <button style={{color:"white"}} type="button" className="btn btn-warning mb-2 mr-2" onClick={this.toggle} ><i className="ti-close"/>Keluar</button>
-                        <button type="submit" className="btn btn-primary mb-2 mr-2" onClick={this.handleValidation} ><i className="ti-save" /> {!this.props.isLoadingPost?'Simpan':'Loading ......'}</button>
+                        <button style={{color:"white"}} type="button" className="btn btn-warning mb-2 mr-2" onClick={this.toggle} ><i className="ti-close"/>Exit</button>
+                        <button type="submit" className="btn btn-primary mb-2 mr-2" onClick={this.handleValidation} ><i className="ti-save" /> {!this.props.isLoadingPost?'Save':'Loading ......'}</button>
                     </div>
                 </ModalFooter>
             </WrapperModal>
