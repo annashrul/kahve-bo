@@ -2,27 +2,99 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import FormFaq from "../../App/modals/faq/form_faq";
+import FormInbox from "../../App/modals/inbox/form_inbox";
 import Paginationq from "../../../helper";
 import {noImage} from "../../../helper";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
-import {deleteInbox, FetchInbox} from "../../../redux/actions/inbox/inbox.action";
+import {deleteInbox, FetchInbox, putInbox} from "../../../redux/actions/inbox/inbox.action";
+import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown";
+import DropdownToggle from "reactstrap/es/DropdownToggle";
+import DropdownMenu from "reactstrap/es/DropdownMenu";
+import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 class Inbox extends Component{
     constructor(props){
         super(props);
+        this.handleSearch = this.handleSearch.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state={
-            detail:{}
+            detail:{},
+            id:"",
+            any:""
         }
     }
+    handleChange = (event) => {
+        this.setState({[event.target.name]: event.target.value});
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            this.setState({detail:{id:this.props.match.params.id}});
+            this.forceUpdate();
+            const bool = !this.props.isOpen;
+            this.props.dispatch(ModalToggle(bool));
+            this.props.dispatch(ModalType("formInbox"));
+        }
+    }
+
     componentWillMount(){
-        this.props.dispatch(FetchInbox('page=1'));
+        if(this.props.match.params.id!==undefined){
+            this.setState({detail:{id:this.props.match.params.id}});
+            this.forceUpdate();
+        }
+        else{
+            this.props.dispatch(FetchInbox('page=1&perpage=5'));
+        }
+    }
+
+    handleSearch(e){
+        e.preventDefault();
+        this.props.history.push('/contact');
+        let where = this.handleValidate();
+        this.props.dispatch(FetchInbox(where));
+    }
+
+    handleValidate(){
+        let where="perpage=5";
+        let page = localStorage.getItem("pageInbox");
+        let any = this.state.any;
+        if(page!==null&&page!==undefined&&page!==""){
+            where+=`&page=${page}`;
+        }else{
+            where+="&page=1";
+        }
+        if(any!==null&&any!==undefined&&any!==""){
+            where+=`&q=${any}`;
+        }
+        return where;
+    }
+
+    handleDetail(e,i){
+        if(this.props.data.data[i].status===0){
+            this.props.dispatch(putInbox({status:1},this.props.data.data[i].id))
+        }
+        this.setState({
+            detail:{
+                id:this.props.data.data[i].id,
+                message:this.props.data.data[i].message,
+                name:this.props.data.data[i].name,
+                email:this.props.data.data[i].email,
+                title:this.props.data.data[i].title,
+                created_at:this.props.data.data[i].created_at
+            }
+        })
+        const bool = !this.props.isOpen;
+        this.props.dispatch(ModalToggle(bool));
+        this.props.dispatch(ModalType("formInbox"));
+        // this.props.dispatch(putInbox({status:1},id))
     }
 
     handlePageChange(pageNumber){
-        this.props.dispatch(FetchInbox(`page=${pageNumber}`));
+        localStorage.setItem("pageInbox",pageNumber);
+        let where = this.handleValidate();
+        this.props.dispatch(FetchInbox(where));
+        // this.props.dispatch(FetchInbox(`page=${pageNumber}&perpage=5`));
     }
 
 
@@ -56,7 +128,7 @@ class Inbox extends Component{
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Message</h5>
+                            <h5 className="mb-0 font-weight-bold">Contact</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -67,22 +139,20 @@ class Inbox extends Component{
                         <div className="card">
 
                             <div className="card-body">
-                                <form onSubmit={this.handlesearch} noValidate>
-                                    <div className="row">
-                                        <div className="col-10 col-xs-10 col-md-3">
-                                            <div className="form-group">
-                                                <label>Type something here ..</label>
-                                                <input type="text" className="form-control" name="any"/>
-                                            </div>
-                                        </div>
-                                        <div className="col-2 col-xs-4 col-md-4">
-                                            <div className="form-group">
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"/></button>
-                                            </div>
+                                <div className="row">
+                                    <div className="col-8 col-xs-8 col-md-3">
+                                        <div className="form-group">
+                                            <label>Type something here ..</label>
+                                            <input type="text" className="form-control" name="any" value={this.state.any} onChange={this.handleChange}/>
                                         </div>
                                     </div>
-                                </form>
-
+                                    <div className="col-4 col-xs-4 col-md-4">
+                                        <div className="form-group">
+                                            <button onClick={(e)=>this.handleSearch(e)} style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"/></button>
+                                            <button onClick={(e)=>this.handleSearch(e)} style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-refresh"/></button>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 {
                                     !this.props.isLoading ?
@@ -90,25 +160,29 @@ class Inbox extends Component{
                                             typeof data === 'object' ? data.length > 0 ?
                                                 data.map((v, i) => {
                                                     return (
-                                                        <div className="admi-mail-list mb-30" key={i}>
+                                                        <div className="admi-mail-list mb-30" key={i} style={{cursor:"pointer",zoom:"80%",backgroundColor:v.status===0?"#eeeeee":""}}>
                                                             <div className="admi-mail-item">
                                                                 <div className="admi-mail-checkbox" style={{marginRight:"5px"}}>
                                                                     <div className="form-group mb-0">
                                                                         <a href="javascript:void(0)" className="badge badge-danger" onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></a>
                                                                     </div>
                                                                 </div>
-                                                                <div className="admi-mail-body d-flex align-items-center mr-3" style={{width:"70%"}}>
+                                                                <div className="admi-mail-body d-flex align-items-center mr-3" style={{width:"70%"}}  onClick={(e)=>this.handleDetail(e,i)}>
                                                                     <div className="mail-thumb flex-40-thubm mr-3">
                                                                         <img className="border-radius-50" src={noImage()} alt=""/>
                                                                     </div>
                                                                     <div className="div">
                                                                         <div className="admi-mail-from"style={{color:"green"}}>{v.name} ( {v.email} )</div>
                                                                         <div className="admi-mail-subject">
-                                                                            <p className="mb-0 mail-subject--text--">{v.title} - <span>{v.message.length>200?v.message.substr(0,200)+" [..]":v.message}</span></p>
+                                                                            <p className="mb-0 mail-subject--text--">{v.title} - <span>{v.message.length>200?v.message.substr(0,200)+" [..]":v.message}</span> <br/> <i class="fa fa-clock-o"/> <span style={{color:"#6c757d"}}>{moment(v.created_at).startOf('minute').fromNow()}</span></p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="admi-mail-date" style={{color:"rgba(0,0,0,.125)"}}>{moment(v.created_at).startOf('hour').fromNow()}</div>
+
+                                                                {/*<div className="admi-mail-date" style={{color:"rgba(0,0,0,.125)"}}>{moment(v.created_at).startOf('hour').fromNow()}</div>*/}
+                                                                <div className="admi-mail-date">
+                                                                    <button className="btn btn-primary" onClick={(e)=>this.handleDetail(e,i)}><i className="fa fa-eye"/></button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     );
@@ -121,7 +195,7 @@ class Inbox extends Component{
                                             let container =[];
                                             for(let x=0; x<10; x++){
                                                 container.push(
-                                                    <div className="admi-mail-list mb-30" key={x}>
+                                                    <div className="admi-mail-list mb-30" key={x} style={{zoom:"80%"}}>
                                                         <div className="admi-mail-item">
                                                             <div className="admi-mail-checkbox">
                                                                 <div className="form-group mb-0">
@@ -171,7 +245,7 @@ class Inbox extends Component{
                         </div>
                     </div>
                 </div>
-                <FormFaq detail={this.state.detail}/>
+                <FormInbox detail={this.state.detail}/>
             </Layout>
         );
     }

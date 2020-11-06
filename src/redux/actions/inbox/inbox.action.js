@@ -80,30 +80,19 @@ export const FetchInbox = (where) => {
     }
 };
 
-export const storeInbox = (data) => {
+export const putInbox = (data,id) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
-        const url = HEADERS.URL + `inbox`;
-        axios.post(url,data)
+        const url = HEADERS.URL + `inbox/${id}`;
+        axios.put(url,data)
             .then(function (response) {
                 const data = (response.data);
                 if (data.status === 'success') {
-                    Swal.fire({
-                        title: 'Success',
-                        icon: 'success',
-                        text: data.msg,
-                    });
                     dispatch(setIsError(true));
-                    dispatch(ModalToggle(false));
-                    dispatch(FetchInbox('page=1'));
+                    dispatch(FetchInbox('page=1&perpage=5&q='+id));
+                    console.log("success");
                 } else {
-                    Swal.fire({
-                        title: 'failed',
-                        icon: 'error',
-                        text: data.msg,
-                    });
-                    dispatch(setIsError(false));
-                    dispatch(ModalToggle(true));
+                    console.log("error");
                 }
                 dispatch(setLoadingPost(false));
 
@@ -112,16 +101,26 @@ export const storeInbox = (data) => {
             .catch(function (error) {
                 dispatch(setLoadingPost(false));
                 dispatch(setIsError(false));
-                dispatch(ModalToggle(true));
-                Swal.fire({
-                    title: 'failed',
-                    icon: 'error',
-                    text: error.response.data.msg,
-                });
-
-                if (error.response) {
-
+                // dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
                 }
+                else{
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
+
+                    if (error.response) {
+
+                    }
+                }
+
             })
     }
 }
@@ -159,15 +158,17 @@ export const deleteInbox = (id) => {
                         'Periksa koneksi internet anda.',
                         'error'
                     );
-                }
-                Swal.fire({
-                    title: 'failed',
-                    icon: 'error',
-                    text: error.response.data.msg,
-                });
-                if (error.response) {
+                }else{
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
+                    if (error.response) {
 
+                    }
                 }
+
             })
     }
 }

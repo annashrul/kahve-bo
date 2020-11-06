@@ -25,8 +25,22 @@ class Deposit extends Component{
             dateTo:moment(new Date()).format("yyyy-MM-DD")
         }
     }
+    componentDidUpdate(prevProps) {
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            this.props.dispatch(FetchDeposit("page=1&q="+this.props.match.params.id));
+            this.forceUpdate();
+        }
+    }
     componentWillMount(){
-        this.props.dispatch(FetchDeposit('page=1'));
+        if(this.props.match.params.id!==undefined){
+            this.props.dispatch(FetchDeposit("page=1&q="+this.props.match.params.id));
+            this.forceUpdate();
+            console.log("abus kondisi");
+        }
+        else{
+            this.props.dispatch(FetchDeposit('page=1'));
+            console.log("teu abus kondisi");
+        }
     }
     handlePageChange(pageNumber){
         localStorage.setItem("pageDeposit",pageNumber);
@@ -108,6 +122,7 @@ class Deposit extends Component{
     }
     handleSearch(e){
         e.preventDefault();
+        this.props.history.push('/investment');
         let where = this.handleValidate();
         this.props.dispatch(FetchDeposit(where));
     }

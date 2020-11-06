@@ -26,8 +26,22 @@ class Penarikan extends Component{
 
         }
     }
+    componentDidUpdate(prevProps) {
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            this.forceUpdate();
+            this.props.dispatch(FetchPenarikan("page=1&q="+this.props.match.params.id));
+        }
+    }
+
     componentWillMount(){
-        this.props.dispatch(FetchPenarikan('page=1'));
+        if(this.props.match.params.id!==undefined){
+            this.props.dispatch(FetchPenarikan("page=1&q="+this.props.match.params.id));
+            this.forceUpdate();
+            console.log("abus kondisi");
+        }
+        else{
+            this.props.dispatch(FetchPenarikan('page=1'));
+        }
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
@@ -97,6 +111,7 @@ class Penarikan extends Component{
     }
     handleSearch(e){
         e.preventDefault();
+        this.props.history.push('/withdraw');
         let where = this.handleValidate();
         this.props.dispatch(FetchPenarikan(where));
     }

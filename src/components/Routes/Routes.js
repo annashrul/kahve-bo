@@ -25,6 +25,7 @@ const Routes = (
             {/* USER SECTION START */}
             <PrivateRoute path="/admin" exact strict component={Admin} />
             <PrivateRoute path="/user" exact strict component={User} />
+            <PrivateRoute path="/user/:id" exact strict component={User} />
             {/* USER SECTION END */}
             {/* COIN TYPE SECTION START */}
             <PrivateRoute path="/coin_type" exact strict component={CoinType} />
@@ -34,12 +35,15 @@ const Routes = (
             {/* FAQ SECTION END */}
             {/* INBOX SECTION START */}
             <PrivateRoute path="/contact" exact strict component={Inbox} />
+            <PrivateRoute path="/contact/:id" exact strict component={Inbox} />
             {/* INBOX SECTION END */}
             {/* DEPOSIT SECTION START */}
             <PrivateRoute path="/investment" exact strict component={Deposit} />
+            <PrivateRoute path="/investment/:id" exact strict component={Deposit} />
             {/* DEPOSIT SECTION END */}
             {/* PENARIKAN SECTION START */}
             <PrivateRoute path="/withdraw" exact strict component={Penarikan} />
+            <PrivateRoute path="/withdraw/:id" exact strict component={Penarikan} />
             {/* PENARIKAN SECTION END */}
             {/* TRANSACTION SECTION START */}
             <PrivateRoute path="/transaction" exact strict component={Transaction} />

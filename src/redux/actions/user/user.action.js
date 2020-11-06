@@ -76,6 +76,7 @@ export const FetchUser = (where) => {
         if(where){
             url+=`?${where}`;
         }
+        console.log(url);
 
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {

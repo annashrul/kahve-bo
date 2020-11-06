@@ -26,6 +26,7 @@ class User extends Component{
         this.handleCopy = this.handleCopy.bind(this);
         this.state={
             detail:{},
+            status:"",
             formatEmail:"",
             email:"",
             perpage:0,
@@ -33,9 +34,22 @@ class User extends Component{
             any:"",
         }
     }
+    componentDidUpdate(prevProps) {
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            this.forceUpdate();
+            this.props.dispatch(FetchUser("page=1&q="+this.props.match.params.id));
+        }
+    }
+
     componentWillMount(){
         console.log("component will mount");
-        this.props.dispatch(FetchUser('page=1'));
+        if(this.props.match.params.id!==undefined){
+            this.props.dispatch(FetchUser("page=1&q="+this.props.match.params.id));
+            this.forceUpdate();
+        }
+        else{
+            this.props.dispatch(FetchUser('page=1'));
+        }
     }
     componentDidMount(){
         this.setState({
@@ -82,18 +96,7 @@ class User extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-        // console.log(nextProps.dataAll);
-        // console.log("nextProps",nextProps);
-        // this.setState({
-        //     perpage:nextProps.data.per_page,
-        //     lastpage:nextProps.data.last_page,
-        //     // email:data.toString()
-        // });
-        // let pepage=this.state.perpage;
-        // let lastpage=this.state.lastpage;
-        // nextProps.dispatch(FetchAllUser(`page=1&perpage=${nextProps.data.per_page*nextProps.data.last_page}`));
         let data = [];
-        // if(nextProps.dataAll!==undefined)
         if(nextProps.dataAll!==undefined){
             if(nextProps.dataAll.data!==undefined){
                 if(nextProps.dataAll.data.length>0){
@@ -159,12 +162,13 @@ class User extends Component{
         let where = this.handleValidate();
         this.props.dispatch(FetchUser(where));
         this.props.dispatch(setUserListAll([]));
-
     }
     handleValidate(){
         let where="";
         let page = localStorage.getItem("pagePengguna");
         let any = this.state.any;
+        let status = this.state.status;
+
         if(page!==null&&page!==undefined&&page!==""){
             where+=`&page=${page}`;
         }else{
@@ -173,10 +177,15 @@ class User extends Component{
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${any}`;
         }
+        if(status!==null&&status!==undefined&&status!==""){
+            where+=`&status=${status}`;
+        }
+        console.log(where);
         return where;
     }
     handleSearch(e){
         e.preventDefault();
+        this.props.history.push('/user');
         let where = this.handleValidate();
         this.props.dispatch(FetchUser(where));
     }
@@ -222,32 +231,44 @@ class User extends Component{
                                 <div className="row">
                                     <div className="col-6 col-xs-6 col-md-3">
                                         <div className="form-group">
-                                            <label>Type something here ..</label>
-                                            <input type="text" className="form-control" name="any" value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                            <label>Write something here ..</label>
+                                            <input type="text" className="form-control" name="any" placeholder={"search by wallet address,name,email"} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
+                                        </div>
+                                    </div>
+                                    <div className="col-6 col-xs-6 col-md-2">
+                                        <div className="form-group">
+                                            <label>Status</label>
+                                            <select name="status" className="form-control form-control-lg" defaultValue={this.state.status} value={this.state.status} onChange={this.handleChange}>
+                                                <option value="">All Status</option>
+                                                <option value="1">Active</option>
+                                                <option value="0">In Active</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div className="col-6 col-xs-6 col-md-4">
                                         <div className="form-group">
                                             <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>
-                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}>{this.props.isLoadingSend?"loading ...":<i className="fa fa-send"/>}</button>
+                                            {/*<button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>*/}
+                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i className="fa fa-reply"/> {this.props.isLoadingSend?"loading ...":" Reply all"}</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div style={{overflowX: "auto"}}>
+                                <div style={{overflowX: "auto",zoom:"90%"}}>
                                     <table className="table table-hover">
                                         <thead className="bg-light">
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
                                             <th className="text-black" style={columnStyle}>#</th>
-                                            <th className="text-black" style={columnStyle}>Id Wallet Indodax</th>
+                                            <th className="text-black" style={columnStyle}>Wallet Address</th>
+                                            <th className="text-black" style={columnStyle}>Name</th>
                                             <th className="text-black" style={columnStyle}>Email</th>
                                             <th className="text-black" style={columnStyle}>Active Balance</th>
                                             <th className="text-black" style={columnStyle}>Active Slot</th>
                                             <th className="text-black" style={columnStyle}>Payment</th>
                                             <th className="text-black" style={columnStyle}>Total Ref</th>
                                             <th className="text-black" style={columnStyle}>BEP</th>
-                                            <th className="text-black" style={columnStyle}>Send</th>
+                                            <th className="text-black" style={columnStyle}>Status</th>
+                                            <th className="text-black" style={columnStyle}>Reply Email</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -280,7 +301,7 @@ class User extends Component{
                                                             }
 
                                                             return(
-                                                                <tr key={i}>
+                                                                <tr key={i} style={{backgroundColor:this.props.match.params.id===v.id?"#eeeeee":""}}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                                     <td style={columnStyle}>
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
@@ -293,20 +314,22 @@ class User extends Component{
                                                                             <span>{address?address:'-'} <i className="fa fa-copy" style={{color:"green"}}/></span>
                                                                         </CopyToClipboard>
                                                                     </td>
+                                                                    <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>{v.email}</td>
                                                                     <td style={rightStyle}>{parseFloat(v.active_balance).toFixed(8)}</td>
                                                                     <td style={rightStyle}>{v.active_slot}</td>
                                                                     <td style={rightStyle}>{parseFloat(v.payment).toFixed(8)}</td>
                                                                     <td style={rightStyle}>{parseFloat(v.reff)}</td>
                                                                     <td style={columnStyle}>{statusQ(bep)}</td>
+                                                                    <td style={columnStyle}>{statusQ(v.status)}</td>
                                                                     <td style={columnStyle}>
-                                                                        <a href={`mailto:${v.email}`} className="btn btn-primary btn-sm"><i className="fa fa-send"/></a>
+                                                                        <a href={`mailto:${v.email}`} className="btn btn-primary btn-sm"><i className="fa fa-reply"/> Reply</a>
                                                                     </td>
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={9} style={columnStyle}>No data</td></tr>
-                                                    : <tr><td colSpan={9} style={columnStyle}>No data</td></tr>
+                                                        : <tr><td colSpan={12} style={columnStyle}>No data</td></tr>
+                                                    : <tr><td colSpan={12} style={columnStyle}>No data</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
@@ -326,6 +349,8 @@ class User extends Component{
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton height={30} width={30}/>}</td>
                                                             </tr>
@@ -336,20 +361,20 @@ class User extends Component{
                                         }
                                         </tbody>
                                         <tfoot>
-                                            <th className="text-black" colspan={4}>Total Allpage</th>
+                                            <th className="text-black" colspan={5}>Total Allpage</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
-                                            <th className="text-black" colspan={2}/>
+                                            <th className="text-black" colspan={3}/>
                                         </tfoot>
                                         <tfoot>
-                                            <th className="text-black" colspan={4}>Total Perpage</th>
+                                            <th className="text-black" colspan={5}>Total Perpage</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance.toFixed(8)}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment.toFixed(8)}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
-                                            <th className="text-black" colspan={2}/>
+                                            <th className="text-black" colspan={3}/>
                                         </tfoot>
 
                                     </table>
