@@ -39,11 +39,11 @@ const Routes = (
             {/* INBOX SECTION END */}
             {/* DEPOSIT SECTION START */}
             <PrivateRoute path="/investment" exact strict component={Deposit} />
-            <PrivateRoute path="/investment/:id" exact strict component={Deposit} />
+            <PrivateRoute path="/investment/:id/:tgl" exact strict component={Deposit} />
             {/* DEPOSIT SECTION END */}
             {/* PENARIKAN SECTION START */}
             <PrivateRoute path="/withdraw" exact strict component={Penarikan} />
-            <PrivateRoute path="/withdraw/:id" exact strict component={Penarikan} />
+            <PrivateRoute path="/withdraw/:id/:tgl" exact strict component={Penarikan} />
             {/* PENARIKAN SECTION END */}
             {/* TRANSACTION SECTION START */}
             <PrivateRoute path="/transaction" exact strict component={Transaction} />

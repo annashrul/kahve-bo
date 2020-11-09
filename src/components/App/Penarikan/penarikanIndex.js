@@ -28,16 +28,26 @@ class Penarikan extends Component{
     }
     componentDidUpdate(prevProps) {
         if (prevProps.match.params.id !== this.props.match.params.id) {
+            let tgl = atob(this.props.match.params.tgl);
+            this.setState({
+                dateFrom:tgl,
+                dateTo:tgl
+            });
+            this.props.dispatch(FetchPenarikan(`page=1&q=${this.props.match.params.id}&datefrom=${tgl}&dateto=${tgl}`));
             this.forceUpdate();
-            this.props.dispatch(FetchPenarikan("page=1&q="+this.props.match.params.id));
+
         }
     }
 
     componentWillMount(){
         if(this.props.match.params.id!==undefined){
-            this.props.dispatch(FetchPenarikan("page=1&q="+this.props.match.params.id));
+            let tgl = atob(this.props.match.params.tgl);
+            this.setState({
+                dateFrom:tgl,
+                dateTo:tgl
+            });
+            this.props.dispatch(FetchPenarikan(`page=1&q=${this.props.match.params.id}&datefrom=${tgl}&dateto=${tgl}`));
             this.forceUpdate();
-            console.log("abus kondisi");
         }
         else{
             this.props.dispatch(FetchPenarikan('page=1'));

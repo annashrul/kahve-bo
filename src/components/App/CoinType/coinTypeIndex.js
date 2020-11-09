@@ -91,20 +91,20 @@ class CoinType extends Component{
                         <div className="card">
 
                             <div className="card-body">
-                                <div className="row">
-                                    <div className="col-6 col-xs-6 col-md-3">
-                                        <div className="form-group">
-                                            <label>Type something here ..</label>
-                                            <input type="text" className="form-control" name="any" defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
-                                        </div>
-                                    </div>
-                                    <div className="col-4 col-xs-4 col-md-4">
-                                        <div className="form-group">
-                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>
-                                        </div>
-                                    </div>
-                                </div>
+                                {/*<div className="row">*/}
+                                    {/*<div className="col-6 col-xs-6 col-md-3">*/}
+                                        {/*<div className="form-group">*/}
+                                            {/*<label>Type something here ..</label>*/}
+                                            {/*<input type="text" className="form-control" name="any" defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>*/}
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="col-4 col-xs-4 col-md-4">*/}
+                                        {/*<div className="form-group">*/}
+                                            {/*<button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>*/}
+                                            {/*<button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>*/}
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
                                 <div style={{overflowX: "auto"}}>
                                     <table className="table table-hover">
                                         <thead className="bg-light">

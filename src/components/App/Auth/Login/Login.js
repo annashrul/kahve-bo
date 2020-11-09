@@ -46,7 +46,7 @@ class Login extends Component {
                     width:data.result.width
                 })
                 const favicon = this.getFaviconEl(); // Accessing favicon element
-                favicon.href = data.result.logo;
+                favicon.href = data.result.site_url;
             },
             (error) => {
                 this.setState({

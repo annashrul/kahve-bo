@@ -5,7 +5,9 @@ import {TRANSACTION} from "../../actions/_constants";
 const initialState = {
     isLoading: true,
     isLoadingPost: true,
+    isLoadingCheck: true,
     isError: false,
+    isSkipped: false,
     status: "",
     msg: "",
     data: [],
@@ -15,6 +17,11 @@ const initialState = {
 
 export const transactionReducer = (state = initialState, action) => {
     switch (action.type) {
+        case TRANSACTION.CHECKING_GET:
+            console.log("CHECKING DAILY IN REDUCER",action.data.result.skipped)
+            return Object.assign({}, state, {
+                skipped: action.data.result.skipped,
+            });
         case TRANSACTION.SUCCESS:
             return Object.assign({}, state, {
                 status: action.data.status,
@@ -42,6 +49,10 @@ export const transactionReducer = (state = initialState, action) => {
         case TRANSACTION.LOADING_POST:
             return Object.assign({}, state, {
                 isLoadingPost: action.load
+            });
+        case TRANSACTION.LOADING_CHECKING_POST:
+            return Object.assign({}, state, {
+                isLoadingCheck: action.load
             });
         case TRANSACTION.IS_ERROR:
             return Object.assign({}, state, {

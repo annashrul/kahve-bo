@@ -16,6 +16,12 @@ export function setLoadingPost(load) {
         load
     }
 }
+export function setLoadingCheck(load) {
+    return {
+        type: TRANSACTION.LOADING_CHECKING_POST,
+        load
+    }
+}
 export function setIsError(load) {
     return {
         type: TRANSACTION.IS_ERROR,
@@ -26,6 +32,12 @@ export function setIsError(load) {
 export function setData(data = []) {
     return {
         type: TRANSACTION.SUCCESS,
+        data
+    }
+}
+export function setCheck(data = []) {
+    return {
+        type: TRANSACTION.CHECKING_GET,
         data
     }
 }
@@ -115,4 +127,82 @@ export const FetchDetailTransaction = (id,where) => {
 };
 
 
+export const CheckDaily = () => {
+    return (dispatch) => {
+        let url = 'transaction/daily_profit';
+        axios.get(HEADERS.URL + `${url}`)
+            .then(function (response) {
+                const data = response.data;
+                dispatch(setCheck(data));
+            })
+            .catch(function (error) {
+                // handle error
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
+
+            })
+
+    }
+};
+
+
+
+export const storeDailyProfit = () => {
+    return (dispatch) => {
+        dispatch(setLoadingCheck(true));
+        const url = HEADERS.URL + `transaction/daily_profit`;
+        axios.post(url,{})
+            .then(function (response) {
+                const data = (response.data);
+                if (data.status === 'success') {
+                    Swal.fire({
+                        title: 'Success',
+                        icon: 'success',
+                        text: data.msg,
+                    });
+                    dispatch(setIsError(true));
+                    dispatch(ModalToggle(false));
+                    dispatch(CheckDaily());
+                } else {
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: data.msg,
+                    });
+                    dispatch(setIsError(false));
+                    dispatch(ModalToggle(true));
+                }
+                dispatch(setLoadingCheck(false));
+            })
+            .catch(function (error) {
+                dispatch(setLoadingCheck(false));
+                dispatch(setIsError(false));
+                dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
+                else{
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
+
+                    if (error.response) {
+
+                    }
+                }
+
+            })
+    }
+}
 

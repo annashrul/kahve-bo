@@ -14,6 +14,7 @@ import Cards from './src/Cards'
 import Filter from './src/Filter'
 import Info from './src/Info'
 import Clock from "../../common/clock";
+import {CheckDaily, storeDailyProfit} from "../../../redux/actions/transaction/transaction.action";
 const socket = socketIOClient(HEADERS.URL);
 
 class Dashboard extends Component {
@@ -84,6 +85,7 @@ class Dashboard extends Component {
                     type: 'datetime'
                 },
             },
+            isDaily:false,
 
         };
 
@@ -118,6 +120,10 @@ class Dashboard extends Component {
 
 
     componentWillReceiveProps = (nextProps) => {
+        console.log("CHECKING DAILY",nextProps.skipped)
+        this.setState({
+            isDaily:nextProps.skipped
+        })
         if (nextProps.auth.user) {
           let lk = [{
               value: "-",
@@ -150,11 +156,13 @@ class Dashboard extends Component {
 
     componentWillMount(){
         this.refreshData();
+        this.props.dispatch(CheckDaily());
     }
 
     componentWillUnmount(){
         localStorage.removeItem('startDateProduct');
         localStorage.removeItem('endDateDashboard');
+
     }
 
     onChange = date => this.setState({ date })
@@ -170,6 +178,11 @@ class Dashboard extends Component {
         this.refreshData(awal,akhir);
     };
 
+    handleDailyProfit(e){
+        e.preventDefault();
+        this.props.dispatch(storeDailyProfit());
+    }
+
     handleSubmit = (event) => {
         event.preventDefault()
         this.refreshData();
@@ -184,7 +197,6 @@ class Dashboard extends Component {
             error: err
         })
         this.refreshData(null, null)
-
     }
 
     render() {
@@ -221,6 +233,9 @@ class Dashboard extends Component {
                     location_data={this.state.location_data}
                     HandleChangeLokasi={this.HandleChangeLokasi}
                     location={this.state.location}
+                    handleDailyProfit={this.handleDailyProfit.bind(this)}
+                    isDaily={this.state.isDaily}
+                    isLoadingDaily={this.props.isLoadingCheck}
                 />
 
                 {/* Dashboard Widget Area */}
@@ -261,7 +276,9 @@ class Dashboard extends Component {
 const mapStateToProps = (state) =>{
      return{
        auth: state.auth,
-       stock: state.dashboardReducer.data
+       stock: state.dashboardReducer.data,
+        skipped: state.transactionReducer.skipped,
+        isLoadingCheck: state.transactionReducer.isLoadingCheck,
      }
 }
 export default connect(mapStateToProps)(Dashboard);

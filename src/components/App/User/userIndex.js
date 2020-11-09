@@ -3,6 +3,7 @@ import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
 import {
+    confirmUser,
     deleteUser, FetchAllUser, FetchDetailUser, FetchUser, putUser,
     setUserListAll
 } from "../../../redux/actions/user/user.action";
@@ -117,25 +118,30 @@ class User extends Component{
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("detailUser"));
-
     }
     handleIsActive(e,param){
         e.preventDefault();
         Swal.fire({
             title: 'Perhatian !!!',
-            html:`Anda yakin akan ${param['status']===1?'menonaktifkan':'mengaktifkan'} <b style="color:red">${param['nama']}</b> ??`,
+            html:`You are sure ${param['status']===1?'approve':'block'} <b style="color:red">${param['nama']}</b> ??`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: `Oke, ${param['status']===1?'nonaktifkan':'aktifkan'} sekarang!`,
+            confirmButtonText: `Oke, ${param['status']===1?'approve':'block'} now!`,
             cancelButtonText: 'Batal',
         }).then((result) => {
             if (result.value) {
                 let id = param['id'];
                 let data  = {"status":param['status'],'isadmin':0};
                 let where = this.handleValidate();
-                this.props.dispatch(putUser(data,id,where));
+                if(param['status']===0){
+                    this.props.dispatch(confirmUser({'isadmin':0},param['regist'],where));
+                }
+                else{
+                    this.props.dispatch(putUser(data,id,where));
+                }
+                console.log(param['status'])
             }
         })
     }
@@ -208,6 +214,7 @@ class User extends Component{
             current_page,
             data
         } = this.props.data;
+        let totalPerInvestment=0;
         let totalPerActiveBalance=0;
         let totalPerActiveSlot=0;
         let totalPerPayment=0;
@@ -262,6 +269,7 @@ class User extends Component{
                                             <th className="text-black" style={columnStyle}>Wallet Address</th>
                                             <th className="text-black" style={columnStyle}>Name</th>
                                             <th className="text-black" style={columnStyle}>Email</th>
+                                            <th className="text-black" style={columnStyle}>Investment</th>
                                             <th className="text-black" style={columnStyle}>Active Balance</th>
                                             <th className="text-black" style={columnStyle}>Active Slot</th>
                                             <th className="text-black" style={columnStyle}>Payment</th>
@@ -278,21 +286,30 @@ class User extends Component{
                                                 (
                                                     typeof data === 'object' ? data.length>0?
                                                         data.map((v,i)=>{
+                                                            totalPerInvestment = totalPerInvestment+parseFloat(v.investment);
                                                             totalPerActiveBalance = totalPerActiveBalance+parseFloat(v.active_balance);
                                                             totalPerActiveSlot = totalPerActiveSlot+parseFloat(v.active_slot);
                                                             totalPerPayment = totalPerPayment+parseFloat(v.payment);
                                                             totalPerRef = totalPerRef+parseFloat(v.reff);
                                                             let faIsActive="";
                                                             let isStatus=0;
+                                                            let isColor;
                                                             let bep;
                                                             let address=v.address;
+                                                            if(v.status===2){
+                                                                faIsActive="fa-check";
+                                                                isStatus=1;
+                                                                isColor="btn-warning";
+                                                            }
                                                             if(v.status===1){
                                                                 faIsActive="fa-ban";
-                                                                isStatus=0;
+                                                                isStatus=2;
+                                                                isColor="btn-danger";
                                                             }
                                                             if(v.status===0){
                                                                 faIsActive="fa-check";
                                                                 isStatus=1;
+                                                                isColor="btn-info";
                                                             }
                                                             if(v.bep===true){
                                                                 bep = 1;
@@ -306,7 +323,7 @@ class User extends Component{
                                                                     <td style={columnStyle}>
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-dark btn-sm"} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
+                                                                        <button style={{marginRight:"5px"}} className={`btn ${isColor} btn-sm`} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name,"regist":v.regist_token})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
                                                                     </td>
                                                                     <td style={columnStyle}>
                                                                         <CopyToClipboard text={address?address:'-'}
@@ -316,6 +333,7 @@ class User extends Component{
                                                                     </td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>{v.email}</td>
+                                                                    <td style={rightStyle}>{parseFloat(v.investment).toFixed(8)}</td>
                                                                     <td style={rightStyle}>{parseFloat(v.active_balance).toFixed(8)}</td>
                                                                     <td style={rightStyle}>{v.active_slot}</td>
                                                                     <td style={rightStyle}>{parseFloat(v.payment).toFixed(8)}</td>
@@ -328,8 +346,8 @@ class User extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={12} style={columnStyle}>No data</td></tr>
-                                                    : <tr><td colSpan={12} style={columnStyle}>No data</td></tr>
+                                                        : <tr><td colSpan={13} style={columnStyle}>No data</td></tr>
+                                                    : <tr><td colSpan={13} style={columnStyle}>No data</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
@@ -350,6 +368,7 @@ class User extends Component{
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton height={30} width={30}/>}</td>
@@ -360,21 +379,25 @@ class User extends Component{
                                                 })()
                                         }
                                         </tbody>
+                                        {/*<tfoot>*/}
+                                            {/*<th className="text-black" colspan={5}>Total Allpage</th>*/}
+                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerInvestment}</th>*/}
+                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance}</th>*/}
+                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>*/}
+                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment}</th>*/}
+                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>*/}
+                                            {/*<th className="text-black" colspan={3}/>*/}
+                                        {/*</tfoot>*/}
                                         <tfoot>
-                                            <th className="text-black" colspan={5}>Total Allpage</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
-                                            <th className="text-black" colspan={3}/>
-                                        </tfoot>
-                                        <tfoot>
-                                            <th className="text-black" colspan={5}>Total Perpage</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance.toFixed(8)}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment.toFixed(8)}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
-                                            <th className="text-black" colspan={3}/>
+                                            <tr style={{backgroundColor:"#eeeeee"}}>
+                                                <th className="text-black" colspan={5}>TOTAL PERPAGE</th>
+                                                <th className="text-black" style={rightStyle} colspan={1}>{totalPerInvestment.toFixed(8)}</th>
+                                                <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance.toFixed(8)}</th>
+                                                <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
+                                                <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment.toFixed(8)}</th>
+                                                <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
+                                                <th className="text-black" colspan={3}/>
+                                            </tr>
                                         </tfoot>
 
                                     </table>

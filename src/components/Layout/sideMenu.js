@@ -88,6 +88,25 @@ class SideMenu extends Component {
     };
     render() {
         const path = this.props.location.pathname;
+        console.log(path.split("/"));
+        let pathArray=path.split("/");
+        let sub = pathArray.length;
+        let isActiveInv=false;
+        let isActiveWit=false;
+        if(pathArray[1]==='investment'){
+            isActiveInv=true;
+            if(pathArray[2]&&pathArray[3]!==undefined){
+                isActiveInv=true;
+            }
+        }
+        if(pathArray[1]==='withdraw'){
+            isActiveWit=true;
+            if(pathArray[2]&&pathArray[3]!==undefined){
+                isActiveWit=true;
+            }
+        }
+        console.log(pathArray);
+        console.log(sub);
         return (
             <nav>
                 <ul className="sidebar-menu" data-widget="tree">
@@ -118,11 +137,11 @@ class SideMenu extends Component {
                     {/* INBOX MODUL END */}
 
                     {/* DEPOSIT MODUL START */}
-                    <li  className={path==='/investment'?"active":''}><Link to="/investment"> <i className="fa fa-exchange" /><span> Investment</span></Link></li>
+                    <li  className={isActiveInv?"active":''}><Link to="/investment"> <i className="fa fa-exchange" /><span> Investment</span></Link></li>
                     {/* DEPOSIT MODUL END */}
 
                     {/* PENARIKAN MODUL START */}
-                    <li  className={path==='/withdraw'?"active":''}><Link to="/withdraw"> <i className="fa fa-exchange" /><span> Withdraw</span></Link></li>
+                    <li  className={isActiveWit?"active":''}><Link to="/withdraw"> <i className="fa fa-exchange" /><span> Withdraw</span></Link></li>
                     {/* PENARIKAN MODUL END */}
 
                     {/* TRANSACTION MODUL START */}

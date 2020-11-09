@@ -513,7 +513,7 @@ class Header extends Component {
                                                        <table className="table table-hover">
                                                            <tbody>
                                                            <tr>
-                                                               <Link to={`/investment/${v.id}`}>
+                                                               <Link to={`/investment/${v.id}/${btoa(moment(v.created_at).format("yyyy-MM-DD"))}`}>
                                                                <td className="text-black" style={columnStyle}>
                                                                    {v.name} -
                                                                    &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
@@ -546,7 +546,7 @@ class Header extends Component {
                                                         <table className="table table-hover">
                                                             <tbody>
                                                             <tr>
-                                                                <Link to={`/withdraw/${v.id}`}>
+                                                                <Link to={`/withdraw/${v.id}/${btoa(moment(v.created_at).format("yyyy-MM-DD"))}`}>
                                                                     <td className="text-black" style={columnStyle}>
                                                                         {v.users} -
                                                                         &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>

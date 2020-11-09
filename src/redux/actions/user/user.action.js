@@ -219,8 +219,7 @@ export const putUser = (data,id,where="") => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         const url = HEADERS.URL + `user/${id}`;
-        console.log(data['isadmin']);
-        axios.put(url,data)
+        axios.put(url,{"status":data['status']})
             .then(function (response) {
                 const data = (response.data);
                 if (data.status === 'success') {
@@ -238,8 +237,65 @@ export const putUser = (data,id,where="") => {
                     else{
                         console.log('page=1');
                         dispatch(FetchUser(where===""?"page=1":where));
+                    }
+                } else {
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: data.msg,
+                    });
+                    dispatch(setIsError(false));
+                    dispatch(ModalToggle(true));
+                }
+                dispatch(setLoadingPost(false));
 
-                        // dispatch(FetchUser(where));
+
+            })
+            .catch(function (error) {
+                dispatch(setLoadingPost(false));
+                dispatch(setIsError(false));
+                dispatch(ModalToggle(true));
+                if (error.message === 'Network Error') {
+                    Swal.fire(
+                        'Server tidak tersambung!.',
+                        'Periksa koneksi internet anda.',
+                        'error'
+                    );
+                }
+                Swal.fire({
+                    title: 'failed',
+                    icon: 'error',
+                    text: error.response.data.msg,
+                });
+
+                if (error.response) {
+
+                }
+            })
+    }
+}
+export const confirmUser = (data,id,where="") => {
+    return (dispatch) => {
+        dispatch(setLoadingPost(true));
+        const url = HEADERS.URL + `auth/confirm/${id}`;
+        axios.post(url,{})
+            .then(function (response) {
+                const data = (response.data);
+                if (data.status === 'success') {
+                    Swal.fire({
+                        title: 'Success',
+                        icon: 'success',
+                        text: data.msg,
+                    });
+                    dispatch(setIsError(true));
+                    dispatch(ModalToggle(false));
+                    if(data['isadmin']===1){
+                        console.log('page=1&isadmin=1');
+                        dispatch(FetchUser(where===""?"page=1&isadmin=1":where));
+                    }
+                    else{
+                        console.log('page=1');
+                        dispatch(FetchUser(where===""?"page=1":where));
                     }
                 } else {
                     Swal.fire({

@@ -27,13 +27,24 @@ class Deposit extends Component{
     }
     componentDidUpdate(prevProps) {
         if (prevProps.match.params.id !== this.props.match.params.id) {
-            this.props.dispatch(FetchDeposit("page=1&q="+this.props.match.params.id));
+            let tgl = atob(this.props.match.params.tgl);
+            this.setState({
+                dateFrom:tgl,
+                dateTo:tgl
+            });
+            this.props.dispatch(FetchDeposit(`page=1&q=${this.props.match.params.id}&datefrom=${tgl}&dateto=${tgl}`));
             this.forceUpdate();
         }
     }
     componentWillMount(){
         if(this.props.match.params.id!==undefined){
-            this.props.dispatch(FetchDeposit("page=1&q="+this.props.match.params.id));
+            let tgl = atob(this.props.match.params.tgl);
+            this.props.dispatch(FetchDeposit(`page=1&q=${this.props.match.params.id}&datefrom=${tgl}&dateto=${tgl}`));
+            this.setState({
+                dateFrom:tgl,
+                dateTo:tgl
+            });
+            // this.props.dispatch(FetchDeposit("page=1&q="+this.props.match.params.id));
             this.forceUpdate();
             console.log("abus kondisi");
         }
