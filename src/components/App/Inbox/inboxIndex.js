@@ -124,7 +124,7 @@ class Inbox extends Component{
             data
         } = this.props.data;
         return (
-            <Layout page={"message"}>
+            <Layout page={"Contact"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">

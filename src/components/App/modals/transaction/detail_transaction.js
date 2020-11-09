@@ -41,15 +41,14 @@ class DetailTransaction extends Component{
         }
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${btoa(any)}&datefrom=${localStorage.dateFromTransaction}&dateto=${localStorage.dateToTransaction}`;
+            // where+=`&q=${btoa(any)}&datefrom=${localStorage.dateFromTransaction!==undefined?localStorage.dateFromTransaction:moment(new Date()).format("yyyy-MM-DD")}&dateto=${localStorage.dateToTransaction!==undefined?localStorage.dateToTransaction:moment(new Date()).format("yyyy-MM-DD")}`;
+
         }
         return where;
     }
     handlePageChange(pageNumber){
         localStorage.setItem("pageDetailTransaction",pageNumber);
         let where = this.handleValidate();
-
-        // if(this.state.any!==""){
-        // }
         this.props.dispatch(FetchDetailTransaction(this.props.detail.id,where));
 
     }
@@ -59,9 +58,6 @@ class DetailTransaction extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-        console.log(this.state.any);
-        // console.log(localStorage.dateFromTransaction);
-        // console.log(localStorage.dateToTransaction);
             this.props.dispatch(FetchDetailTransaction(this.props.detail.id,where));
 
     }
@@ -84,7 +80,7 @@ class DetailTransaction extends Component{
         let totalPerAmountIn=0;
         let totalPerAmountOut=0;
         return (
-            <WrapperModal isOpen={this.props.isOpen && this.props.type === "detailTransaction"} size="lg">
+            <WrapperModal isOpen={this.props.isOpen && this.props.type === "detailTransaction"} size="lg" style={{zoom:"90%"}}>
                 <ModalHeader toggle={this.toggle}>Detail Transaction {this.state.name}</ModalHeader>
                 <ModalBody>
                     <div className="form-group">

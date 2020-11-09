@@ -28,6 +28,8 @@ class Transaction extends Component{
     }
     componentWillMount(){
         this.props.dispatch(FetchTransaction('page=1'));
+        localStorage.setItem("dateFromTransaction",`${this.state.dateFrom}`);
+        localStorage.setItem("dateToTransaction",`${this.state.dateTo}`);
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
@@ -138,7 +140,7 @@ class Transaction extends Component{
                                             <th className="text-black" style={columnStyle}>Kd Referral</th>
                                             <th className="text-black" style={columnStyle}>Name</th>
                                             <th className="text-black" style={columnStyle}>Email</th>
-                                            <th className="text-black" style={columnStyle}>First Saldo</th>
+                                            <th className="text-black" style={columnStyle}>Beginning Balance</th>
                                             <th className="text-black" style={columnStyle}>Trx In</th>
                                             <th className="text-black" style={columnStyle}>Trx Out</th>
                                             <th className="text-black" style={columnStyle}>Total</th>
@@ -200,19 +202,20 @@ class Transaction extends Component{
 
                                         <tfoot>
                                         <tr style={{backgroundColor:this.props.isLoading?"white":"#EEEEEE"}}>
-                                            <th className="text-black" colspan={6}>TOTAL ALLPAGE</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.saldo_awal}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.amount_in}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.amount_out}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.saldo_akhir}</th>
-                                        </tr>
-                                        <tr style={{backgroundColor:this.props.isLoading?"white":"#EEEEEE"}}>
                                             <th className="text-black" colspan={6}>TOTAL PERPAGE</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:totPerSaldoAwal.toFixed(8)}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:totPerIn.toFixed(8)}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:totPerOut.toFixed(8)}</th>
                                             <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:totPerSaldoAkhir.toFixed(8)}</th>
                                         </tr>
+                                        <tr style={{backgroundColor:this.props.isLoading?"white":"#EEEEEE"}}>
+                                            <th className="text-black" colspan={6}>TOTAL ALLPAGE</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.saldo_awal}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.amount_in}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.amount_out}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.saldo_akhir}</th>
+                                        </tr>
+
                                         </tfoot>
                                     </table>
                                 </div>

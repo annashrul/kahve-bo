@@ -110,7 +110,7 @@ class CoinType extends Component{
                                         <thead className="bg-light">
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
-                                            <th className="text-black" style={columnStyle}>Aksi</th>
+                                            <th className="text-black" style={columnStyle}>#</th>
                                             <th className="text-black" style={columnStyle}>Title</th>
                                             <th className="text-black" style={columnStyle}>Symbol</th>
                                             <th className="text-black" style={columnStyle}>Status</th>

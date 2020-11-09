@@ -20,6 +20,7 @@ class Setting extends Component{
             logo:"",
             site_url:"",
             number_of_month:"",
+            limit_member:"",
             referral_profit:"",
             email_admin:"",
             wallet_address:"",
@@ -62,22 +63,23 @@ class Setting extends Component{
                 logo:nextProps.data.logo,
                 site_url:nextProps.data.site_url,
                 number_of_month:nextProps.data.number_of_month,
+                limit_member:nextProps.data.limit_member,
                 referral_profit:nextProps.data.referral_profit,
                 email_admin:nextProps.data.email_admin,
                 wallet_address:nextProps.data.wallet_address,
                 hariInvest1:nextProps.data.schedule_invest.days[0],
                 hariInvest2:nextProps.data.schedule_invest.days[1],
                 jamInvestFrom1:nextProps.data.schedule_invest.time[0].split("-")[0],
-                jamInvestFrom2:nextProps.data.schedule_invest.time[0].split("-")[1],
+                // jamInvestFrom2:nextProps.data.schedule_invest.time[0].split("-")[1],
                 jamInvestTo1:nextProps.data.schedule_invest.time[1].split("-")[0],
-                jamInvestTo2:nextProps.data.schedule_invest.time[1].split("-")[1],
+                // jamInvestTo2:nextProps.data.schedule_invest.time[1].split("-")[1],
 
                 hariWD1:nextProps.data.schedule_wd.days[0],
                 hariWD2:nextProps.data.schedule_wd.days[1],
                 jamWDFrom1:nextProps.data.schedule_wd.time[0].split("-")[0],
-                jamWDFrom2:nextProps.data.schedule_wd.time[0].split("-")[1],
+                // jamWDFrom2:nextProps.data.schedule_wd.time[0].split("-")[1],
                 jamWDTo1:nextProps.data.schedule_wd.time[1].split("-")[0],
-                jamWDTo2:nextProps.data.schedule_wd.time[1].split("-")[1],
+                // jamWDTo2:nextProps.data.schedule_wd.time[1].split("-")[1],
 
                 invest_min:nextProps.data.invest_min,
                 invest_max:nextProps.data.invest_max,
@@ -107,6 +109,7 @@ class Setting extends Component{
         parsedata["site_name"]=this.state.site_name;
         parsedata["logo"]=this.state.logo.base64;
         parsedata["site_url"]=this.state.site_url;
+        parsedata["limit_member"]=this.state.limit_member;
         parsedata["number_of_month"]=this.state.number_of_month;
         parsedata["referral_profit"]=this.state.referral_profit;
         parsedata["email_admin"]=this.state.email_admin;
@@ -115,11 +118,11 @@ class Setting extends Component{
         parsedata["invest_max"]=this.state.invest_max;
         parsedata["schedule_invest"] =  {
             "days": [this.state.hariInvest1, this.state.hariInvest2],
-            "time": [`${this.state.jamInvestFrom1}-${this.state.jamInvestFrom2}`, `${this.state.jamInvestTo1}-${this.state.jamInvestTo2}`]
+            "time": [`${this.state.jamInvestFrom1}`, `${this.state.jamInvestTo1}`]
         };
         parsedata["schedule_wd"] ={
             "days": [this.state.hariWD1,this.state.hariWD2],
-            "time": [`${this.state.jamWDFrom1}-${this.state.jamWDFrom2}`, `${this.state.jamWDTo1}-${this.state.jamWDTo2}`]
+            "time": [`${this.state.jamWDFrom1}`, `${this.state.jamWDTo1}`]
         };
         if(validateEmail(parsedata["email_admin"])===false){
             err = Object.assign({}, err, {email_admin:"format email tidak sesuai"});
@@ -142,7 +145,7 @@ class Setting extends Component{
                     <div className="col-6">
                         <div className="dashboard-infor-mation d-flex flex-wrap align-items-center mb-3">
                             <div className="dashboard-btn-group d-flex align-items-center">
-                                <button type="button" className="btn btn-primary ml-1 float-right" onClick={this.handleSubmit}>{!this.props.isLoadingPost?'Simpan':'Loading ......'}</button>
+                                <button type="button" className="btn btn-primary ml-1 float-right" onClick={this.handleSubmit}>{!this.props.isLoadingPost?'Save':'Loading ......'}</button>
                             </div>
                         </div>
                     </div>
@@ -204,12 +207,21 @@ class Setting extends Component{
 
                                         </div>
                                         <div className="form-group">
-                                            <label>Number of Month</label>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <label>Number of Month</label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label style={{color:"#e8ebf1",float:"right"}}>Unit</label>
+                                                </div>
+                                            </div>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                     <div className="input-group mb-2">
                                                         <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
-                                                        <input type="text" className="form-control" name="number_of_month" value={this.state.number_of_month} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                        <input type="number" className="form-control" name="number_of_month" value={this.state.number_of_month} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                        <div className="input-group-prepend"><div className="input-group-text"><small>Day</small></div></div>
+
                                                     </div>
 
                                             }
@@ -217,34 +229,71 @@ class Setting extends Component{
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="form-group">
-                                            <label>Profit Month</label>
-                                            {
-                                                this.props.isLoading?<Skeleton height={30}/>:
-                                                <div className="input-group mb-2">
-                                                    <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
-                                                    <input type="text" className="form-control" name="monthly_profit" value={this.state.monthly_profit} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label>Profit Month</label>
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <div className="input-group mb-2">
+                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
+                                                                <input type="number" className="form-control" name="monthly_profit" value={this.state.monthly_profit} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-percent"></i></div></div>
+                                                            </div>
+                                                    }
                                                 </div>
-                                            }
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label>Limit Member</label>
+
+                                                    {
+                                                        this.props.isLoading?<Skeleton height={30}/>:
+                                                            <div className="input-group mb-2">
+                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
+                                                                <input type="number" className="form-control" name="limit_member" value={this.state.limit_member} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                                {/*<div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-percent"></i></div></div>*/}
+
+                                                            </div>
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="form-group">
-                                            <label>Contract</label>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <label>Contract</label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label style={{color:"#e8ebf1",float:"right"}}>Unit</label>
+                                                </div>
+                                            </div>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                 <div className="input-group mb-2">
                                                     <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
-                                                    <input type="text" className="form-control" name="contract" value={this.state.contract} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    <input type="number" className="form-control" name="contract" value={this.state.contract} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    <div className="input-group-prepend"><div className="input-group-text"><small>Month</small></div></div>
+
                                                 </div>
                                             }
 
                                         </div>
                                         <div className="form-group">
-                                            <label>Fee charge</label>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <label>Fee charge</label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label style={{color:"#e8ebf1",float:"right"}}>Unit</label>
+                                                </div>
+                                            </div>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                 <div className="input-group mb-2">
                                                     <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
-                                                    <input type="text" className="form-control" name="charge" value={this.state.charge} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    <input type="number" className="form-control" name="charge" value={this.state.charge} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-percent"/></div></div>
                                                 </div>
                                             }
 
@@ -256,18 +305,28 @@ class Setting extends Component{
                                                 <div className="input-group mb-2">
                                                     <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
                                                     <input type="text" className="form-control" name="wallet_address" value={this.state.wallet_address} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+
                                                 </div>
 
                                             }
 
                                         </div>
                                         <div className="form-group">
-                                            <label>Profit Referral</label>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <label>Profit Referral</label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label style={{color:"#e8ebf1",float:"right"}}>Unit</label>
+                                                </div>
+                                            </div>
                                             {
                                                 this.props.isLoading?<Skeleton height={30}/>:
                                                 <div className="input-group mb-2">
                                                     <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
                                                     <input type="text" className="form-control" name="referral_profit" value={this.state.referral_profit} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-bitcoin"/></div></div>
+
                                                 </div>
                                             }
 
@@ -281,8 +340,9 @@ class Setting extends Component{
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
                                                             <div className="input-group mb-2">
-                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
                                                                 <input type="text" className="form-control" name="invest_min" value={this.state.invest_min} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-bitcoin"/></div></div>
+
                                                             </div>
                                                     }
 
@@ -294,8 +354,9 @@ class Setting extends Component{
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
                                                             <div className="input-group mb-2">
-                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-list"/></div></div>
                                                                 <input type="text" className="form-control" name="invest_max" value={this.state.invest_max} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                                <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-bitcoin"/></div></div>
+
                                                             </div>
                                                     }
 
@@ -307,7 +368,7 @@ class Setting extends Component{
                                             <div className="col-md-6">
                                                 <label style={{color:"#e8ebf1",float:"right"}}>From</label>
                                             </div>
-                                            <div className="col-md-6" style={{paddingRight:"0px"}}>
+                                            <div className="col-md-6">
                                                 <div className="form-group">
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
@@ -323,7 +384,7 @@ class Setting extends Component{
                                                     }
                                                 </div>
                                             </div>
-                                            <div className="col-md-3" style={{padding:"0px"}}>
+                                            <div className="col-md-6">
                                                 <div className="form-group">
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
@@ -332,19 +393,19 @@ class Setting extends Component{
                                                     }
                                                 </div>
                                             </div>
-                                            <div className="col-md-3" style={{paddingLeft:"0px"}}>
-                                                <div className="form-group">
-                                                    {
-                                                        this.props.isLoading?<Skeleton height={30}/>:
-                                                        <input type="time" className="form-control" name={"jamInvestFrom2"} value={this.state.jamInvestFrom2} onChange={this.handleChange}/>
+                                            {/*<div className="col-md-3" style={{paddingLeft:"0px"}}>*/}
+                                                {/*<div className="form-group">*/}
+                                                    {/*{*/}
+                                                        {/*this.props.isLoading?<Skeleton height={30}/>:*/}
+                                                        {/*<input type="time" className="form-control" name={"jamInvestFrom2"} value={this.state.jamInvestFrom2} onChange={this.handleChange}/>*/}
 
-                                                    }
-                                                </div>
-                                            </div>
+                                                    {/*}*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
                                             <div className="col-md-12">
                                                 <label style={{color:"#e8ebf1",float:"right"}}>To</label>
                                             </div>
-                                            <div className="col-md-6" style={{paddingRight:"0px"}}>
+                                            <div className="col-md-6">
                                                 <div className="form-group">
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
@@ -360,7 +421,7 @@ class Setting extends Component{
                                                     }
                                                 </div>
                                             </div>
-                                            <div className="col-md-3" style={{padding:"0px"}}>
+                                            <div className="col-md-6">
                                                 <div className="form-group">
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
@@ -369,15 +430,15 @@ class Setting extends Component{
                                                     }
                                                 </div>
                                             </div>
-                                            <div className="col-md-3" style={{paddingLeft:"0px"}}>
-                                                <div className="form-group">
-                                                    {
-                                                        this.props.isLoading?<Skeleton height={30}/>:
-                                                            <input type="time" className="form-control" name={"jamInvestTo2"} value={this.state.jamInvestTo2} onChange={this.handleChange}/>
+                                            {/*<div className="col-md-3" style={{paddingLeft:"0px"}}>*/}
+                                                {/*<div className="form-group">*/}
+                                                    {/*{*/}
+                                                        {/*this.props.isLoading?<Skeleton height={30}/>:*/}
+                                                            {/*<input type="time" className="form-control" name={"jamInvestTo2"} value={this.state.jamInvestTo2} onChange={this.handleChange}/>*/}
 
-                                                    }
-                                                </div>
-                                            </div>
+                                                    {/*}*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
                                         </div>
                                         <div className="row">
 
@@ -403,7 +464,7 @@ class Setting extends Component{
                                                     }
                                                 </div>
                                             </div>
-                                            <div className="col-md-3" style={{padding:"0px"}}>
+                                            <div className="col-md-6">
                                                 <div className="form-group">
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
@@ -412,15 +473,15 @@ class Setting extends Component{
                                                     }
                                                 </div>
                                             </div>
-                                            <div className="col-md-3" style={{paddingLeft:"0px"}}>
-                                                <div className="form-group">
-                                                    {
-                                                        this.props.isLoading?<Skeleton height={30}/>:
-                                                            <input type="time" className="form-control" name={"jamWDFrom2"} value={this.state.jamWDFrom2} onChange={this.handleChange}/>
+                                            {/*<div className="col-md-3" style={{paddingLeft:"0px"}}>*/}
+                                                {/*<div className="form-group">*/}
+                                                    {/*{*/}
+                                                        {/*this.props.isLoading?<Skeleton height={30}/>:*/}
+                                                            {/*<input type="time" className="form-control" name={"jamWDFrom2"} value={this.state.jamWDFrom2} onChange={this.handleChange}/>*/}
 
-                                                    }
-                                                </div>
-                                            </div>
+                                                    {/*}*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
                                             <div className="col-md-12">
                                                 <label style={{color:"#e8ebf1",float:"right"}}>To</label>
                                             </div>
@@ -440,7 +501,7 @@ class Setting extends Component{
                                                     }
                                                 </div>
                                             </div>
-                                            <div className="col-md-3" style={{padding:"0px"}}>
+                                            <div className="col-md-6">
                                                 <div className="form-group">
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
@@ -449,15 +510,15 @@ class Setting extends Component{
                                                     }
                                                 </div>
                                             </div>
-                                            <div className="col-md-3" style={{paddingLeft:"0px"}}>
-                                                <div className="form-group">
-                                                    {
-                                                        this.props.isLoading?<Skeleton height={30}/>:
-                                                            <input type="time" className="form-control" name={"jamWDTo2"} value={this.state.jamWDTo2} onChange={this.handleChange}/>
+                                            {/*<div className="col-md-3" style={{paddingLeft:"0px"}}>*/}
+                                                {/*<div className="form-group">*/}
+                                                    {/*{*/}
+                                                        {/*this.props.isLoading?<Skeleton height={30}/>:*/}
+                                                            {/*<input type="time" className="form-control" name={"jamWDTo2"} value={this.state.jamWDTo2} onChange={this.handleChange}/>*/}
 
-                                                    }
-                                                </div>
-                                            </div>
+                                                    {/*}*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
                                         </div>
                                     </div>
 

@@ -137,11 +137,11 @@ class SideMenu extends Component {
                     {/* INBOX MODUL END */}
 
                     {/* DEPOSIT MODUL START */}
-                    <li  className={isActiveInv?"active":''}><Link to="/investment"> <i className="fa fa-exchange" /><span> Investment</span></Link></li>
+                    <li  className={isActiveInv?"active":''}><Link to="/investment"> <i className="fa fa-history" /><span> Investment</span></Link></li>
                     {/* DEPOSIT MODUL END */}
 
                     {/* PENARIKAN MODUL START */}
-                    <li  className={isActiveWit?"active":''}><Link to="/withdraw"> <i className="fa fa-exchange" /><span> Withdraw</span></Link></li>
+                    <li  className={isActiveWit?"active":''}><Link to="/withdraw"> <i className="fa fa-history" /><span> Withdraw</span></Link></li>
                     {/* PENARIKAN MODUL END */}
 
                     {/* TRANSACTION MODUL START */}

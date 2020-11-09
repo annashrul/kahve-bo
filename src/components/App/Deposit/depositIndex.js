@@ -17,12 +17,15 @@ class Deposit extends Component{
         this.handleModal = this.handleModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.HandleChangeInputValue = this.HandleChangeInputValue.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state={
             detail:{},
             status:"",
             any:"",
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
-            dateTo:moment(new Date()).format("yyyy-MM-DD")
+            dateTo:moment(new Date()).format("yyyy-MM-DD"),
+            data:[],
         }
     }
     componentDidUpdate(prevProps) {
@@ -44,15 +47,19 @@ class Deposit extends Component{
                 dateFrom:tgl,
                 dateTo:tgl
             });
-            // this.props.dispatch(FetchDeposit("page=1&q="+this.props.match.params.id));
             this.forceUpdate();
-            console.log("abus kondisi");
         }
         else{
-            this.props.dispatch(FetchDeposit('page=1'));
-            console.log("teu abus kondisi");
+            this.props.dispatch(FetchDeposit(`page=1&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`));
         }
     }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            data:nextProps.data.data
+        })
+    }
+
     handlePageChange(pageNumber){
         localStorage.setItem("pageDeposit",pageNumber);
         let where = this.handleValidate();
@@ -118,7 +125,7 @@ class Deposit extends Component{
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
         }else{
-            where+="page=1";
+            where+=`page=1`;
         }
         if(dateFrom!==null&&dateFrom!==undefined&&dateFrom!==""){
             where+=`&datefrom=${dateFrom}&dateto=${dateTo}`;
@@ -137,6 +144,25 @@ class Deposit extends Component{
         let where = this.handleValidate();
         this.props.dispatch(FetchDeposit(where));
     }
+
+
+    HandleChangeInputValue(e,i) {
+        const column = e.target.name;
+        const val = e.target.value;
+        let data = [...this.state.data];
+        data[i] = {...data[i], [column]: val};
+        this.setState({ data });
+    }
+
+    handleSubmit(e,i){
+        e.preventDefault();
+        let where = this.handleValidate();
+        console.log(this.state.data[i].id);
+        console.log(this.state.data[i].amount);
+        this.props.dispatch(approval({amount:this.state.data[i].amount},this.state.data[i].id,where))
+    }
+
+
     render(){
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {total,per_page, current_page,data} = this.props.data;
@@ -205,26 +231,48 @@ class Deposit extends Component{
                                         {
                                             !this.props.isLoading ?
                                                 (
-                                                    typeof data === 'object' ? data.length>0?
-                                                        data.map((v,i)=>{
+                                                    this.state.data.length>0?
+                                                        this.state.data.map((v,i)=>{
                                                             let badge = "";
                                                             let txt = "";
                                                             if(v.status===0){badge="btn-warning";txt="Pending";}
                                                             if(v.status===1){badge="btn-success";txt="Success";}
                                                             if(v.status===2){badge="btn-danger";txt="Cancel";}
+
                                                             return(
                                                                 <tr key={i}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                                     <td style={columnStyle}>
-                                                                       <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,1)}><i className={"fa fa-check"}/></button>
-                                                                       <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
-                                                                       <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-eye"}/></button>
+                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,1)}><i className={"fa fa-check"}/></button>
+                                                                        <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
+                                                                        <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-eye"}/></button>
                                                                     </td>
                                                                     <td style={columnStyle}>{v.slot_no}</td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>
-                                                                        {copyTxt(parseFloat(v.amount).toFixed(8))}
-                                                                        <span style={{color:"red"}}>({v.coin})</span>
+                                                                        <div className="input-group mb-2">
+                                                                            <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
+                                                                                <i className="fa fa-copy"/>
+                                                                            </div></div>
+                                                                            <input type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={this.state.data[i].amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i);}}} />
+                                                                            <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
+                                                                        </div>
+                                                                        {/*{*/}
+                                                                        {/*v.status===0?(*/}
+                                                                        {/*<div className="input-group mb-2">*/}
+                                                                        {/*<div className="input-group-prepend"><div className="input-group-text">*/}
+                                                                        {/*<i className="fa fa-copy"/>*/}
+                                                                        {/*</div></div>*/}
+                                                                        {/*<input type="text" className="form-control form-control-sm" name="monthly_profit" value={""} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />*/}
+                                                                        {/*<div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red"}}>{v.coin}</small></div></div>*/}
+                                                                        {/*</div>*/}
+                                                                        {/*):(*/}
+                                                                        {/*{copyTxt(parseFloat(v.amount).toFixed(8))}*/}
+                                                                        {/*// <span style={{color:"red"}}>({v.coin})</span>*/}
+                                                                        {/*)*/}
+                                                                        {/*}*/}
+
+
                                                                     </td>
                                                                     <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
                                                                     <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
@@ -232,7 +280,6 @@ class Deposit extends Component{
                                                             )
                                                         })
                                                         : <tr><td colSpan={8} style={{textAlign:"center"}}>No Data.</td></tr>
-                                                    : <tr><td colSpan={8} style={{textAlign:"center"}}>No Data.</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
