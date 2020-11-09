@@ -15,7 +15,7 @@ export const noImage = ()=>{
 }
 export const copyTxt = (txt)=>{
     return <CopyToClipboard text={txt} style={{cursor:"copy"}}
-         onCopy={()=>ToastQ.fire({icon:'success',title:`${txt} copied successful.`})}>
+         onCopy={()=>ToastQ.fire({icon:'success',title:`${txt} copied successfully.`})}>
         <span><i className="fa fa-copy" style={{color:"green"}}/> {txt} </span>
     </CopyToClipboard>
 }

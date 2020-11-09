@@ -9,7 +9,7 @@ import {
 } from "../../../redux/actions/user/user.action";
 import FormUser from "../../App/modals/user/form_user";
 import DetailUser from "../../App/modals/user/detail_user";
-import Paginationq, {statusQ, ToastQ} from "../../../helper";
+import Paginationq, {copyTxt, statusQ, ToastQ} from "../../../helper";
 import {noImage} from "../../../helper";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
@@ -326,10 +326,12 @@ class User extends Component{
                                                                         <button style={{marginRight:"5px"}} className={`btn ${isColor} btn-sm`} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name,"regist":v.regist_token})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
                                                                     </td>
                                                                     <td style={columnStyle}>
-                                                                        <CopyToClipboard text={address?address:'-'}
-                                                                             onCopy={()=>ToastQ.fire({icon:'success',title:`${address} berhasil disalin.`})}>
-                                                                            <span>{address?address:'-'} <i className="fa fa-copy" style={{color:"green"}}/></span>
-                                                                        </CopyToClipboard>
+                                                                        {copyTxt(address?address:'-')}
+
+                                                                        {/*<CopyToClipboard text={address?address:'-'}*/}
+                                                                             {/*onCopy={()=>ToastQ.fire({icon:'success',title:`${address} berhasil disalin.`})}>*/}
+                                                                            {/*<span>{address?address:'-'} <i className="fa fa-copy" style={{color:"green"}}/></span>*/}
+                                                                        {/*</CopyToClipboard>*/}
                                                                     </td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>{v.email}</td>

@@ -181,7 +181,7 @@ class Deposit extends Component{
                         <div className="card">
 
                             <div className="card-body">
-                                <div className="row" style={{zoom:"90%"}}>
+                                <div className="row" style={{zoom:"80%"}}>
                                     <div className="col-6 col-xs-6 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
@@ -213,7 +213,7 @@ class Deposit extends Component{
                                         </div>
                                     </div>
                                 </div>
-                                <div style={{overflowX: "auto"}}>
+                                <div style={{overflowX: "auto",zoom:"80%"}}>
                                     <table className="table table-hover">
                                         <thead className="bg-light">
                                         <tr>
@@ -250,13 +250,15 @@ class Deposit extends Component{
                                                                     <td style={columnStyle}>{v.slot_no}</td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>
-                                                                        <div className="input-group mb-2">
-                                                                            <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
-                                                                                <i className="fa fa-copy"/>
-                                                                            </div></div>
-                                                                            <input type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={this.state.data[i].amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i);}}} />
-                                                                            <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
-                                                                        </div>
+                                                                       <div className="form-group">
+                                                                           <div className="input-group mb-2">
+                                                                               <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
+                                                                                   <i className="fa fa-copy"/>
+                                                                               </div></div>
+                                                                               <input type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={this.state.data[i].amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i);}}} />
+                                                                               <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
+                                                                           </div>
+                                                                       </div>
                                                                         {/*{*/}
                                                                         {/*v.status===0?(*/}
                                                                         {/*<div className="input-group mb-2">*/}
