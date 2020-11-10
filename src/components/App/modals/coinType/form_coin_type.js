@@ -10,7 +10,7 @@ import {
 import ProfileImage from "../../../../assets/profile.png";
 import FileBase64 from "react-file-base64";
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import {stringifyFormData, validateEmail, validateForm} from "../../../../helper";
+import {isEmpty, stringifyFormData, validateEmail, validateForm} from "../../../../helper";
 import {storeUser} from "../../../../redux/actions/user/user.action";
 import {putCoinType, storeCoinType} from "../../../../redux/actions/coinType/coinType.action";
 
@@ -89,15 +89,15 @@ class FormCoinType extends Component{
         parseData['symbol'] = this.state.symbol;
         parseData['status'] = this.state.status;
         if(parseData['title']===''||parseData['title']===undefined){
-            err = Object.assign({}, err, {title:"title tidak boleh kosong"});
+            err = Object.assign({}, err, {title:isEmpty("title")});
             this.setState({error: err});
         }
         else if(parseData['symbol']===''||parseData['symbol']===undefined){
-            err = Object.assign({}, err, {symbol:"symbol tidak boleh kosong"});
+            err = Object.assign({}, err, {symbol:isEmpty("symbol")});
             this.setState({error: err});
         }
         else if(parseData['status']===''||parseData['status']===undefined){
-            err = Object.assign({}, err, {status:"status tidak boleh kosong"});
+            err = Object.assign({}, err, {status:isEmpty("status")});
             this.setState({error: err});
         }
         else{
@@ -119,7 +119,7 @@ class FormCoinType extends Component{
     render(){
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formCoinType"} size="md">
-                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?"Tambah Tipe Koin":"Ubah Tipe Koin"}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?"Add Coin Type":"Update Coin Type"}</ModalHeader>
                 <ModalBody>
                     <div className="row">
                         <div className="col-md-12">

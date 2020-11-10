@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {USER_LIST,HEADERS} from "../_constants";
+import {USER_LIST, HEADERS, NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
@@ -88,8 +88,8 @@ export const FetchUser = (where) => {
                 // handle error
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
 
@@ -118,11 +118,10 @@ export const FetchAllUser = (where) => {
                 // handle error
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
-
                     dispatch(setLoadingSend(false));
                 }
             })
@@ -146,8 +145,8 @@ export const FetchDetailUser = (id) => {
                 // handle error
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
 
@@ -168,7 +167,7 @@ export const storeUser = (data) => {
                     Swal.fire({
                         title: 'Success',
                         icon: 'success',
-                        text: data.msg,
+                        text: NOTIF_ALERT.SUCCESS,
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
@@ -183,7 +182,7 @@ export const storeUser = (data) => {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
-                        text: data.msg,
+                        text: NOTIF_ALERT.FAILED,
                     });
                     dispatch(setIsError(false));
                     dispatch(ModalToggle(true));
@@ -196,22 +195,25 @@ export const storeUser = (data) => {
                 dispatch(setLoadingPost(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }
-                dispatch(setIsError(false));
-                dispatch(ModalToggle(true));
-                Swal.fire({
-                    title: 'failed',
-                    icon: 'error',
-                    text: error.response.data.msg,
-                });
+                else{
+                    dispatch(setIsError(false));
+                    dispatch(ModalToggle(true));
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
 
-                if (error.response) {
+                    if (error.response) {
 
+                    }
                 }
+
             })
     }
 }
@@ -226,7 +228,7 @@ export const putUser = (data,id,where="") => {
                     Swal.fire({
                         title: 'Success',
                         icon: 'success',
-                        text: data.msg,
+                        text: NOTIF_ALERT.SUCCESS,
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
@@ -242,7 +244,7 @@ export const putUser = (data,id,where="") => {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
-                        text: data.msg,
+                        text: NOTIF_ALERT.FAILED,
                     });
                     dispatch(setIsError(false));
                     dispatch(ModalToggle(true));
@@ -257,20 +259,23 @@ export const putUser = (data,id,where="") => {
                 dispatch(ModalToggle(true));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }
-                Swal.fire({
-                    title: 'failed',
-                    icon: 'error',
-                    text: error.response.data.msg,
-                });
+                else{
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
 
-                if (error.response) {
+                    if (error.response) {
 
+                    }
                 }
+
             })
     }
 }
@@ -285,7 +290,7 @@ export const confirmUser = (data,id,where="") => {
                     Swal.fire({
                         title: 'Success',
                         icon: 'success',
-                        text: data.msg,
+                        text: NOTIF_ALERT.SUCCESS,
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
@@ -301,7 +306,7 @@ export const confirmUser = (data,id,where="") => {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
-                        text: data.msg,
+                        text: NOTIF_ALERT.FAILED,
                     });
                     dispatch(setIsError(false));
                     dispatch(ModalToggle(true));
@@ -316,26 +321,29 @@ export const confirmUser = (data,id,where="") => {
                 dispatch(ModalToggle(true));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }
-                Swal.fire({
-                    title: 'failed',
-                    icon: 'error',
-                    text: error.response.data.msg,
-                });
+                else{
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
 
-                if (error.response) {
+                    if (error.response) {
 
+                    }
                 }
+
             })
     }
 }
 
 
-export const deleteUser = (id,param) => {
+export const deleteUser = (id,where) => {
     return (dispatch) => {
         dispatch(setLoading(true));
         const url = HEADERS.URL + `user/${id}`;
@@ -346,35 +354,46 @@ export const deleteUser = (id,param) => {
                     Swal.fire({
                         title: 'Success',
                         icon: 'success',
-                        text: data.msg,
+                        text: NOTIF_ALERT.SUCCESS,
                     });
                 } else {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
-                        text: data.msg,
+                        text: NOTIF_ALERT.FAILED,
                     });
                 }
                 dispatch(setLoading(false));
-                dispatch(FetchUser('page=1'));
+                // if(param['isadmin']===1){
+                //     console.log('page=1&isadmin=1');
+                //     dispatch(FetchUser(where===""?"page=1&isadmin=1":where));
+                // }
+                // else{
+                //     console.log('page=1');
+                //     dispatch(FetchUser(where===""?"page=1":where));
+                // }
+                dispatch(FetchUser(where));
             })
             .catch(function (error) {
                 dispatch(setLoading(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }
-                Swal.fire({
-                    title: 'failed',
-                    icon: 'error',
-                    text: error.response.data.msg,
-                });
-                if (error.response) {
+                else{
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: error.response.data.msg,
+                    });
+                    if (error.response) {
 
+                    }
                 }
+
             })
     }
 }

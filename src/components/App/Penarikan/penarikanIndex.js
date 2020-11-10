@@ -9,6 +9,7 @@ import * as Swal from "sweetalert2";
 import {approvalPenarikan, FetchPenarikan} from "../../../redux/actions/penarikan/penarikan.action";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import {CopyToClipboard} from "react-copy-to-clipboard";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 class Penarikan extends Component{
     constructor(props){
@@ -50,7 +51,7 @@ class Penarikan extends Component{
             this.forceUpdate();
         }
         else{
-            this.props.dispatch(FetchPenarikan('page=1'));
+            this.props.dispatch(FetchPenarikan(`page=1&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`));
         }
     }
     handleChange = (event) => {
@@ -216,7 +217,7 @@ class Penarikan extends Component{
                                                                         {copyTxt(v.wallet?v.wallet:'-')}
                                                                     </td>
                                                                     <td style={columnStyle}>
-                                                                        {copyTxt(v.amount?v.amount:'0')}
+                                                                        {copyTxt(v.amount?parseFloat(v.amount).toFixed(8):'0')}
                                                                         <span style={{color:"red"}}>({v.coin})</span>
                                                                     </td>
                                                                     <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
@@ -224,8 +225,8 @@ class Penarikan extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={9} style={{textAlign:"center"}}>No Data.</td></tr>
-                                                    : <tr><td colSpan={9} style={{textAlign:"center"}}>No Data.</td></tr>
+                                                        : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                    : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){

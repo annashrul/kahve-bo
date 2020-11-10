@@ -7,6 +7,7 @@ import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import {FetchCoinType} from "../../../redux/actions/coinType/coinType.action";
 import FormCoinType from "../../App/modals/coinType/form_coin_type";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 class CoinType extends Component{
     constructor(props){
         super(props);
@@ -135,8 +136,8 @@ class CoinType extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : "No data."
-                                                    : "No data."
+                                                        :<tr><td style={columnStyle} colSpan={5}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                    : <tr><td style={columnStyle} colSpan={5}>{NOTIF_ALERT.NO_DATA}</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){

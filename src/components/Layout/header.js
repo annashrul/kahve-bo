@@ -323,7 +323,7 @@ class Header extends Component {
                                                                     {v.name} -
                                                                     &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
                                                                     <small style={{color:"green"}}>{v.kd_trx}</small><br/>
-                                                                    <small style={{color:"black"}}>{v.amount}</small>
+                                                                    <small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small>
                                                                 </td>
                                                             </tr>
                                                             </tbody>
@@ -355,7 +355,7 @@ class Header extends Component {
                                                             <tr>
                                                                 <td className="text-black" style={columnStyle}>
                                                                     {v.users} -
-                                                                    &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.kd_trx}</small><br/><small style={{color:"black"}}>{v.amount}</small></td>
+                                                                    &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.kd_trx}</small><br/><small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small></td>
                                                             </tr>
                                                             </tbody>
                                                         </table>
@@ -518,7 +518,7 @@ class Header extends Component {
                                                                    {v.name} -
                                                                    &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
                                                                    <small style={{color:"green"}}>{v.kd_trx}</small><br/>
-                                                                   <small style={{color:"black"}}>{v.amount}</small>
+                                                                   <small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small>
                                                                </td>
                                                                </Link>
                                                            </tr>
@@ -551,7 +551,7 @@ class Header extends Component {
                                                                         {v.users} -
                                                                         &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
                                                                         <small style={{color:"green"}}>{v.kd_trx}</small><br/>
-                                                                        <small style={{color:"black"}}>{v.amount}</small>
+                                                                        <small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small>
                                                                     </td>
                                                                 </Link>
                                                             </tr>

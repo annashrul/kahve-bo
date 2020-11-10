@@ -10,6 +10,17 @@ import No from "assets/status-T.png";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 
 
+export const isEmpty = (col)=>{
+    return `${col} cannot be null`;
+}
+
+export const isFloatFix = (num)=>{
+    return parseFloat(num).toFixed(8);
+}
+export const isFloat = (num)=>{
+    return parseFloat(num);
+}
+
 export const noImage = ()=>{
     return ProfileImage;
 }

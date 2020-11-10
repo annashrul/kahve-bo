@@ -8,6 +8,7 @@ import {
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {putFaq, storeFaq} from "../../../../redux/actions/faq/faq.action";
+import {isEmpty} from "../../../../helper";
 
 class FormFaq extends Component{
     constructor(props){
@@ -84,15 +85,15 @@ class FormFaq extends Component{
         parseData['answer'] = this.state.answer;
         parseData['status'] = this.state.status;
         if(parseData['question']===''||parseData['question']===undefined){
-            err = Object.assign({}, err, {question:"pertanyaan tidak boleh kosong"});
+            err = Object.assign({}, err, {question:isEmpty("question")});
             this.setState({error: err});
         }
         else if(parseData['answer']===''||parseData['answer']===undefined){
-            err = Object.assign({}, err, {answer:"jawaban tidak boleh kosong"});
+            err = Object.assign({}, err, {answer:isEmpty("answer")});
             this.setState({error: err});
         }
         else if(parseData['status']===''||parseData['status']===undefined){
-            err = Object.assign({}, err, {status:"status tidak boleh kosong"});
+            err = Object.assign({}, err, {status:isEmpty("status")});
             this.setState({error: err});
         }
         else{
@@ -114,17 +115,17 @@ class FormFaq extends Component{
     render(){
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formFaq"} size="md">
-                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?"Tambah Faq":"Ubah Faq"}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?"Add Faq":"Update Faq"}</ModalHeader>
                 <ModalBody>
                     <div className="row">
                         <div className="col-md-12">
                             <div className="form-group">
-                                <label>Pertanyaan</label>
+                                <label>Question</label>
                                 <input type="text" className="form-control" name="question" value={this.state.question} onChange={this.handleChange} />
                                 <div className="invalid-feedback" style={this.state.error.question !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.question}</div>
                             </div>
                             <div className="form-group">
-                                <label>Jawaban</label>
+                                <label>Answer</label>
                                 <input type="email" className="form-control" name="answer" value={this.state.answer} onChange={this.handleChange} />
                                 <div className="invalid-feedback" style={this.state.error.answer !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.answer}</div>
                             </div>

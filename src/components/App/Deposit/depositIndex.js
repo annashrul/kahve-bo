@@ -9,6 +9,7 @@ import * as Swal from "sweetalert2";
 import {approval, FetchDeposit} from "../../../redux/actions/deposit/deposit.action";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import {CopyToClipboard} from "react-copy-to-clipboard";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 class Deposit extends Component{
     constructor(props){
@@ -79,13 +80,13 @@ class Deposit extends Component{
         e.preventDefault();
         Swal.fire({
             title: 'Warning !!!',
-            text: `You are sure ${status===1?"approve":"cancel"} this data ??`,
+            text: `are you sure ${status===1?"approve":"cancel"} this data ??`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: `Oke, ${status===1?"approve":"cancel"} now!`,
-            cancelButtonText: 'Batal',
+            cancelButtonText: 'Cancel',
         }).then((result) => {
             if (result.value) {
                 let parsedata={"status":status};
@@ -97,10 +98,10 @@ class Deposit extends Component{
     handleModal(e,param) {
         e.preventDefault();
         Swal.fire({
-            title: 'Bukti Transfer',
-            text: 'Atas nama '+this.props.data.data[param].name,
+            title: 'transfer proof',
+            text: 'name of '+this.props.data.data[param].name,
             imageUrl: this.props.data.data[param].pict,
-            imageAlt: 'gambar tidak tersedia',
+            imageAlt: 'image not available',
             showClass   : {popup: 'animate__animated animate__fadeInDown'},
             hideClass   : {popup: 'animate__animated animate__fadeOutUp'},
         })
@@ -149,17 +150,36 @@ class Deposit extends Component{
     HandleChangeInputValue(e,i) {
         const column = e.target.name;
         const val = e.target.value;
+
+        // if(val==="0"){
+        //
+        // }
+        // if(parseFloat(val)>parseFloat("0.25")){
+        //     console.log("gagal");
+        // }else{
+        //     let data = [...this.state.data];
+        //     data[i] = {...data[i], [column]: val};
+        //     this.setState({ data });
+        // }
         let data = [...this.state.data];
         data[i] = {...data[i], [column]: val};
         this.setState({ data });
+        console.log("VALUE",val);
+        console.log("STATE",this.state.data[i].amount);
+
     }
 
-    handleSubmit(e,i){
+    handleSubmit(e,i,note){
         e.preventDefault();
-        let where = this.handleValidate();
-        console.log(this.state.data[i].id);
-        console.log(this.state.data[i].amount);
-        this.props.dispatch(approval({amount:this.state.data[i].amount},this.state.data[i].id,where))
+        if(note===""){
+            let where = this.handleValidate();
+            console.log(this.state.data[i].id);
+            console.log(this.state.data[i].amount);
+            this.props.dispatch(approval({amount:this.state.data[i].amount},this.state.data[i].id,where))
+        }
+        else{
+            alert("gagal oiii")
+        }
     }
 
 
@@ -219,7 +239,7 @@ class Deposit extends Component{
                                         <tr>
                                             <th className="text-black" style={columnStyle}>No</th>
                                             <th className="text-black" style={columnStyle}>#</th>
-                                            <th className="text-black" style={columnStyle}>Slot No</th>
+                                            <th className="text-black" style={columnStyle}>Wallet Address</th>
                                             <th className="text-black" style={columnStyle}>Name</th>
                                             <th className="text-black" style={columnStyle}>Amount (Coin)</th>
                                             <th className="text-black" style={columnStyle}>Invest Date</th>
@@ -231,14 +251,28 @@ class Deposit extends Component{
                                         {
                                             !this.props.isLoading ?
                                                 (
-                                                    this.state.data.length>0?
+                                                    this.state.data!==undefined?this.state.data.length>0?
                                                         this.state.data.map((v,i)=>{
                                                             let badge = "";
                                                             let txt = "";
+                                                            let note = "";
                                                             if(v.status===0){badge="btn-warning";txt="Pending";}
                                                             if(v.status===1){badge="btn-success";txt="Success";}
                                                             if(v.status===2){badge="btn-danger";txt="Cancel";}
-
+                                                            // if()
+                                                            if(parseFloat(v.amount)===0){
+                                                                console.log("sama dengan 0");
+                                                                note = "input amount min 0.025 and max 0.25";
+                                                                // v.amount=0;
+                                                            }
+                                                            else if(parseFloat(v.amount)>0.25){
+                                                                note = "input amount min 0.025 and max 0.25";
+                                                                // v.amount=0;
+                                                            }
+                                                            else if(parseFloat(v.amount)<0.025){
+                                                                note = "input amount min 0.025 and max 0.25";
+                                                                // v.amount=0;
+                                                            }
                                                             return(
                                                                 <tr key={i}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
@@ -247,7 +281,7 @@ class Deposit extends Component{
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
                                                                         <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-eye"}/></button>
                                                                     </td>
-                                                                    <td style={columnStyle}>{v.slot_no}</td>
+                                                                    <td style={columnStyle}>{v.wallet_address}</td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>
                                                                        <div className="form-group">
@@ -255,9 +289,14 @@ class Deposit extends Component{
                                                                                <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
                                                                                    <i className="fa fa-copy"/>
                                                                                </div></div>
-                                                                               <input type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={this.state.data[i].amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i);}}} />
+                                                                               <input minLength="4" maxLength="5" type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={v.amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i,note);}}} />
                                                                                <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
                                                                            </div>
+
+                                                                           {/*{*/}
+                                                                             {/*parseFloat(this.state.data[i].amount)<parseFloat(0.025)?(<small>tidak boleh</small>):(parseFloat(this.state.data[i].amount)>parseFloat(0.25)?<small>tidak boleh</small>:"")*/}
+                                                                           {/*}*/}
+                                                                           <small style={{color:"red",float:"left"}}>{note}</small>
                                                                        </div>
                                                                         {/*{*/}
                                                                         {/*v.status===0?(*/}
@@ -281,7 +320,8 @@ class Deposit extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={8} style={{textAlign:"center"}}>No Data.</td></tr>
+                                                        : <tr><td colSpan={8} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        : <tr><td colSpan={8} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){

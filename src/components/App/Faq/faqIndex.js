@@ -19,6 +19,7 @@ import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import {deleteFaq, FetchFaq} from "../../../redux/actions/faq/faq.action";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 class Faq extends Component{
     constructor(props){
@@ -156,7 +157,7 @@ class Faq extends Component{
                                                         </div>
                                                     );
                                                 })
-                                            : "No data."
+                                            : NOTIF_ALERT.NO_DATA
                                         )
                                     :
                                         (()=>{

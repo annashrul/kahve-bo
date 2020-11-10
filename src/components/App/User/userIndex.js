@@ -16,6 +16,7 @@ import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import moment from "moment";
 import {CopyToClipboard} from "react-copy-to-clipboard";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 class User extends Component{
     constructor(props){
@@ -122,21 +123,21 @@ class User extends Component{
     handleIsActive(e,param){
         e.preventDefault();
         Swal.fire({
-            title: 'Perhatian !!!',
+            title: 'Warning !!!',
             html:`You are sure ${param['status']===1?'approve':'block'} <b style="color:red">${param['nama']}</b> ??`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: `Oke, ${param['status']===1?'approve':'block'} now!`,
-            cancelButtonText: 'Batal',
+            cancelButtonText: 'Cancel',
         }).then((result) => {
             if (result.value) {
                 let id = param['id'];
                 let data  = {"status":param['status'],'isadmin':0};
                 let where = this.handleValidate();
-                if(param['status']===0){
-                    this.props.dispatch(confirmUser({'isadmin':0},param['regist'],where));
+                if(param['status']===1){
+                    this.props.dispatch(confirmUser({'isadmin':0},btoa(param['regist'].split("|")[0]),where));
                 }
                 else{
                     this.props.dispatch(putUser(data,id,where));
@@ -220,7 +221,7 @@ class User extends Component{
         let totalPerPayment=0;
         let totalPerRef=0;
         return (
-            <Layout page={"pengguna-member"}>
+            <Layout page={"member"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
@@ -256,7 +257,7 @@ class User extends Component{
                                         <div className="form-group">
                                             <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                             {/*<button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>*/}
-                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i className="fa fa-reply"/> {this.props.isLoadingSend?"loading ...":" Reply all"}</button>
+                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i className="fa fa-send"/> {this.props.isLoadingSend?"loading ...":" Send to all"}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -321,7 +322,7 @@ class User extends Component{
                                                                 <tr key={i} style={{backgroundColor:this.props.match.params.id===v.id?"#eeeeee":""}}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                                     <td style={columnStyle}>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
+                                                                        {/*<button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>*/}
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
                                                                         <button style={{marginRight:"5px"}} className={`btn ${isColor} btn-sm`} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name,"regist":v.regist_token})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
                                                                     </td>
@@ -348,8 +349,8 @@ class User extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={13} style={columnStyle}>No data</td></tr>
-                                                    : <tr><td colSpan={13} style={columnStyle}>No data</td></tr>
+                                                        : <tr><td colSpan={13} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                    : <tr><td colSpan={13} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){

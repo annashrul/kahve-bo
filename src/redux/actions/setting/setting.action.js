@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {PENGATURAN,HEADERS} from "../_constants";
+import {PENGATURAN, HEADERS, NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
@@ -65,8 +65,8 @@ export const FetchPengaturan = () => {
                 dispatch(setLoading(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }
@@ -85,7 +85,7 @@ export const putPengaturan = (data) => {
                     Swal.fire({
                         title: 'Success',
                         icon: 'success',
-                        text: data.msg,
+                        text: NOTIF_ALERT.SUCCESS,
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
@@ -94,7 +94,7 @@ export const putPengaturan = (data) => {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
-                        text: data.msg,
+                        text: NOTIF_ALERT.FAILED,
                     });
                     dispatch(setIsError(false));
                     dispatch(ModalToggle(true));
@@ -109,8 +109,8 @@ export const putPengaturan = (data) => {
                 dispatch(ModalToggle(true));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }

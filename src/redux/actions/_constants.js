@@ -12,6 +12,12 @@ export const TOKEN = {
   GET: "GET_TOKEN"
 }
 
+export const NOTIF_ALERT = {
+    SUCCESS: "Data has been saved",
+    FAILED: "Data failed to saved",
+    NO_DATA: "No data.",
+}
+
 export const HEADERS ={
   // URL: atob(document.getElementById("hellyeah").value),
   URL       : "http://192.168.100.10:3000/",

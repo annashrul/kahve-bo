@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {INBOX,HEADERS} from "../_constants";
+import {INBOX, HEADERS, NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
@@ -70,8 +70,8 @@ export const FetchInbox = (where) => {
                 dispatch(setLoading(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }
@@ -104,8 +104,8 @@ export const putInbox = (data,id) => {
                 // dispatch(ModalToggle(true));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }
@@ -138,13 +138,13 @@ export const deleteInbox = (id) => {
                     Swal.fire({
                         title: 'Success',
                         icon: 'success',
-                        text: data.msg,
+                        text: NOTIF_ALERT.SUCCESS,
                     });
                 } else {
                     Swal.fire({
                         title: 'failed',
                         icon: 'error',
-                        text: data.msg,
+                        text: NOTIF_ALERT.FAILED,
                     });
                 }
                 dispatch(setLoading(false));
@@ -154,8 +154,8 @@ export const deleteInbox = (id) => {
                 dispatch(setLoading(false));
                 if (error.message === 'Network Error') {
                     Swal.fire(
-                        'Server tidak tersambung!.',
-                        'Periksa koneksi internet anda.',
+                        'Network Failed!.',
+                        'Please check your connection',
                         'error'
                     );
                 }else{

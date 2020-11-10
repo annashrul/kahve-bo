@@ -11,6 +11,7 @@ import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import moment from "moment";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 class Admin extends Component{
     constructor(props){
@@ -63,17 +64,18 @@ class Admin extends Component{
     handleDelete(e,id){
         e.preventDefault();
         Swal.fire({
-            title: 'Perhatian !!!',
-            text: "Anda yakin akan menghapus data ini ??",
+            title: 'Warning !!!',
+            text: "Are you sure delete this data ??",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Oke, hapus sekarang!',
-            cancelButtonText: 'Batal',
+            confirmButtonText: 'Oke, delete!',
+            cancelButtonText: 'cancel',
         }).then((result) => {
             if (result.value) {
-                this.props.dispatch(deleteUser(id));
+                let where = this.handleValidate();
+                this.props.dispatch(deleteUser(id,where));
             }
         })
     }
@@ -83,7 +85,7 @@ class Admin extends Component{
             showClass   : {popup: 'animate__animated animate__fadeInDown'},
             hideClass   : {popup: 'animate__animated animate__fadeOutUp'},
             imageUrl    : param,
-            imageAlt    : 'gambar tidak tersedia'
+            imageAlt    : 'image not available'
         })
     }
     handleChange = (event) => {
@@ -98,16 +100,16 @@ class Admin extends Component{
     handlePageChange(pageNumber){
         localStorage.setItem("pageAdmin",pageNumber);
         let where = this.handleValidate();
-        this.props.dispatch(FetchUser(`isadmin=1&${where}`));
+        this.props.dispatch(FetchUser(where));
     }
     handleValidate(){
-        let where="";
+        let where="isadmin=1";
         let page = localStorage.getItem("pageAdmin");
         let any = this.state.any;
         if(page!==null&&page!==undefined&&page!==""){
-            where+=`page=${page}`;
+            where+=`&page=${page}`;
         }else{
-            where+="page=1";
+            where+="&page=1";
         }
         if(any!==null&&any!==undefined&&any!==""){
             where+=`&q=${any}`;
@@ -117,7 +119,7 @@ class Admin extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-        this.props.dispatch(FetchUser(`isadmin=1&${where}`));
+        this.props.dispatch(FetchUser(where));
     }
     render(){
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
@@ -128,7 +130,7 @@ class Admin extends Component{
             data
         } = this.props.data;
         return (
-            <Layout page={"users-admin"}>
+            <Layout page={"admin"}>
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
@@ -198,8 +200,8 @@ class Admin extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={9} style={columnStyle}>No data</td></tr>
-                                                        : <tr><td colSpan={9} style={columnStyle}>No data</td></tr>
+                                                        : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){

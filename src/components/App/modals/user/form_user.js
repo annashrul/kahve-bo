@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 import FileBase64 from "react-file-base64";
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import {validateEmail} from "../../../../helper";
+import {isEmpty, validateEmail} from "../../../../helper";
 import {putUser, storeUser} from "../../../../redux/actions/user/user.action";
 
 class FormUser extends Component{
@@ -52,7 +52,6 @@ class FormUser extends Component{
             isAdmin:param.isAdmin
         });
         if(param.detail!==undefined){
-            console.log(param.detail);
             this.setState({
                 id:param.detail.id,
                 name:param.detail.name,
@@ -122,19 +121,19 @@ class FormUser extends Component{
         parseData['foto'] = this.state.foto!==""?this.state.foto.base64:'-';
         parseData['isadmin'] = this.state.isAdmin;
         if(parseData['name']===''){
-            err = Object.assign({}, err, {name:"nama tidak boleh kosong"});
+            err = Object.assign({}, err, {name:isEmpty("name")});
             this.setState({error: err});
         }
         else if(parseData['email']===''){
-            err = Object.assign({}, err, {email:"email tidak boleh kosong"});
+            err = Object.assign({}, err, {email:isEmpty("email")});
             this.setState({error: err});
         }
         else if(validateEmail(parseData['email'])===false){
-            err = Object.assign({}, err, {email:"format email tidak sesuai"});
+            err = Object.assign({}, err, {email:"email format is wrong"});
             this.setState({error: err,email:''});
         }
-        else if(parseData['status']===""||parseData['email']===undefined){
-            err = Object.assign({}, err, {status:"status tidak sesuai"});
+        else if(parseData['status']===""||parseData['status']===undefined){
+            err = Object.assign({}, err, {status:isEmpty("status")});
             this.setState({error: err,status:''});
         }
         else if(parseData['password']!==parseData['conf_password']){
@@ -178,7 +177,7 @@ class FormUser extends Component{
     render(){
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "formUser"} size="lg">
-                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?`Add ${this.state.isAdmin===1?"Admin":"Member"}`:`Update ${this.state.isAdmin===1?"Admin":"Member"}`}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>{this.props.detail===undefined?`Add ${this.state.isAdmin===1?"Admin":"Member"}`:`Update ${this.state.isAdmin===1?this.state.name:"Member"}`}</ModalHeader>
                 <ModalBody>
                     <div className="row">
                         <div className="col-md-6">

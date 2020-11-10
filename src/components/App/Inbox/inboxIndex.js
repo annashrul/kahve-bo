@@ -13,6 +13,7 @@ import UncontrolledButtonDropdown from "reactstrap/es/UncontrolledButtonDropdown
 import DropdownToggle from "reactstrap/es/DropdownToggle";
 import DropdownMenu from "reactstrap/es/DropdownMenu";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 class Inbox extends Component{
     constructor(props){
         super(props);
@@ -187,8 +188,8 @@ class Inbox extends Component{
                                                         </div>
                                                     );
                                                 })
-                                                : "No data."
-                                            : "No data."
+                                                : NOTIF_ALERT.NO_DATA
+                                            : NOTIF_ALERT.NO_DATA
                                         )
                                     :
                                         (()=>{

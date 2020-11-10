@@ -7,11 +7,12 @@ import {
     ModalFooter,
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import Paginationq, {copyTxt, ToastQ} from "../../../../helper";
+import Paginationq, {copyTxt, isFloat, isFloatFix} from "../../../../helper";
 import {FetchDetailTransaction} from "../../../../redux/actions/transaction/transaction.action";
-import {CopyToClipboard} from "react-copy-to-clipboard";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
+import {NOTIF_ALERT} from "../../../../redux/actions/_constants";
+
 class DetailTransaction extends Component{
     constructor(props){
         super(props);
@@ -113,18 +114,18 @@ class DetailTransaction extends Component{
                                     (
                                         typeof data === 'object' ? data.length>0?
                                             data.map((v,i)=>{
-                                                totalPerAmountIn = totalPerAmountIn+parseFloat(v.amount_in);
-                                                totalPerAmountOut = totalPerAmountOut+parseFloat(v.amount_out);
+                                                totalPerAmountIn = totalPerAmountIn+isFloat(v.amount_in);
+                                                totalPerAmountOut = totalPerAmountOut+isFloat(v.amount_out);
                                                 return(
                                                     <tr key={i}>
                                                         <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                         <td style={columnStyle}>{copyTxt(v.kd_trx)}</td>
                                                         <td style={columnStyle}>{v.name}</td>
                                                         <td style={rightStyle}>
-                                                            {copyTxt(parseFloat(v.amount_in).toFixed(8))} <span style={{color:"red"}}>({v.coin})</span>
+                                                            {copyTxt(isFloatFix(v.amount_in))} <span style={{color:"red"}}>({v.coin})</span>
                                                         </td>
                                                         <td style={rightStyle}>
-                                                            {copyTxt(parseFloat(v.amount_out).toFixed(8))}
+                                                            {copyTxt(isFloatFix(v.amount_out))}
                                                             <span style={{color:"red"}}>({v.coin})</span>
                                                         </td>
                                                         <td style={columnStyle}>
@@ -135,8 +136,8 @@ class DetailTransaction extends Component{
                                                     </tr>
                                                 )
                                             })
-                                            : <tr><td colSpan={7} style={{textAlign:"center"}}>No Data.</td></tr>
-                                            : <tr><td colSpan={7} style={{textAlign:"center"}}>No Data.</td></tr>
+                                            : <tr><td colSpan={7} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                            : <tr><td colSpan={7} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
                                     ) : (()=>{
                                         let container =[];
                                         for(let x=0; x<10; x++){
@@ -159,8 +160,8 @@ class DetailTransaction extends Component{
                             <tfoot>
                             <tr style={{backgroundColor:this.props.isLoadingPost?"white":"#EEEEEE"}}>
                                 <th className="text-black" colspan={3}>TOTAL ALLPAGE</th>
-                                <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoadingPost?<Skeleton/>:totalPerAmountIn.toFixed(8)}</th>
-                                <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoadingPost?<Skeleton/>:totalPerAmountOut.toFixed(8)}</th>
+                                <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoadingPost?<Skeleton/>:isFloatFix(totalPerAmountIn)}</th>
+                                <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoadingPost?<Skeleton/>:totalPerAmountOut}</th>
                                 <th colspan={2}/>
                             </tr>
                             </tfoot>

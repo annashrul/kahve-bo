@@ -448,7 +448,7 @@ class Setting extends Component{
                                             <div className="col-md-6">
                                                 <label style={{color:"#e8ebf1",float:"right"}}>From</label>
                                             </div>
-                                            <div className="col-md-6" style={{paddingRight:"0px"}}>
+                                            <div className="col-md-6">
                                                 <div className="form-group">
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:
@@ -485,7 +485,7 @@ class Setting extends Component{
                                             <div className="col-md-12">
                                                 <label style={{color:"#e8ebf1",float:"right"}}>To</label>
                                             </div>
-                                            <div className="col-md-6" style={{paddingRight:"0px"}}>
+                                            <div className="col-md-6">
                                                 <div className="form-group">
                                                     {
                                                         this.props.isLoading?<Skeleton height={30}/>:

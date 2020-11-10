@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import Paginationq, {copyTxt, rangeDate, ToastQ} from "../../../helper";
+import Paginationq, {copyTxt, isFloatFix, rangeDate, ToastQ} from "../../../helper";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
@@ -10,6 +10,7 @@ import {CopyToClipboard} from "react-copy-to-clipboard";
 import {FetchDetailTransaction, FetchTransaction} from "../../../redux/actions/transaction/transaction.action";
 import DetailTransaction from "../../App/modals/transaction/detail_transaction";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 class Transaction extends Component{
     constructor(props){
@@ -174,8 +175,8 @@ class Transaction extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={10} style={{textAlign:"center"}}>No Data.</td></tr>
-                                                        : <tr><td colSpan={10} style={{textAlign:"center"}}>No Data.</td></tr>
+                                                        : <tr><td colSpan={10} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        : <tr><td colSpan={10} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
@@ -210,10 +211,10 @@ class Transaction extends Component{
                                         </tr>
                                         <tr style={{backgroundColor:this.props.isLoading?"white":"#EEEEEE"}}>
                                             <th className="text-black" colspan={6}>TOTAL ALLPAGE</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.saldo_awal}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.amount_in}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.amount_out}</th>
-                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:total_amount.saldo_akhir}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:isFloatFix(total_amount.saldo_awal)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:isFloatFix(total_amount.amount_in)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:isFloatFix(total_amount.amount_out)}</th>
+                                            <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoading?<Skeleton/>:total_amount===undefined?0:isFloatFix(total_amount.saldo_akhir)}</th>
                                         </tr>
 
                                         </tfoot>
