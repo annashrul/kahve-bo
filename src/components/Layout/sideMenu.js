@@ -13,24 +13,29 @@ class SideMenu extends Component {
             isPengguna:false,
             isAdmin:false,
             isUser:false,
+            isLog:false,
+            isLogActivity:false,
+            isLogAuth:false,
+            isLogTransaction:false,
+
         }
-        this.subChangeMenu = this.subChangeMenu.bind(this);
         this.changeMenu = this.changeMenu.bind(this);
     }
 
-    subChangeMenu(e){
-        e.preventDefault();
-        this.setState({isMasterdata : true});
-    }
 
     changeMenu(e,param){
         e.preventDefault();
-        if(param === 'pengguna'){
+        console.log(param)
+
+        if(param === 'isPengguna'){
             this.setState({
                 isPengguna : !this.state.isPengguna,
             });
-            console.log('abus')
-
+        }
+        if(param === 'isLog'){
+            this.setState({
+                isLog : !this.state.isLog,
+            });
         }
 
         this.forceUpdate();
@@ -39,17 +44,19 @@ class SideMenu extends Component {
     getProps(param){
         if (param.auth.user) {
             let akses = param.auth.user.access;
-            
-
         }
     }
     componentDidMount(){
         this.getProps(this.props);
-      
         const path = this.props.location.pathname;
         if(path==='/admin' || path==='/user'){
             this.setState({
                 isPengguna:true
+            })
+        }
+        if(path==='/log_activity' || path==='/log_auth'||path==='/log_transaction'){
+            this.setState({
+                isLog:true
             })
         }
 
@@ -116,10 +123,10 @@ class SideMenu extends Component {
 
                     {/* USER MODUL START */}
                     <li className={"treeview" +(this.state.isPengguna===true || path==='/admin' || path==='/user' ?" active menu-open" : "")}>
-                        <a href="!#" onClick={(e) => this.changeMenu(e,'pengguna')}><i className="fa fa-gears" /> <span>Users</span> <i className="fa fa-angle-right" /></a>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isPengguna')}><i className="fa fa-gears" /> <span>Users</span> <i className="fa fa-angle-right" /></a>
                         <ul className={"treeview-menu"} style={{display:this.state.isPengguna===true?"block":"none"}}>
-                            <li className={path==='/admin'?"active":''} style={this.state.isAdmin==="0"?{"display":"none"}:{"display":"block"}}><Link to="/admin" style={{width:'fit-content'}}> <i className="fa fa-user-secret" />Admin</Link></li>
-                            <li className={path==='/user'?"active":''} style={this.state.isUser==="0"?{"display":"none"}:{"display":"block"}}><Link to="/user" style={{width:'fit-content'}}> <i className="fa fa-group" />Member</Link></li>
+                            <li className={path==='/admin'?"active":''}><Link to="/admin" style={{width:'fit-content'}}> Admin</Link></li>
+                            <li className={path==='/user'?"active":''}><Link to="/user" style={{width:'fit-content'}}> Member</Link></li>
                         </ul>
                     </li>
                     {/* USER MODUL END */}
@@ -152,6 +159,16 @@ class SideMenu extends Component {
                     <li  className={path==='/setting'?"active":''}><Link to="/setting"> <i className="fa fa-cogs" /><span> Setting</span></Link></li>
                     {/* PENGATURAN MODUL END */}
 
+                    {/* LOG MODUL START */}
+                    <li className={"treeview" +(this.state.isLog===true || path==='/log_activity' || path==='/log_auth'|| path==='/log_transaction' ?" active menu-open" : "")}>
+                        <a href="!#" onClick={(e) => this.changeMenu(e,'isLog')}><i className="fa fa-eye" /> <span>Log</span> <i className="fa fa-angle-right" /></a>
+                        <ul className={"treeview-menu"} style={{display:this.state.isLog===true?"block":"none"}}>
+                            <li className={path==='/log_activity'?"active":''}><Link to="/log_activity" style={{width:'fit-content'}}>Activity</Link></li>
+                            <li className={path==='/log_auth'?"active":''}><Link to="/log_auth" style={{width:'fit-content'}}>Auth</Link></li>
+                            <li className={path==='/log_transaction'?"active":''}><Link to="/log_transaction" style={{width:'fit-content'}}>Transaction</Link></li>
+                        </ul>
+                    </li>
+                    {/* LOG MODUL END */}
 
 
                     {/* LOGOUT MODUL START */}

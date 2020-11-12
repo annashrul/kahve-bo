@@ -12,6 +12,7 @@ import {depositReducer} from "./deposit/deposit.reducer";
 import {penarikanReducer} from "./penarikan/penarikan.reducer";
 import {pengaturanReducer} from "./setting/setting.reducer";
 import {transactionReducer} from "./transaction/transaction.reducer";
+import {logReducer} from "./log/log.reducer";
 
 export default combineReducers({
     modalReducer,
@@ -26,6 +27,7 @@ export default combineReducers({
     penarikanReducer,
     transactionReducer,
     pengaturanReducer,
+    logReducer,
     auth: authReducer,
     errors : errorsReducer
 });

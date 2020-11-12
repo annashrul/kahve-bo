@@ -14,6 +14,9 @@ import Deposit from '../App/Deposit/depositIndex';
 import Penarikan from '../App/Penarikan/penarikanIndex';
 import Transaction from '../App/Transaction/transactionIndex';
 import Setting from '../App/Setting/settingIndex';
+import LogActivity from '../App/Log/logActivity';
+import LogAuth from '../App/Log/logAuth';
+import LogTransaction from '../App/Log/logTransaction';
 const Routes = (
     <div>
         <Switch>
@@ -48,9 +51,15 @@ const Routes = (
             {/* TRANSACTION SECTION START */}
             <PrivateRoute path="/transaction" exact strict component={Transaction} />
             {/* TRANSACTION SECTION END */}
+
             {/* PENGATURAN SECTION START */}
             <PrivateRoute path="/setting" exact strict component={Setting} />
             {/* PENGATURAN SECTION END */}
+            {/* LOG SECTION START */}
+            <PrivateRoute path="/log_activity" exact strict component={LogActivity} />
+            <PrivateRoute path="/log_auth" exact strict component={LogAuth} />
+            <PrivateRoute path="/log_transaction" exact strict component={LogTransaction} />
+            {/* LOG SECTION END */}
             <Route component={NotFound}/>
 
         </Switch>
