@@ -3,25 +3,21 @@ import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
 import {rangeDate} from "../../../helper";
-import Skeleton from 'react-loading-skeleton';
-import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {FetchLog} from "../../../redux/actions/log/log.action";
 import moment from "moment";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import DetailLogActivity from "../../App/modals/log/detail_log_activity";
 import { isArray } from 'lodash';
 import * as Swal from "sweetalert2";
 
 class LogActivity extends Component{
     constructor(props){
         super(props)
-
         this.handleEvent    = this.handleEvent.bind(this);
         this.handleChange   = this.handleChange.bind(this);
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleGet    = this.handleGet.bind(this);
         this.handleLoadMore    = this.handleLoadMore.bind(this);
-        this.handleScroll    = this.handleScroll.bind(this);
+        this.videoRefs = [];
 
         this.state={
             any:"",
@@ -35,22 +31,19 @@ class LogActivity extends Component{
             isLoading:false,
             scrollPage:0,
             isScroll:false,
-            transform: 'translateY(0px)'
+
         }
 
     }
 
+    componentWillUnmount(){
+        localStorage.removeItem("numKeyActivity");
+    }
+
     componentWillReceiveProps(nextProps){
-        console.log("componentWillReceiveProps",nextProps);
         if(typeof nextProps.data.data === 'object'){
             if(nextProps.data.data.length>0){
-                this.getData(nextProps.data.data[0].detail,0);
-            }
-            let perpage=this.state.perpage;
-            if(nextProps.data.data.length === perpage){
-                this.setState({
-                    perpage:perpage+5
-                });
+                this.getData(nextProps.data.data[localStorage.numKeyActivity!==undefined?parseInt(localStorage.numKeyActivity):0].detail,localStorage.numKeyActivity!==undefined?parseInt(localStorage.numKeyActivity):0);
             }
         }
     }
@@ -58,8 +51,6 @@ class LogActivity extends Component{
     componentWillMount(){
         let where = this.handleValidate();
         this.props.dispatch(FetchLog('activity',where));
-        // document.querySelector('#cik').setAttribute("wooo")
-
     }
     handlePageChange(pageNumber){
         localStorage.setItem("pageLogActivity",pageNumber);
@@ -75,7 +66,6 @@ class LogActivity extends Component{
         let dateTo = this.state.dateTo;
         let any = this.state.any;
         let where=`perpage=${this.state.perpage}&datefrom=${dateFrom}&dateto=${dateTo}`;
-        console.log(where);
         if(page!==null&&page!==undefined&&page!==""){
             where+=`&page=${page}`;
         }else{
@@ -92,7 +82,6 @@ class LogActivity extends Component{
         this.props.dispatch(FetchLog('activity',where));
     }
     handleEvent = (event, picker) => {
-        console.log(picker);
         const from = moment(picker.startDate._d).format('YYYY-MM-DD');
         const to = moment(picker.endDate._d).format('YYYY-MM-DD');
         localStorage.setItem("dateFromLogActivity",`${from}`);
@@ -119,6 +108,7 @@ class LogActivity extends Component{
     }
     handleGet(e,data,i){
         e.preventDefault();
+        localStorage.setItem("numKeyActivity",i);
         this.setState({
             isScroll:false,
         });
@@ -129,52 +119,30 @@ class LogActivity extends Component{
         e.preventDefault();
         this.setState({
             isScroll:true,
-            scrollPage:this.state.scrollPage+=5
+            scrollPage:this.state.scrollPage+=5,
+            perpage:this.state.perpage+=5
         });
         let perpage = parseInt(this.props.data.per_page,10);
         let lengthBrg = parseInt(this.props.data.data.length,10);
-        this.handleScroll();
-
         if(perpage===lengthBrg || perpage<lengthBrg){
             let where = this.handleValidate();
             this.props.dispatch(FetchLog('activity',where));
-            // this.setState({scrollPage:this.state.scrollPage+5});
         }
         else{
             Swal.fire({
                 title: 'Warning',
                 icon: 'warning',
-                text: NOTIF_ALERT.NO_DATA,
+                text: "No Data.",
             });
         }
     }
 
 
-    handleScroll(){
-        // let divToScrollTo=document.getElementById('item7');
-        // divToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' })
 
-        // if(divToScrollTo){
-        //     console.log('bus')
-        //     divToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' })
-        // }
-        // divToScrollTo =
-        // if (divToScrollTo) {
-        // this.refs[ `item${this.state.scrollPage}`].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' })
-        //     console.log(`item${this.state.scrollPage}`)
-
-        // }
-    }
 
     render(){
-        if(this.state.isScroll===true)this.handleScroll();
-
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
-        // console.log("STATE",this.state.keyName_);
         const {
-            total,
-            per_page,
-            current_page,
             data
         } = this.props.data;
         return (
@@ -182,8 +150,8 @@ class LogActivity extends Component{
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Log Activity</h5>
-                         </div>
+                            <h5 className="mb-0 font-weight-bold">Log Activity </h5>
+                        </div>
                     </div>
                     {/* Dashboard Info Area */}
                     <Info handleSubmit={this.handleSubmit}/>
@@ -219,144 +187,92 @@ class LogActivity extends Component{
                                 <div className="row">
                                     <div className="col-md-3">
                                         <div className={"people-list"} style={{zoom:"80%",height:'300px',maxHeight:'100%',overflowY:'scroll'}}>
-                                                {/*<ul className="chat-list list-unstyled">*/}
-                                                {
-                                                    !this.props.isLoading?(
-                                                        <div id="chat_user_2">
-                                                            <ul className="chat-list list-unstyled">
-                                                                {
-                                                                    typeof data==='object'?data.length!==0?
-                                                                        data.map((i,inx)=>{
-                                                                            return(
-                                                                                <li style={{backgroundColor:this.state.isClick===inx||this.state.scrollPage===inx?"#eeeeee":""}} id={`item${inx}`} className={`clearfix`} key={inx} onClick={(e)=>this.handleGet(e,i.detail,inx)}>
-                                                                                    {
-                                                                                        <span class="circle">{inx+1}</span>
-                                                                                    }
-                                                                                    <div className="about">
-                                                                                        <div className="status" style={{color: 'black',fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{i.tabel} | {i.aksi}</div>
-                                                                                        <div className="status" style={{color: '#a1887f', fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{moment(i.tgl).format('LLLL')}</div>
-                                                                                    </div>
+                                            {/*<ul className="chat-list list-unstyled">*/}
 
-                                                                                </li>
-                                                                            )
-                                                                        }):(
-                                                                            <div style={{textAlign:'center',fontSize:"11px",fontStyle:"italic"}}>{NOTIF_ALERT.NO_DATA}</div>
-                                                                        ) : ''
 
-                                                                }
-
-                                                            </ul>
-                                                        </div>
-
-                                                    ):(()=>{
-                                                        let container =[];
-                                                        for(let x=0; x<5; x++){
-                                                            container.push(
-                                                                <a href="!#" key={x}>
-                                                                    <li className="d-flex align-items-center mb-15">
-                                                                        <div className={"timeline-icon mr-3"}>
-                                                                            <Skeleton circle={true} height={40} width={40}/>
+                                            <div id="chat_user_2">
+                                                <ul className="chat-list list-unstyled">
+                                                    {
+                                                        typeof data==='object'?data.length!==0?
+                                                            data.map((i,inx)=>{
+                                                                return(
+                                                                    <li style={{backgroundColor:this.state.isClick===inx?"#eeeeee":""}} id={`item${inx}`} className={`clearfix`} key={inx} onClick={(e)=>this.handleGet(e,i.detail,inx)}>
+                                                                        {
+                                                                            <span class="circle">{inx+1}</span>
+                                                                        }
+                                                                        <div className="about">
+                                                                            <div className="status" style={{color: 'black',fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{i.tabel} | {i.aksi}</div>
+                                                                            <div className="status" style={{color: '#FC8213',fontWeight:"bold", wordBreak:"break-all", fontSize:"14px"}}>{i.nama}</div>
+                                                                            <div className="status" style={{color: '#a1887f', fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{moment(i.tgl).format('LLLL')}</div>
                                                                         </div>
-                                                                        <div className="timeline-info">
-                                                                            <p className="font-weight-bold mb-0"><Skeleton height={15} width={100}/></p>
-                                                                            <span><Skeleton height={15} width={150}/></span>
-                                                                            <p className="mb-0"><Skeleton height={15} width={200}/></p>
-                                                                        </div>
+
                                                                     </li>
-                                                                </a>
-                                                            )
-                                                        }
-                                                        return container;
-                                                    })()
-                                                }
+                                                                )
+                                                            }):(
+                                                                <div style={{textAlign:'center',fontSize:"11px",fontStyle:"italic"}}>No Data.</div>
+                                                            ) : ''
+                                                    }
+                                                </ul>
+                                            </div>
                                         </div>
+                                        {/*<div style={{ float:"left", clear: "both" }}*/}
+                                             {/*ref={(el) => { this.messagesEnd = el; }}>*/}
+                                        {/*</div>*/}
                                         <hr/>
                                         <div className="form-group">
-                                            <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>{this.state.isLoading?"loading":"Loadmore"}</button>
+                                            {
+                                                !this.props.isLoading?(
+                                                    <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
+                                                ):(
+                                                    <button className={"btn btn-primary"} style={{width:"100%"}}>Loading ...</button>
+                                                )
+                                            }
                                         </div>
                                     </div>
                                     <div className="col-md-9">
                                         <div style={{overflowX: "auto"}}>
                                             <table className="table table-hover">
 
+                                                <thead>
+                                                <tr>
                                                     {
-                                                        !this.props.isLoading?(
-                                                            <thead>
-                                                            <tr>
-                                                                {
-                                                                    this.state.keyName_.length>0?
-                                                                        this.state.keyName_.map((v,i)=>{
-                                                                            return(
-                                                                                <th className="text-black" style={columnStyle} rowSpan="2" key={i}>{v.split('_').map(f=>{ return f.toUpperCase(); }).join(' ')}</th>
+                                                        this.state.keyName_.length>0?
+                                                            this.state.keyName_.map((v,i)=>{
+                                                                return(
+                                                                    <th className="text-black" style={columnStyle} rowSpan="2" key={i}>{v.split('_').map(f=>{ return f.toUpperCase(); }).join(' ')}</th>
+                                                                )
+                                                            })
+                                                            : ""
+                                                    }
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                {
+                                                    (
+                                                        this.state.valData_.length>0?
+                                                            this.state.valData_.map((v,i)=>{
+                                                                return(
+                                                                    <tr key={i}>
+                                                                        {
+                                                                            (
+                                                                                typeof this.state.keyName_ === 'object' ? this.state.keyName_.length>0?
+                                                                                    this.state.keyName_.map((w,j)=>{
+                                                                                        return(
+                                                                                            <td style={columnStyle} key={j}>{v[w]}</td>
+                                                                                        )
+                                                                                    })
+                                                                                    : "No data." : "No data."
                                                                             )
-                                                                        })
-                                                                    : ""
-                                                                }
-                                                            </tr>
-                                                            </thead>
-                                                        ):(()=>{
-                                                            let container =[];
-                                                            for(let x=0; x<1; x++){
-                                                                container.push(
-                                                                    <tr key={x}>
-                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        }
+
                                                                     </tr>
                                                                 )
-                                                            }
-                                                            return container;
-                                                        })()
-                                                    }
-
-                                                {
-                                                    !this.props.isLoading?(
-                                                        <tbody>
-                                                        {
-                                                            (
-                                                                this.state.valData_.length>0?
-                                                                    this.state.valData_.map((v,i)=>{
-                                                                        return(
-                                                                            <tr key={i}>
-                                                                                {
-                                                                                    (
-                                                                                        typeof this.state.keyName_ === 'object' ? this.state.keyName_.length>0?
-                                                                                            this.state.keyName_.map((w,j)=>{
-                                                                                                return(
-                                                                                                    <td style={columnStyle} key={j}>{v[w]}</td>
-                                                                                                )
-                                                                                            })
-                                                                                            : "No data." : "No data."
-                                                                                    )
-                                                                                }
-
-                                                                            </tr>
-                                                                        )
-                                                                    })
-                                                                : ""
-                                                            )
-                                                        }
-                                                        </tbody>
-                                                    ):(()=>{
-                                                        let container =[];
-                                                        for(let x=0; x<10; x++){
-                                                            container.push(
-                                                                <tr key={x}>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                </tr>
-                                                            )
-                                                        }
-                                                        return container;
-                                                    })()
+                                                            })
+                                                            : ""
+                                                    )
                                                 }
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -365,7 +281,6 @@ class LogActivity extends Component{
                         </div>
                     </div>
                 </div>
-                <DetailLogActivity/>
             </Layout>
         );
     }

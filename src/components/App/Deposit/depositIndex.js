@@ -151,35 +151,18 @@ class Deposit extends Component{
         const column = e.target.name;
         const val = e.target.value;
 
-        // if(val==="0"){
-        //
-        // }
-        // if(parseFloat(val)>parseFloat("0.25")){
-        //     console.log("gagal");
-        // }else{
-        //     let data = [...this.state.data];
-        //     data[i] = {...data[i], [column]: val};
-        //     this.setState({ data });
-        // }
         let data = [...this.state.data];
         data[i] = {...data[i], [column]: val};
         this.setState({ data });
-        console.log("VALUE",val);
-        console.log("STATE",this.state.data[i].amount);
-
     }
 
     handleSubmit(e,i,note){
         e.preventDefault();
         if(note===""){
             let where = this.handleValidate();
-            console.log(this.state.data[i].id);
-            console.log(this.state.data[i].amount);
             this.props.dispatch(approval({amount:this.state.data[i].amount},this.state.data[i].id,where))
         }
-        else{
-            alert("gagal oiii")
-        }
+
     }
 
 
@@ -261,17 +244,13 @@ class Deposit extends Component{
                                                             if(v.status===2){badge="btn-danger";txt="Cancel";}
                                                             // if()
                                                             if(parseFloat(v.amount)===0){
-                                                                console.log("sama dengan 0");
                                                                 note = "input amount min 0.025 and max 0.25";
-                                                                // v.amount=0;
                                                             }
                                                             else if(parseFloat(v.amount)>0.25){
                                                                 note = "input amount min 0.025 and max 0.25";
-                                                                // v.amount=0;
                                                             }
                                                             else if(parseFloat(v.amount)<0.025){
                                                                 note = "input amount min 0.025 and max 0.25";
-                                                                // v.amount=0;
                                                             }
                                                             return(
                                                                 <tr key={i}>
@@ -284,34 +263,20 @@ class Deposit extends Component{
                                                                     <td style={columnStyle}>{v.wallet_address}</td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>
-                                                                       <div className="form-group">
-                                                                           <div className="input-group mb-2">
-                                                                               <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
-                                                                                   <i className="fa fa-copy"/>
-                                                                               </div></div>
-                                                                               <input minLength="4" maxLength="5" type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={v.amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i,note);}}} />
-                                                                               <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
-                                                                           </div>
+                                                                        <div style={{width:"20em"}}>
+                                                                            <div className="form-group">
+                                                                                <div className="input-group mb-2">
+                                                                                    <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
+                                                                                        <i className="fa fa-copy"/>
+                                                                                    </div></div>
+                                                                                    <input minLength="4" maxLength="5" type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={v.amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i,note);}}} />
+                                                                                    <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
+                                                                                </div>
+                                                                                <small style={{color:"red",float:"left"}}>{note}</small>
+                                                                            </div>
+                                                                        </div>
 
-                                                                           {/*{*/}
-                                                                             {/*parseFloat(this.state.data[i].amount)<parseFloat(0.025)?(<small>tidak boleh</small>):(parseFloat(this.state.data[i].amount)>parseFloat(0.25)?<small>tidak boleh</small>:"")*/}
-                                                                           {/*}*/}
-                                                                           <small style={{color:"red",float:"left"}}>{note}</small>
-                                                                       </div>
-                                                                        {/*{*/}
-                                                                        {/*v.status===0?(*/}
-                                                                        {/*<div className="input-group mb-2">*/}
-                                                                        {/*<div className="input-group-prepend"><div className="input-group-text">*/}
-                                                                        {/*<i className="fa fa-copy"/>*/}
-                                                                        {/*</div></div>*/}
-                                                                        {/*<input type="text" className="form-control form-control-sm" name="monthly_profit" value={""} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />*/}
-                                                                        {/*<div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red"}}>{v.coin}</small></div></div>*/}
-                                                                        {/*</div>*/}
-                                                                        {/*):(*/}
-                                                                        {/*{copyTxt(parseFloat(v.amount).toFixed(8))}*/}
-                                                                        {/*// <span style={{color:"red"}}>({v.coin})</span>*/}
-                                                                        {/*)*/}
-                                                                        {/*}*/}
+
 
 
                                                                     </td>
@@ -320,8 +285,8 @@ class Deposit extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={8} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                                        : <tr><td colSpan={8} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        : <tr><td colSpan={8} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                                        : <tr><td colSpan={8} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){

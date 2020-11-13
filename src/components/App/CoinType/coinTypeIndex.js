@@ -136,8 +136,8 @@ class CoinType extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        :<tr><td style={columnStyle} colSpan={5}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                                    : <tr><td style={columnStyle} colSpan={5}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        :<tr><td style={columnStyle} colSpan={5}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                                    : <tr><td style={columnStyle} colSpan={5}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){

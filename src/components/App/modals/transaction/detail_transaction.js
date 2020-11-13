@@ -4,7 +4,6 @@ import WrapperModal from '../_wrapper.modal'
 import {
     ModalHeader,
     ModalBody,
-    ModalFooter,
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import Paginationq, {copyTxt, isFloat, isFloatFix} from "../../../../helper";
@@ -136,8 +135,8 @@ class DetailTransaction extends Component{
                                                     </tr>
                                                 )
                                             })
-                                            : <tr><td colSpan={7} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                            : <tr><td colSpan={7} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                            : <tr><td colSpan={7} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                            : <tr><td colSpan={7} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
                                     ) : (()=>{
                                         let container =[];
                                         for(let x=0; x<10; x++){

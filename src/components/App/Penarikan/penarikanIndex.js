@@ -225,8 +225,8 @@ class Penarikan extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                                    : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        : <tr><td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                                    : <tr><td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){

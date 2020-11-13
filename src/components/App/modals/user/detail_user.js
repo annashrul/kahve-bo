@@ -8,6 +8,9 @@ import {
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {statusQ} from "../../../../helper";
 import moment from "moment";
+import {FetchDetailUser} from "../../../../redux/actions/user/user.action";
+import Skeleton from 'react-loading-skeleton';
+import {NOTIF_ALERT} from "../../../../redux/actions/_constants";
 
 class DetailUser extends Component{
     constructor(props){
@@ -18,37 +21,35 @@ class DetailUser extends Component{
             miner:[],
             date:[],
 
-
         }
     }
-    componentWillReceiveProps(nextProps){
+
+    getProps(param){
         let data = [];
         let dates=[];
-
-
-        if(typeof nextProps.detail.slot === 'object'){
-            if(nextProps.detail.slot.length>0){
-                    nextProps.detail.slot.forEach((e,i)=>{
-                        let start = moment(e.start_date);
-                        let now = moment();
-                        let end = moment(e.start_date).add((e.contract), 'days');
-                        const timer = this.calculateCountdown(start, end, now);
-                        dates.push(timer);
-                        data.push({
-                            "id": e.id,
-                            "id_user": e.id_user,
-                            "slot_no": e.slot_no?e.slot_no:'-',
-                            "symbol": e.symbol?e.symbol:'-',
-                            "amount": e.amount?e.amount:'0',
-                            "daily_earning": e.daily_earning?e.daily_earning:'-',
-                            "contract": e.contract?`${e.contract} day`:'-',
-                            "start_date": e.start_date?moment(e.start_date).locale('id').format("LLLL"):'-',
-                            "status": statusQ(e.status),
-                            "created_at": e.created_at,
-                            "updated_at": e.updated_at,
-                            "monthly_profit": e.monthly_profit?e.monthly_profit:'0'
-                        });
+        if(typeof param.dataDetail.slot === 'object'){
+            if(param.dataDetail.slot.length>0){
+                param.dataDetail.slot.forEach((e,i)=>{
+                    let start = moment(e.start_date);
+                    let now = moment();
+                    let end = moment(e.start_date).add((e.contract), 'days');
+                    const timer = this.calculateCountdown(start, end, now);
+                    dates.push(timer);
+                    data.push({
+                        "id": e.id,
+                        "id_user": e.id_user,
+                        "slot_no": e.slot_no?e.slot_no:'-',
+                        "symbol": e.symbol?e.symbol:'-',
+                        "amount": e.amount?e.amount:'0',
+                        "daily_earning": e.daily_earning?e.daily_earning:'-',
+                        "contract": e.contract?`${e.contract} day`:'-',
+                        "start_date": e.start_date?moment(e.start_date).locale('id').format("LLLL"):'-',
+                        "status": statusQ(e.status),
+                        "created_at": e.created_at,
+                        "updated_at": e.updated_at,
+                        "monthly_profit": e.monthly_profit?e.monthly_profit:'0'
                     });
+                });
 
             }
             else{
@@ -59,7 +60,15 @@ class DetailUser extends Component{
             data=[];
         }
         this.setState({detail:data,date: dates});
+    }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.detail !== prevProps.detail) {
+            this.props.dispatch(FetchDetailUser(this.props.detail.id));
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        this.getProps(nextProps);
     }
 
     toggle = (e) => {
@@ -109,10 +118,6 @@ class DetailUser extends Component{
         return timeLeft;
 
     }
-    stop() {
-        clearInterval(this.interval);
-    }
-
     addLeadingZeros(value) {
         value = String(value);
         while (value.length < 2) {
@@ -127,7 +132,7 @@ class DetailUser extends Component{
 
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "detailUser"} size="lg"  className="custom-map-modal">
-                <ModalHeader toggle={this.toggle}>Detail User {this.props.detail.name}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>Detail User {this.props.dataDetail.name}</ModalHeader>
                 <ModalBody>
                     <div style={{overflowX: "auto"}}>
                         <table className="table table-hover">
@@ -146,27 +151,47 @@ class DetailUser extends Component{
                             </thead>
                             <tbody>
                             {
+                                !this.props.isLoadingDetail?
                                 this.state.detail.length>0?
-                                this.state.detail.map((v,i)=>{
-                                    return (
-                                        <tr key={i}>
-                                            <td style={columnStyle}>{v.slot_no}</td>
-                                            <td style={columnStyle}>{v.symbol}</td>
-                                            <td style={columnStyle}>{parseFloat(v.amount).toFixed(8)}</td>
-                                            <td style={columnStyle}>{v.daily_earning!==undefined&&v.daily_earning!==null&&v.daily_earning!=='-'?parseFloat(v.daily_earning).toFixed(8):"0.00000000"}</td>
-                                            {/*<td style={columnStyle}>{v.contract}</td>*/}
-                                            <td style={columnStyle}>{
-                                                this.addLeadingZeros(this.state.date[i].days)+" Days"
-                                            }</td>
-                                            <td style={columnStyle}>{parseFloat(v.monthly_profit).toFixed(8)}</td>
-                                            <td style={columnStyle}>{v.status}</td>
-                                            <td style={columnStyle}>{v.start_date}</td>
+                                    this.state.detail.map((v,i)=>{
+                                        return (
+                                            <tr key={i}>
+                                                <td style={columnStyle}>{v.slot_no}</td>
+                                                <td style={columnStyle}>{v.symbol}</td>
+                                                <td style={columnStyle}>{parseFloat(v.amount).toFixed(8)}</td>
+                                                <td style={columnStyle}>{v.daily_earning!==undefined&&v.daily_earning!==null&&v.daily_earning!=='-'?parseFloat(v.daily_earning).toFixed(8):"0.00000000"}</td>
+                                                <td style={columnStyle}>{
+                                                    this.addLeadingZeros(this.state.date[i].days)+" Days"
+                                                }</td>
+                                                <td style={columnStyle}>{parseFloat(v.monthly_profit).toFixed(8)}</td>
+                                                <td style={columnStyle}>{v.status}</td>
+                                                <td style={columnStyle}>{v.start_date}</td>
 
 
 
-                                        </tr>
-                                    );
-                                }):<tr><td style={columnStyle} colSpan={9}>No data.</td></tr>
+                                            </tr>
+                                        );
+                                    })
+                                :<tr><td style={columnStyle} colSpan={9}><img className="img img-responsive" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                :(()=>{
+                                        let container =[];
+                                        for(let x=0; x<10; x++){
+                                            container.push(
+                                                <tr key={x}>
+                                                    <td style={columnStyle}>{<Skeleton/>}</td>
+                                                    <td style={columnStyle}>{<Skeleton/>}</td>
+                                                    <td style={columnStyle}>{<Skeleton/>}</td>
+                                                    <td style={columnStyle}>{<Skeleton/>}</td>
+                                                    <td style={columnStyle}>{<Skeleton/>}</td>
+                                                    <td style={columnStyle}>{<Skeleton/>}</td>
+                                                    <td style={columnStyle}>{<Skeleton circle={true} width={30} height={30}/>}</td>
+                                                    <td style={columnStyle}>{<Skeleton/>}</td>
+                                                </tr>
+                                            )
+                                        }
+                                        return container;
+                                    })()
+                                // :
                             }
                             </tbody>
                         </table>
@@ -182,6 +207,8 @@ const mapStateToProps = (state) => {
         isOpen: state.modalReducer,
         type: state.modalTypeReducer,
         isLoadingDetail: state.userReducer.isLoadingDetail,
+        dataDetail:state.userReducer.detail
+
     }
 }
 export default connect(mapStateToProps)(DetailUser);

@@ -78,7 +78,6 @@ export const FetchLog = (param,where) => {
         if(where){
             url+=`?${where}`;
         }
-        console.log(url)
 
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {

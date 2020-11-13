@@ -2,16 +2,8 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import {deleteUser, FetchUser} from "../../../redux/actions/user/user.action";
 import FormFaq from "../../App/modals/faq/form_faq";
-import Paginationq, {statusQ} from "../../../helper";
-import {
-    UncontrolledButtonDropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle
-} from 'reactstrap';
-import {noImage} from "../../../helper";
+import Paginationq from "../../../helper";
 import moment from "moment";
 
 
@@ -157,7 +149,7 @@ class Faq extends Component{
                                                         </div>
                                                     );
                                                 })
-                                            : NOTIF_ALERT.NO_DATA
+                                            : <img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/>
                                         )
                                     :
                                         (()=>{

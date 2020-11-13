@@ -28,6 +28,7 @@ class User extends Component{
         this.handleCopy = this.handleCopy.bind(this);
         this.state={
             detail:{},
+            detail_:{},
             status:"",
             formatEmail:"",
             email:"",
@@ -44,7 +45,6 @@ class User extends Component{
     }
 
     componentWillMount(){
-        console.log("component will mount");
         if(this.props.match.params.id!==undefined){
             this.props.dispatch(FetchUser("page=1&q="+this.props.match.params.id));
             this.forceUpdate();
@@ -59,7 +59,6 @@ class User extends Component{
             lastpage:this.props.data.last_page,
             // email:data.toString()
         });
-        console.log("component did mount",`${this.props.data.per_page} ${this.props.data.last_page}`)
     }
     handleModal(e,param) {
         e.preventDefault();
@@ -114,8 +113,9 @@ class User extends Component{
 
     handleDetail(e,param) {
         e.preventDefault();
-        this.props.dispatch(setUserListAll([]));
-        this.props.dispatch(FetchDetailUser(param));
+        // this.props.dispatch(setUserListAll([]));
+        // this.props.dispatch(FetchDetailUser(param));
+        this.setState({detail_:{id:param}});
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("detailUser"));
@@ -142,7 +142,6 @@ class User extends Component{
                 else{
                     this.props.dispatch(putUser(data,id,where));
                 }
-                console.log(param['status'])
             }
         })
     }
@@ -187,7 +186,6 @@ class User extends Component{
         if(status!==null&&status!==undefined&&status!==""){
             where+=`&status=${status}`;
         }
-        console.log(where);
         return where;
     }
     handleSearch(e){
@@ -202,7 +200,6 @@ class User extends Component{
     }
     handleCopy = (e) => {
         e.preventDefault();
-        console.log('abus');
         e.clipboardData.setData('text/plain', 'Hello, world!');
     }
     render(){
@@ -349,8 +346,8 @@ class User extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={13} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                                    : <tr><td colSpan={13} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        : <tr><td colSpan={13} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                                    : <tr><td colSpan={13} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
@@ -418,8 +415,7 @@ class User extends Component{
                     </div>
                 </div>
                 <FormUser detail={this.state.detail} isAdmin={0}/>
-                <DetailUser detail={this.props.detail}/>
-
+                <DetailUser detail={this.state.detail_}/>
             </Layout>
         );
     }
