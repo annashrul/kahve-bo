@@ -150,16 +150,24 @@ class Setting extends Component{
                     <div className="card">
                         <Tabs>
                             <div className="card-header d-flex align-items-center justify-content-between">
-                                <TabList>
-                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(0)}>GENERAL</Tab>
-                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(1)}>WITHDRAW</Tab>
-                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(2)}>INVESTMENT</Tab>
-                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(3)}>REFERRAL</Tab>
-                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(4)}>TRANSACTION</Tab>
-                                </TabList>
-                                <div>
-                                    <button className="btn btn-primary" onClick={this.handleSubmit}>{!this.props.isLoadingPost?'Save':'Loading ......'}</button>
+                                <div className="row">
+                                    <div className="col-md-10">
+                                        <TabList>
+                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(0)}>GENERAL</Tab>
+                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(1)}>WITHDRAW</Tab>
+                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(2)}>INVESTMENT</Tab>
+                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(3)}>REFERRAL</Tab>
+                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(4)}>TRANSACTION</Tab>
+                                        </TabList>
+                                    </div>
+                                    <div className="col-12 col-xs-12 col-md-2">
+                                        <div className="form-group text-right">
+                                            <button className="btn btn-primary" onClick={this.handleSubmit}>{!this.props.isLoadingPost?'Save':'Loading ......'}</button>
+
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
                             <div className="card-body">
                                 {/*START SECTION GENERAL*/}

@@ -114,14 +114,14 @@ export const FetchAllUser = (where) => {
             })
             .catch(function (error) {
                 // handle error
-                if (error.message === 'Network Error') {
-                    Swal.fire(
-                        'Network Failed!.',
-                        'Please check your connection',
-                        'error'
-                    );
+                // if (error.message === 'Network Error') {
+                //     Swal.fire(
+                //         'Network Failed!.',
+                //         'Please check your connection',
+                //         'error'
+                //     );
                     dispatch(setLoadingSend(false));
-                }
+                // }
             })
 
     }

@@ -215,7 +215,7 @@ class LogAuth extends Component{
                                                 !this.props.isLoading?(
                                                     <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
                                                 ):(
-                                                    <button className={"btn btn-primary"} style={{width:"100%"}}>Loading ...</button>
+                                                    <button disabled={true} className={"btn btn-primary"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
                                                 )
                                             }
                                         </div>

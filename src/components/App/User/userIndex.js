@@ -25,7 +25,6 @@ class User extends Component{
         this.handleIsActive = this.handleIsActive.bind(this);
         this.handleZoom = this.handleZoom.bind(this);
         this.handleSendEmail = this.handleSendEmail.bind(this);
-        this.handleCopy = this.handleCopy.bind(this);
         this.state={
             detail:{},
             detail_:{},
@@ -99,15 +98,24 @@ class User extends Component{
     componentWillReceiveProps(nextProps){
         let data = [];
         if(nextProps.dataAll!==undefined){
+            console.log("ie nextprops", nextProps);
             if(nextProps.dataAll.data!==undefined){
                 if(nextProps.dataAll.data.length>0){
                     nextProps.dataAll.data.map((v,i)=>{
                         data.push(v.email);
                     });
+                    console.log("IEU DATA EMAIL",data);
                     window.location = `mailto:${data.toString()}`;
                 }
             }
 
+        }
+        else{
+            Swal.fire({
+                title: 'failed',
+                icon: 'error',
+                text: NOTIF_ALERT.FAILED,
+            });
         }
     }
 
@@ -198,10 +206,7 @@ class User extends Component{
         e.preventDefault();
         this.props.dispatch(FetchAllUser(`page=1&perpage=${perpage*lastpage}`));
     }
-    handleCopy = (e) => {
-        e.preventDefault();
-        e.clipboardData.setData('text/plain', 'Hello, world!');
-    }
+
     render(){
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const rightStyle = {verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
@@ -254,7 +259,14 @@ class User extends Component{
                                         <div className="form-group">
                                             <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                             {/*<button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>*/}
-                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i className="fa fa-send"/> {this.props.isLoadingSend?"loading ...":" Send to all"}</button>
+                                            {
+                                                this.props.isLoadingSend?(
+                                                    <button disabled={true} style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                ):(
+                                                    <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i className={"fa fa-send"}/> Send to all</button>
+
+                                                )
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -319,17 +331,11 @@ class User extends Component{
                                                                 <tr key={i} style={{backgroundColor:this.props.match.params.id===v.id?"#eeeeee":""}}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                                     <td style={columnStyle}>
-                                                                        {/*<button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>*/}
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
                                                                         <button style={{marginRight:"5px"}} className={`btn ${isColor} btn-sm`} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name,"regist":v.regist_token})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
                                                                     </td>
                                                                     <td style={columnStyle}>
                                                                         {copyTxt(address?address:'-')}
-
-                                                                        {/*<CopyToClipboard text={address?address:'-'}*/}
-                                                                             {/*onCopy={()=>ToastQ.fire({icon:'success',title:`${address} berhasil disalin.`})}>*/}
-                                                                            {/*<span>{address?address:'-'} <i className="fa fa-copy" style={{color:"green"}}/></span>*/}
-                                                                        {/*</CopyToClipboard>*/}
                                                                     </td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>{v.email}</td>

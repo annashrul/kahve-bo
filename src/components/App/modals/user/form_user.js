@@ -241,7 +241,7 @@ class FormUser extends Component{
                 <ModalFooter>
                     <div className="form-group" style={{textAlign:"right"}}>
                         <button style={{color:"white"}} type="button" className="btn btn-warning mb-2 mr-2" onClick={this.toggle} ><i className="ti-close"/>Exit</button>
-                        <button type="submit" className="btn btn-primary mb-2 mr-2" onClick={this.handleValidation} ><i className="ti-save" /> {!this.props.isLoadingPost?'Save':'Loading ......'}</button>
+                        <button type="submit" className="btn btn-primary mb-2 mr-2" onClick={this.handleValidation} ><i className="ti-save" /> {!this.props.isLoadingPost?'Save':<i className="fa fa-circle-o-notch fa-spin"/>}</button>
                     </div>
                 </ModalFooter>
             </WrapperModal>
