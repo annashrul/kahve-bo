@@ -17,6 +17,7 @@ import * as Swal from "sweetalert2";
 import moment from "moment";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
+import {BrowserView, MobileView} from "react-device-detect";
 
 class User extends Component{
     constructor(props){
@@ -239,13 +240,7 @@ class User extends Component{
 
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-6 col-xs-6 col-md-3">
-                                        <div className="form-group">
-                                            <label>Write something here ..</label>
-                                            <input type="text" className="form-control" name="any" placeholder={"search by wallet address,name,email"} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-xs-6 col-md-2">
+                                    <div className="col-12 col-xs-12 col-md-2">
                                         <div className="form-group">
                                             <label>Status</label>
                                             <select name="status" className="form-control form-control-lg" defaultValue={this.state.status} value={this.state.status} onChange={this.handleChange}>
@@ -255,19 +250,40 @@ class User extends Component{
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-6 col-xs-6 col-md-4">
+                                    <div className="col-10 col-xs-10 col-md-3">
                                         <div className="form-group">
-                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                            {/*<button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>*/}
-                                            {
-                                                this.props.isLoadingSend?(
-                                                    <button disabled={true} style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
-                                                ):(
-                                                    <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i className={"fa fa-send"}/> Send to all</button>
-
-                                                )
-                                            }
+                                            <label>Write something here ..</label>
+                                            <input type="text" className="form-control" name="any" placeholder={"search by wallet address,name,email"} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
+                                    </div>
+
+                                    <div className="col-1 col-xs-1 col-md-4">
+                                        <BrowserView>
+                                            <div className="form-group">
+                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                {
+                                                    this.props.isLoadingSend?(
+
+                                                        <button disabled={true} style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    ):(
+                                                        <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i className={"fa fa-send"}/> Send to all</button>
+                                                    )
+                                                }
+                                            </div>
+                                        </BrowserView>
+                                        <MobileView>
+                                            <div className="form-group">
+                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                {
+                                                    this.props.isLoadingSend?(
+                                                        <button disabled={true} style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"30px"}} className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    ):(
+                                                        <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary btn-fixed-bottom" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i style={{fontSize:"30px"}} className={"fa fa-send"}/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </MobileView>
+
                                     </div>
                                 </div>
                                 <div style={{overflowX: "auto",zoom:"90%"}}>
@@ -286,7 +302,6 @@ class User extends Component{
                                             <th className="text-black" style={columnStyle}>Total Ref</th>
                                             <th className="text-black" style={columnStyle}>BEP</th>
                                             <th className="text-black" style={columnStyle}>Status</th>
-                                            <th className="text-black" style={columnStyle}>Reply Email</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -333,6 +348,8 @@ class User extends Component{
                                                                     <td style={columnStyle}>
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
                                                                         <button style={{marginRight:"5px"}} className={`btn ${isColor} btn-sm`} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name,"regist":v.regist_token})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
+                                                                        <a style={{marginRight:"5px"}} href={`mailto:${v.email}`} className="btn btn-primary btn-sm"><i className="fa fa-send"/></a>
+
                                                                     </td>
                                                                     <td style={columnStyle}>
                                                                         {copyTxt(address?address:'-')}
@@ -346,9 +363,7 @@ class User extends Component{
                                                                     <td style={rightStyle}>{parseFloat(v.reff)}</td>
                                                                     <td style={columnStyle}>{statusQ(bep)}</td>
                                                                     <td style={columnStyle}>{statusQ(v.status)}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <a href={`mailto:${v.email}`} className="btn btn-primary btn-sm"><i className="fa fa-reply"/> Reply</a>
-                                                                    </td>
+
                                                                 </tr>
                                                             )
                                                         })
@@ -377,7 +392,6 @@ class User extends Component{
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton height={30} width={30}/>}</td>
                                                             </tr>
                                                         )
                                                     }
@@ -402,7 +416,7 @@ class User extends Component{
                                                 <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
                                                 <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment.toFixed(8)}</th>
                                                 <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
-                                                <th className="text-black" colspan={3}/>
+                                                <th className="text-black" colspan={2}/>
                                             </tr>
                                         </tfoot>
 
