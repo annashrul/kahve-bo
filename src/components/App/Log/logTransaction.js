@@ -8,6 +8,7 @@ import moment from "moment";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import { isArray } from 'lodash';
 import * as Swal from "sweetalert2";
+import {BrowserView, MobileView} from 'react-device-detect';
 
 class LogTransaction extends Component{
     constructor(props){
@@ -144,7 +145,7 @@ class LogTransaction extends Component{
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Log Activity</h5>
+                            <h5 className="mb-0 font-weight-bold">Log Transaction</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -219,15 +220,29 @@ class LogTransaction extends Component{
                                             </div>
                                         </div>
                                         <hr/>
-                                        <div className="form-group">
-                                            {
-                                                !this.props.isLoading?(
-                                                    <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
-                                                ):(
-                                                    <button disabled={true} className={"btn btn-primary"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
-                                                )
-                                            }
-                                        </div>
+                                        <BrowserView>
+                                            <div className="form-group">
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
+                                                    ):(
+                                                        <button disabled={true} className={"btn btn-primary"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </BrowserView>
+                                        <MobileView>
+                                            <div className="form-group">
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button className={"btn btn-primary btn-fixed-bottom"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
+                                                    ):(
+                                                        <button disabled={true} className={"btn btn-primary btn-fixed-bottom"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </MobileView>
+
                                     </div>
                                     <div className="col-md-9">
                                         <div style={{overflowX: "auto"}}>

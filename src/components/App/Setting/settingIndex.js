@@ -6,6 +6,7 @@ import {FetchPengaturan, putPengaturan} from "../../../redux/actions/setting/set
 import {noImage, validateEmail} from "../../../helper";
 import Skeleton from 'react-loading-skeleton';
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
+import {BrowserView, MobileView} from 'react-device-detect';
 
 class Setting extends Component{
     constructor(props){
@@ -150,24 +151,33 @@ class Setting extends Component{
                     <div className="card">
                         <Tabs>
                             <div className="card-header d-flex align-items-center justify-content-between">
-                                <div className="row">
-                                    <div className="col-md-10">
-                                        <TabList>
-                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(0)}>GENERAL</Tab>
-                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(1)}>WITHDRAW</Tab>
-                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(2)}>INVESTMENT</Tab>
-                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(3)}>REFERRAL</Tab>
-                                            <Tab label="Core Courses" onClick={() =>this.handleSelect(4)}>TRANSACTION</Tab>
-                                        </TabList>
+                                <TabList>
+                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(0)}>GENERAL</Tab>
+                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(1)}>WITHDRAW</Tab>
+                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(2)}>INVESTMENT</Tab>
+                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(3)}>REFERRAL</Tab>
+                                    <Tab label="Core Courses" onClick={() =>this.handleSelect(4)}>TRANSACTION</Tab>
+                                </TabList>
+                                <BrowserView>
+                                    <div>
+                                        {!this.props.isLoadingPost?(
+                                            <button className="btn btn-primary" onClick={this.handleSubmit}>Save</button>
+                                        ):(
+                                            <button style={{marginTop:"27px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                        )}
                                     </div>
-                                    <div className="col-12 col-xs-12 col-md-2">
-                                        <div className="form-group text-right">
-                                            <button className="btn btn-primary" onClick={this.handleSubmit}>{!this.props.isLoadingPost?'Save':'Loading ......'}</button>
+                                </BrowserView>
+                                <MobileView>
+                                    <div>
+                                        {!this.props.isLoadingPost?(
+                                            <button type="button" className="btn btn-primary btn-fixed-bottom" onClick={this.handleSubmit}><i style={{fontSize:"30px"}} className="fa fa-send"/></button>
 
-                                        </div>
+                                            // <button className="btn btn-primary btn-fixed-bottom" onClick={this.handleSubmit}>Save</button>
+                                        ):(
+                                            <button type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"30px"}} className="fa fa-circle-o-notch fa-spin"/></button>
+                                        )}
                                     </div>
-                                </div>
-
+                                </MobileView>
                             </div>
                             <div className="card-body">
                                 {/*START SECTION GENERAL*/}
@@ -280,10 +290,10 @@ class Setting extends Component{
                                     </div>
                                     <div className="row">
 
-                                        <div className="col-md-6">
+                                        <div className="col-6 col-xs col-md-6">
                                             <label>Schedule Withdraw</label>
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-6 col-xs col-md-6">
                                             <label style={{color:"#e8ebf1",float:"right"}}>From</label>
                                         </div>
                                         <div className="col-md-6">
@@ -369,10 +379,10 @@ class Setting extends Component{
 
                                     </div>
                                     <div className="row">
-                                        <div className="col-md-6">
+                                        <div className="col-6 col-xs col-md-6">
                                             <label>Schedule Invest</label>
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-6 col-xs col-md-6">
                                             <label style={{color:"#e8ebf1",float:"right"}}>From</label>
                                         </div>
                                         <div className="col-md-6">

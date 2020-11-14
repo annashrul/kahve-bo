@@ -10,6 +10,7 @@ import {approval, FetchDeposit} from "../../../redux/actions/deposit/deposit.act
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
+import {BrowserView, MobileView} from 'react-device-detect';
 
 class Deposit extends Component{
     constructor(props){
@@ -204,16 +205,35 @@ class Deposit extends Component{
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-10 col-xs-10 col-md-3">
+                                    <div className="col-12 col-xs-12 col-md-3">
                                         <div className="form-group">
                                             <label>Type something here ..</label>
                                             <input type="text" className="form-control" name="any" placeholder={"search by amount,name"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
-                                        <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                        </div>
+                                        <BrowserView>
+                                            <div className="form-group">
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                    ):(
+                                                        <button style={{marginTop:"27px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </BrowserView>
+                                        <MobileView>
+                                            <div className="form-group">
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button type="button" className="btn btn-primary btn-fixed-bottom" onClick={(e)=>this.handleSearch(e)}><i style={{fontSize:"30px"}} className="fa fa-search"/></button>
+                                                    ):(
+                                                        <button type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"30px"}} className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </MobileView>
                                     </div>
                                 </div>
                                 <div style={{overflowX: "auto",zoom:"80%"}}>
@@ -310,7 +330,7 @@ class Deposit extends Component{
                                         </tbody>
                                     </table>
                                 </div>
-                                <div style={{"marginTop":"20px","float":"right"}}>
+                                <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
                                     <Paginationq
                                         current_page={current_page}
                                         per_page={per_page}
