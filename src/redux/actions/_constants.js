@@ -15,7 +15,7 @@ export const TOKEN = {
 export const NOTIF_ALERT = {
     SUCCESS: "Data has been saved",
     FAILED: "Data failed to saved",
-    NO_DATA: "https://i.pinimg.com/originals/c9/22/68/c92268d92cf2dbf96e3195683d9e14fb.png"
+    NO_DATA: "https://www.mediseller.com/front_assets/img/search.png"
 }
 
 export const HEADERS ={

@@ -112,21 +112,21 @@ class Transaction extends Component{
 
                             <div className="card-body" style={{zoom:"90%"}}>
                                 <div className="row">
-                                    <div className="col-6 col-xs-6 col-md-2">
+                                    <div className="col-6 col-xs-6 col-sm-4 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
                                             <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
-                                                <input type="text" className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                                <input type="text" readOnly={true} className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
                                             </DateRangePicker>
                                         </div>
                                     </div>
-                                    <div className="col-6 col-xs-6 col-md-3">
+                                    <div className="col-6 col-xs-6 col-sm-4 col-md-3">
                                         <div className="form-group">
                                             <label>Type something here ..</label>
                                             <input type="text" className="form-control" name="any" placeholder={"search by wallet address, name, email"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                    <div className="col-1 col-xs-1 col-md-4">
+                                    <div className="col-12 col-xs-12 col-sm-4 col-md-4">
                                         <BrowserView>
                                             <div className="form-group">
                                                 {

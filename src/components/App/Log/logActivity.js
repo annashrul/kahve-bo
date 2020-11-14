@@ -9,6 +9,7 @@ import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import { isArray } from 'lodash';
 import * as Swal from "sweetalert2";
 import {BrowserView, MobileView} from 'react-device-detect';
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 class LogActivity extends Component{
     constructor(props){
@@ -166,7 +167,7 @@ class LogActivity extends Component{
                                         <div className="form-group">
                                             <label>Periode </label>
                                             <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
-                                                <input type="text" className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                                <input type="text" readOnly={true} className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
                                             </DateRangePicker>
                                         </div>
                                     </div>
@@ -179,120 +180,137 @@ class LogActivity extends Component{
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                            {/*<button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>*/}
+                                            {
+                                                !this.props.isLoading?(
+                                                    <button className={"btn btn-primary"} style={{marginTop:"27px"}} onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                ):(
+                                                    <button disabled={true} className={"btn btn-primary"} style={{marginTop:"27px"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                )
+                                            }
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="card-body">
-                                <div className="row">
-                                    <div className="col-md-3">
-                                        <div className={"people-list"} style={{zoom:"80%",height:'300px',maxHeight:'100%',overflowY:'scroll'}}>
-                                            {/*<ul className="chat-list list-unstyled">*/}
+                                {
+                                    typeof data === 'object' ?
+                                        data.length !== 0 ? (
+                                                <div className="row">
+                                                    <div className="col-md-3">
+                                                        <div className={"people-list"} style={{zoom:"80%",height:'300px',maxHeight:'100%',overflowY:'scroll'}}>
+                                                            <div id="chat_user_2">
+                                                                <ul className="chat-list list-unstyled">
+                                                                    {
+                                                                        data.map((i,inx)=>{
+                                                                            return(
+                                                                                <li style={{backgroundColor:this.state.isClick===inx?"#eeeeee":""}} id={`item${inx}`} className={`clearfix`} key={inx} onClick={(e)=>this.handleGet(e,i.detail,inx)}>
+                                                                                    {
+                                                                                        <span class="circle">{inx+1}</span>
+                                                                                    }
+                                                                                    <div className="about">
+                                                                                        <div className="status" style={{color: 'black',fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{i.tabel} | {i.aksi}</div>
+                                                                                        <div className="status" style={{color: '#FC8213',fontWeight:"bold", wordBreak:"break-all", fontSize:"14px"}}>{i.nama}</div>
+                                                                                        <div className="status" style={{color: '#a1887f', fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{moment(i.tgl).format('LLLL')}</div>
+                                                                                    </div>
 
-
-                                            <div id="chat_user_2">
-                                                <ul className="chat-list list-unstyled">
-                                                    {
-                                                        typeof data==='object'?data.length!==0?
-                                                            data.map((i,inx)=>{
-                                                                return(
-                                                                    <li style={{backgroundColor:this.state.isClick===inx?"#eeeeee":""}} id={`item${inx}`} className={`clearfix`} key={inx} onClick={(e)=>this.handleGet(e,i.detail,inx)}>
-                                                                        {
-                                                                            <span class="circle">{inx+1}</span>
-                                                                        }
-                                                                        <div className="about">
-                                                                            <div className="status" style={{color: 'black',fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{i.tabel} | {i.aksi}</div>
-                                                                            <div className="status" style={{color: '#FC8213',fontWeight:"bold", wordBreak:"break-all", fontSize:"14px"}}>{i.nama}</div>
-                                                                            <div className="status" style={{color: '#a1887f', fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{moment(i.tgl).format('LLLL')}</div>
-                                                                        </div>
-
-                                                                    </li>
-                                                                )
-                                                            }):(
-                                                                <div style={{textAlign:'center',fontSize:"11px",fontStyle:"italic"}}>No Data.</div>
-                                                            ) : ''
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        {/*<div style={{ float:"left", clear: "both" }}*/}
-                                             {/*ref={(el) => { this.messagesEnd = el; }}>*/}
-                                        {/*</div>*/}
-                                        <hr/>
-                                        <BrowserView>
-                                            <div className="form-group">
-
-                                                {
-                                                    !this.props.isLoading?(
-                                                        <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
-                                                    ):(
-                                                        <button disabled={true} className={"btn btn-primary"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
-                                                    )
-                                                }
-                                            </div>
-                                        </BrowserView>
-                                        <MobileView>
-                                            <div className="form-group">
-
-                                                {
-                                                    !this.props.isLoading?(
-                                                        <button className={"btn btn-primary btn-fixed-bottom"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
-                                                    ):(
-                                                        <button disabled={true} className={"btn btn-primary btn-fixed-bottom"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
-                                                    )
-                                                }
-                                            </div>
-                                        </MobileView>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div style={{overflowX: "auto"}}>
-                                            <table className="table table-hover">
-
-                                                <thead>
-                                                <tr>
-                                                    {
-                                                        this.state.keyName_.length>0?
-                                                            this.state.keyName_.map((v,i)=>{
-                                                                return(
-                                                                    <th className="text-black" style={columnStyle} rowSpan="2" key={i}>{v.split('_').map(f=>{ return f.toUpperCase(); }).join(' ')}</th>
-                                                                )
-                                                            })
-                                                            : ""
-                                                    }
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                {
-                                                    (
-                                                        this.state.valData_.length>0?
-                                                            this.state.valData_.map((v,i)=>{
-                                                                return(
-                                                                    <tr key={i}>
-                                                                        {
-                                                                            (
-                                                                                typeof this.state.keyName_ === 'object' ? this.state.keyName_.length>0?
-                                                                                    this.state.keyName_.map((w,j)=>{
-                                                                                        return(
-                                                                                            <td style={columnStyle} key={j}>{v[w]}</td>
-                                                                                        )
-                                                                                    })
-                                                                                    : "No data." : "No data."
+                                                                                </li>
                                                                             )
-                                                                        }
+                                                                        })
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        </div>
 
-                                                                    </tr>
-                                                                )
-                                                            })
-                                                            : ""
-                                                    )
-                                                }
-                                                </tbody>
-                                            </table>
+                                                        <hr/>
+                                                        <BrowserView>
+                                                            <div className="form-group">
+
+                                                                {
+                                                                    !this.props.isLoading?(
+                                                                        <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
+                                                                    ):(
+                                                                        <button disabled={true} className={"btn btn-primary"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                                    )
+                                                                }
+                                                            </div>
+                                                        </BrowserView>
+                                                        <MobileView>
+                                                            <div className="form-group">
+
+                                                                {
+                                                                    !this.props.isLoading?(
+                                                                        <button className={"btn btn-primary btn-fixed-bottom"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
+                                                                    ):(
+                                                                        <button disabled={true} className={"btn btn-primary btn-fixed-bottom"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                                    )
+                                                                }
+                                                            </div>
+                                                        </MobileView>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                        <div style={{overflowX: "auto"}}>
+                                                            <table className="table table-hover">
+
+                                                                <thead>
+                                                                <tr>
+                                                                    {
+                                                                        this.state.keyName_.length>0?
+                                                                            this.state.keyName_.map((v,i)=>{
+                                                                                return(
+                                                                                    <th className="text-black" style={columnStyle} rowSpan="2" key={i}>{v.split('_').map(f=>{ return f.toUpperCase(); }).join(' ')}</th>
+                                                                                )
+                                                                            })
+                                                                            : ""
+                                                                    }
+                                                                </tr>
+                                                                </thead>
+
+                                                                <tbody>
+                                                                {
+                                                                    (
+                                                                        this.state.valData_.length>0?
+                                                                            this.state.valData_.map((v,i)=>{
+                                                                                return(
+                                                                                    <tr key={i}>
+                                                                                        {
+                                                                                            (
+                                                                                                typeof this.state.keyName_ === 'object' ? this.state.keyName_.length>0?
+                                                                                                    this.state.keyName_.map((w,j)=>{
+                                                                                                        return(
+                                                                                                            <td style={columnStyle} key={j}>{v[w]}</td>
+                                                                                                        )
+                                                                                                    })
+                                                                                                    : "No data." : "No data."
+                                                                                            )
+                                                                                        }
+
+                                                                                    </tr>
+                                                                                )
+                                                                            })
+                                                                            : ""
+                                                                    )
+                                                                }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        )
+                                    : (
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <BrowserView>
+                                                    <img style={{marginLeft:"auto",marginRight:"auto",display:"block"}} src={NOTIF_ALERT.NO_DATA} alt=""/>
+                                                </BrowserView>
+                                                <MobileView>
+                                                    <img style={{width:"100%",marginLeft:"auto",marginRight:"auto",display:"block"}} src={NOTIF_ALERT.NO_DATA} alt=""/>
+                                                </MobileView>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    ) : ""
+                                }
+
                             </div>
                         </div>
                     </div>
