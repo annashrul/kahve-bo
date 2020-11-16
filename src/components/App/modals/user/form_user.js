@@ -117,8 +117,8 @@ class FormUser extends Component{
         parseData['password'] = this.state.password;
         parseData['conf_password'] = this.state.conf_password;
         parseData['status'] = this.state.status;
-        parseData['id_card'] = this.state.isAdmin===1?'-':(this.state.id_card!==""?this.state.id_card.base64:'-');
-        parseData['selfie'] = this.state.isAdmin===1?'-':(this.state.selfie!==""?this.state.selfie.base64:'-');
+        parseData['id_card'] = "-";
+        parseData['selfie'] = "-";
         parseData['foto'] = this.state.foto!==""?this.state.foto.base64:'-';
         parseData['isadmin'] = this.state.isAdmin;
         if(parseData['name']===''){
@@ -203,6 +203,13 @@ class FormUser extends Component{
                                 <div className="invalid-feedback" style={this.state.error.email !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.email}</div>
                             </div>
                             <div className="form-group">
+                                <label>Photo <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>
+                                <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile3.bind(this) } />
+                            </div>
+
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
                                 <label>Password <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( kosongkan apabila tidak akan diubah )":""}</small></label>
                                 <div className="input-group mb-2">
                                     <input type={this.state.isShowPassword===true?"text":"password"} className="form-control" name="password" value={this.state.password} onChange={this.handleChange} />
@@ -222,21 +229,15 @@ class FormUser extends Component{
                                 </div>
                                 <div className="invalid-feedback" style={this.state.error.conf_password !== "" ? {display: 'block'} : {display: 'none'}}>{this.state.error.conf_password}</div>
                             </div>
+                            {/*<div className="form-group">*/}
+                                {/*<label>ID Card <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>*/}
+                                {/*<FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile1.bind(this) } />*/}
+                            {/*</div>*/}
+                            {/*<div className="form-group">*/}
+                                {/*<label>Selfie <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>*/}
+                                {/*<FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile2.bind(this) } />*/}
+                            {/*</div>*/}
 
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label>ID Card <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>
-                                <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile1.bind(this) } />
-                            </div>
-                            <div className="form-group">
-                                <label>Selfie <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>
-                                <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile2.bind(this) } />
-                            </div>
-                            <div className="form-group">
-                                <label>Photo <small style={{color:"red",fontWeight:"bold"}}>{this.props.detail!==undefined?"( leave blank if it will not be changed )":""}</small></label><br/>
-                                <FileBase64 multiple={ false } className="mr-3 form-control-file" onDone={ this.handleFile3.bind(this) } />
-                            </div>
                             <div className="form-group">
                                 <label>Status</label>
                                 <select className="form-control form-control-lg" name="status" value={this.state.status} onChange={this.handleChange}>

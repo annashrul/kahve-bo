@@ -424,7 +424,7 @@ class User extends Component{
 
                                     </table>
                                 </div>
-                                <div style={{"marginTop":"20px","float":"right"}}>
+                                <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
                                     <Paginationq
                                         current_page={current_page}
                                         per_page={per_page}

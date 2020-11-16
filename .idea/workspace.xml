@@ -2,40 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1e4ad1b-e693-4a35-9562-d95ffc171052" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/redux/actions/user/userAdmin.action.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/redux/actions/user/userMember.action.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/redux/reducers/user/userAdmin.reducer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/redux/reducers/user/userMember.reducer.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/redux/actions/user/user.action.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/redux/reducers/user/user.reducer.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/CoinType/coinTypeIndex.js" afterPath="$PROJECT_DIR$/src/components/App/CoinType/coinTypeIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Dashboard/Dashboard.js" afterPath="$PROJECT_DIR$/src/components/App/Dashboard/Dashboard.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Dashboard/src/Filter.js" afterPath="$PROJECT_DIR$/src/components/App/Dashboard/src/Filter.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Inbox/inboxIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Inbox/inboxIndex.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Log/logActivity.js" afterPath="$PROJECT_DIR$/src/components/App/Log/logActivity.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Log/logAuth.js" afterPath="$PROJECT_DIR$/src/components/App/Log/logAuth.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Log/logTransaction.js" afterPath="$PROJECT_DIR$/src/components/App/Log/logTransaction.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Penarikan/penarikanIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Penarikan/penarikanIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Transaction/transactionIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Transaction/transactionIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/User/adminIndex.js" afterPath="$PROJECT_DIR$/src/components/App/User/adminIndex.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/User/userIndex.js" afterPath="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/coinType/form_coin_type.js" afterPath="$PROJECT_DIR$/src/components/App/modals/coinType/form_coin_type.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/faq/form_faq.js" afterPath="$PROJECT_DIR$/src/components/App/modals/faq/form_faq.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/transaction/detail_transaction.js" afterPath="$PROJECT_DIR$/src/components/App/modals/transaction/detail_transaction.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" afterPath="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/user/form_user.js" afterPath="$PROJECT_DIR$/src/components/App/modals/user/form_user.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/helper.js" afterPath="$PROJECT_DIR$/src/helper.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/actions/_constants.js" afterPath="$PROJECT_DIR$/src/redux/actions/_constants.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/actions/authActions.js" afterPath="$PROJECT_DIR$/src/redux/actions/authActions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/actions/deposit/deposit.action.js" afterPath="$PROJECT_DIR$/src/redux/actions/deposit/deposit.action.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/actions/faq/faq.action.js" afterPath="$PROJECT_DIR$/src/redux/actions/faq/faq.action.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/actions/penarikan/penarikan.action.js" afterPath="$PROJECT_DIR$/src/redux/actions/penarikan/penarikan.action.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/reducers/deposit/deposit.reducer.js" afterPath="$PROJECT_DIR$/src/redux/reducers/deposit/deposit.reducer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/redux/reducers/index.js" afterPath="$PROJECT_DIR$/src/redux/reducers/index.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -49,49 +20,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="depositIndex.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js">
+      <file leaf-file-name="logActivity.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/App/Log/logActivity.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="202" column="20" lean-forward="false" selection-start-line="202" selection-start-column="20" selection-end-line="202" selection-end-column="20" />
+            <state relative-caret-position="480">
+              <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!block;n#handleValidate#0;n#LogActivity#0" expanded="false" />
+                <element signature="n#!!block;n#handleSearch#0;n#LogActivity#0" expanded="false" />
+                <element signature="e#3196#3548#0" expanded="false" />
+                <element signature="n#!!block;n#getData#0;n#LogActivity#0" expanded="false" />
+                <element signature="n#!!block;n#handleGet#0;n#LogActivity#0" expanded="false" />
+                <element signature="e#13658#17661#0" expanded="false" />
+                <element signature="e#18642#25095#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="logTransaction.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/App/Log/logTransaction.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="16">
+              <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
-                <element signature="n#!!block;n#componentDidUpdate#0;n#Deposit#0" expanded="false" />
-                <element signature="n#!!block;n#componentWillMount#0;n#Deposit#0" expanded="false" />
-                <element signature="n#!!block;n#componentWillReceiveProps#0;n#Deposit#0" expanded="false" />
-                <element signature="n#!!block;n#handlePageChange#0;n#Deposit#0" expanded="false" />
-                <element signature="e#3229#3465#0" expanded="false" />
-                <element signature="n#!!block;n#handleApproval#0;n#Deposit#0" expanded="false" />
-                <element signature="n#!!block;n#handleModal#0;n#Deposit#0" expanded="false" />
-                <element signature="e#4666#4978#0" expanded="false" />
-                <element signature="n#!!block;n#handleValidate#0;n#Deposit#0" expanded="false" />
-                <element signature="n#!!block;n#handleSearch#0;n#Deposit#0" expanded="false" />
+                <element signature="n#!!block;n#componentWillReceiveProps#0;n#LogTransaction#0" expanded="false" />
+                <element signature="n#!!block;n#componentWillMount#0;n#LogTransaction#0" expanded="false" />
+                <element signature="n#!!block;n#handlePageChange#0;n#LogTransaction#0" expanded="false" />
+                <element signature="e#2273#2346#0" expanded="false" />
+                <element signature="e#13361#17192#0" expanded="false" />
+                <element signature="e#18177#24630#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="deposit.action.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/redux/actions/deposit/deposit.action.js">
+      <file leaf-file-name="logAuth.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/App/Log/logAuth.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1088">
-              <caret line="97" column="13" lean-forward="false" selection-start-line="97" selection-start-column="13" selection-end-line="97" selection-end-column="13" />
+            <state relative-caret-position="160">
+              <caret line="114" column="0" lean-forward="true" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
               <folding>
-                <element signature="e#942#1719#0" expanded="false" />
-                <element signature="e#2617#3011#0" expanded="false" />
-                <element signature="e#3037#3372#0" expanded="false" />
-                <element signature="e#3073#3242#0" expanded="false" />
+                <element signature="n#!!block;n#componentWillMount#0;n#LogAuth#0" expanded="false" />
+                <element signature="n#!!block;n#handlePageChange#0;n#LogAuth#0" expanded="false" />
+                <element signature="e#2196#2269#0" expanded="false" />
+                <element signature="e#18312#24765#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="deposit.reducer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/redux/reducers/deposit/deposit.reducer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -107,13 +82,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>loginUser</find>
       <find>text</find>
       <find>fire</find>
       <find>SITE</find>
       <find>sign</find>
       <find>class</find>
-      <find>console.lo</find>
       <find>toRp</find>
       <find>Chart</find>
       <find>Toas</find>
@@ -136,7 +109,9 @@
       <find>sche</find>
       <find>perpage</find>
       <find>componentDidUpdate</find>
+      <find>console.lo</find>
       <find>console</find>
+      <find>conso</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -168,7 +143,6 @@
         <option value="$PROJECT_DIR$/src/redux/actions/user/userAdmin.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/user/user.action.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" />
-        <option value="$PROJECT_DIR$/src/components/App/modals/user/form_user.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/user/userAdmin.action.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/user/userMember.action.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/user/user.reducer.js" />
@@ -181,14 +155,10 @@
         <option value="$PROJECT_DIR$/src/components/App/modals/transaction/detail_transaction.js" />
         <option value="$PROJECT_DIR$/src/components/App/Penarikan/penarikanIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/User/adminIndex.js" />
-        <option value="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/CoinType/coinTypeIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/faq/form_faq.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/authActions.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
-        <option value="$PROJECT_DIR$/src/components/App/Log/logTransaction.js" />
-        <option value="$PROJECT_DIR$/src/components/App/Log/logActivity.js" />
-        <option value="$PROJECT_DIR$/src/components/App/Log/logAuth.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/faq/faq.action.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/penarikan/penarikan.action.js" />
         <option value="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" />
@@ -196,6 +166,11 @@
         <option value="$PROJECT_DIR$/src/redux/actions/deposit/deposit.action.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/deposit/deposit.reducer.js" />
         <option value="$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js" />
+        <option value="$PROJECT_DIR$/src/components/App/modals/user/form_user.js" />
+        <option value="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
+        <option value="$PROJECT_DIR$/src/components/App/Log/logAuth.js" />
+        <option value="$PROJECT_DIR$/src/components/App/Log/logTransaction.js" />
+        <option value="$PROJECT_DIR$/src/components/App/Log/logActivity.js" />
       </list>
     </option>
   </component>
@@ -288,6 +263,30 @@
               <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
               <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="Log" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="Penarikan" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="User" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="redux" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -367,25 +366,25 @@
       <workItem from="1605247369877" duration="18526000" />
       <workItem from="1605341334709" duration="6321000" />
       <workItem from="1605353067743" duration="3526000" />
-      <workItem from="1605505255556" duration="18858000" />
+      <workItem from="1605505255556" duration="21247000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="253432000" />
+    <option name="totallyTimeSpent" value="255821000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16220239" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16220239" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1825658" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5542763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -647,14 +646,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/modals/user/form_user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="6" column="16" lean-forward="true" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/actions/user/userMember.action.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5392">
@@ -734,19 +725,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="411" column="0" lean-forward="false" selection-start-line="411" selection-start-column="0" selection-end-line="411" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <element signature="e#15010#20515#0" expanded="false" />
-            <element signature="e#20740#23583#0" expanded="false" />
-            <marker date="1605517656615" expanded="true" signature="4631:4640" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/User/adminIndex.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-112">
@@ -794,46 +772,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/Log/logTransaction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="12" column="20" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!block;n#componentWillReceiveProps#0;n#LogTransaction#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillMount#0;n#LogTransaction#0" expanded="false" />
-            <element signature="n#!!block;n#handlePageChange#0;n#LogTransaction#0" expanded="false" />
-            <element signature="e#2273#2346#0" expanded="false" />
-            <element signature="e#8495#17243#0" expanded="false" />
-            <element signature="e#13361#17192#0" expanded="false" />
-            <element signature="e#18177#24630#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/Log/logActivity.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="e#13405#17408#0" expanded="false" />
-            <element signature="e#18389#24842#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/Log/logAuth.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-768">
-          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!block;n#componentWillMount#0;n#LogAuth#0" expanded="false" />
-            <element signature="n#!!block;n#handlePageChange#0;n#LogAuth#0" expanded="false" />
-            <element signature="e#2196#2269#0" expanded="false" />
-            <element signature="e#18312#24765#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="386">
@@ -862,16 +800,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/Penarikan/penarikanIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="12" column="19" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="e#6914#7763#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/Faq/faqIndex.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1392">
@@ -892,6 +820,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="426" column="84" lean-forward="false" selection-start-line="426" selection-start-column="84" selection-end-line="426" selection-end-column="84" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#15010#20515#0" expanded="false" />
+            <element signature="e#20740#23583#0" expanded="false" />
+            <marker date="1605524893991" expanded="true" signature="4631:4640" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/modals/user/form_user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="207" column="34" lean-forward="false" selection-start-line="207" selection-start-column="34" selection-end-line="207" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#38#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/Penarikan/penarikanIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="15" column="23" lean-forward="true" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#6914#7763#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/reducers/deposit/deposit.reducer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -902,8 +864,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/actions/deposit/deposit.action.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="97" column="13" lean-forward="false" selection-start-line="97" selection-start-column="13" selection-end-line="97" selection-end-column="13" />
+        <state relative-caret-position="177">
+          <caret line="52" column="11" lean-forward="false" selection-start-line="52" selection-start-column="11" selection-end-line="52" selection-end-column="11" />
           <folding>
             <element signature="e#942#1719#0" expanded="false" />
             <element signature="e#2617#3011#0" expanded="false" />
@@ -915,8 +877,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="202" column="20" lean-forward="false" selection-start-line="202" selection-start-column="20" selection-end-line="202" selection-end-column="20" />
+        <state relative-caret-position="64">
+          <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
             <element signature="n#!!block;n#componentDidUpdate#0;n#Deposit#0" expanded="false" />
@@ -926,9 +888,53 @@
             <element signature="e#3229#3465#0" expanded="false" />
             <element signature="n#!!block;n#handleApproval#0;n#Deposit#0" expanded="false" />
             <element signature="n#!!block;n#handleModal#0;n#Deposit#0" expanded="false" />
-            <element signature="e#4666#4978#0" expanded="false" />
             <element signature="n#!!block;n#handleValidate#0;n#Deposit#0" expanded="false" />
             <element signature="n#!!block;n#handleSearch#0;n#Deposit#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/Log/logAuth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="114" column="0" lean-forward="true" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#componentWillMount#0;n#LogAuth#0" expanded="false" />
+            <element signature="n#!!block;n#handlePageChange#0;n#LogAuth#0" expanded="false" />
+            <element signature="e#2196#2269#0" expanded="false" />
+            <element signature="e#18312#24765#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/Log/logTransaction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="n#!!block;n#componentWillReceiveProps#0;n#LogTransaction#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillMount#0;n#LogTransaction#0" expanded="false" />
+            <element signature="n#!!block;n#handlePageChange#0;n#LogTransaction#0" expanded="false" />
+            <element signature="e#2273#2346#0" expanded="false" />
+            <element signature="e#13361#17192#0" expanded="false" />
+            <element signature="e#18177#24630#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/Log/logActivity.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#handleValidate#0;n#LogActivity#0" expanded="false" />
+            <element signature="n#!!block;n#handleSearch#0;n#LogActivity#0" expanded="false" />
+            <element signature="e#3196#3548#0" expanded="false" />
+            <element signature="n#!!block;n#getData#0;n#LogActivity#0" expanded="false" />
+            <element signature="n#!!block;n#handleGet#0;n#LogActivity#0" expanded="false" />
+            <element signature="e#13658#17661#0" expanded="false" />
+            <element signature="e#18642#25095#0" expanded="false" />
           </folding>
         </state>
       </provider>

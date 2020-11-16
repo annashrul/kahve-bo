@@ -125,8 +125,6 @@ class Deposit extends Component{
             dateFrom:from,
             dateTo:to
         });
-        console.log(from)
-        console.log(to)
     };
     handleValidate(){
         let where="";
@@ -183,7 +181,6 @@ class Deposit extends Component{
 
     handleSubmit(e,i,note){
         e.preventDefault();
-        console.log(note)
         if(note===""){
             let where = this.handleValidate();
             this.props.dispatch(approval({amount:this.state.data[i].amount},this.state.data[i].id,where))
@@ -193,7 +190,6 @@ class Deposit extends Component{
 
 
     render(){
-        console.log("CONFIG",this.props.config);
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {total,per_page, current_page,data} = this.props.data;
         return (

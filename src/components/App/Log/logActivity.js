@@ -11,6 +11,7 @@ import * as Swal from "sweetalert2";
 import {BrowserView, MobileView} from 'react-device-detect';
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import Skeleton from 'react-loading-skeleton';
+import * as ReactDom from "react-dom";
 
 class LogActivity extends Component{
     constructor(props){
@@ -41,6 +42,7 @@ class LogActivity extends Component{
 
     componentWillUnmount(){
         localStorage.removeItem("numKeyActivity");
+
     }
 
     componentWillReceiveProps(nextProps){
@@ -68,7 +70,7 @@ class LogActivity extends Component{
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
         let any = this.state.any;
-        let where=`perpage=${this.state.perpage}&datefrom=${dateFrom}&dateto=${dateTo}`;
+        let where=`perpage=${localStorage.perpageLogActivity!==undefined?localStorage.perpageLogActivity:this.state.perpage}&datefrom=${dateFrom}&dateto=${dateTo}`;
         if(page!==null&&page!==undefined&&page!==""){
             where+=`&page=${page}`;
         }else{
@@ -125,6 +127,7 @@ class LogActivity extends Component{
             scrollPage:this.state.scrollPage+=5,
             perpage:this.state.perpage+=5
         });
+        localStorage.setItem("perpageLogActivity",this.state.perpage)
         let perpage = parseInt(this.props.data.per_page,10);
         let lengthBrg = parseInt(this.props.data.data.length,10);
         if(perpage===lengthBrg || perpage<lengthBrg){
@@ -199,13 +202,13 @@ class LogActivity extends Component{
                                         data.length !== 0 ? (
                                                 <div className="row">
                                                     <div className="col-md-3">
-                                                        <div className={"people-list"} style={{zoom:"80%",height:'300px',maxHeight:'100%',overflowY:'scroll'}}>
+                                                        <div ref={(elem) => this.container = elem} className={"people-list inner"} style={{zoom:"80%",height:'300px',maxHeight:'100%',overflowY:'scroll'}}>
                                                             <div id="chat_user_2">
                                                                 <ul className="chat-list list-unstyled">
                                                                     {
                                                                         data.map((i,inx)=>{
                                                                             return(
-                                                                                <li style={{backgroundColor:this.state.isClick===inx?"#eeeeee":""}} id={`item${inx}`} className={`clearfix`} key={inx} onClick={(e)=>this.handleGet(e,i.detail,inx)}>
+                                                                                <li style={{overflowAnchor: "auto",backgroundColor:this.state.isClick===inx?"#eeeeee":""}} id={`item${inx}`} className={`clearfix`} key={inx} onClick={(e)=>this.handleGet(e,i.detail,inx)}>
                                                                                     {
                                                                                         <span className="circle" style={{float:"left"}}>{inx+1}</span>
                                                                                     }
