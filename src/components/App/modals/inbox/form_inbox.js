@@ -23,6 +23,7 @@ class FormInbox extends Component{
 
     getProps(param){
         this.clearState();
+
         if(param.detail!==undefined){
         }
 
@@ -80,10 +81,8 @@ class FormInbox extends Component{
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <textarea className="form-control" name="body" placeholder={"write something here .. "} value={this.state.body} onChange={this.handleChange}>
-
-                    </textarea>
-                    <button className="btn btn-primary" onClick={this.handleReply}><i className="fa fa-reply"/> Reply</button>
+                    <textarea className="form-control" name="body" placeholder={"write something here .. "} value={this.state.body} onChange={this.handleChange}/>
+                        <button className="btn btn-primary" onClick={this.handleReply}><i className="fa fa-reply"/> Reply</button>
                 </ModalFooter>
             </WrapperModal>
         )
