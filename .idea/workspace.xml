@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1e4ad1b-e693-4a35-9562-d95ffc171052" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Log/logActivity.js" afterPath="$PROJECT_DIR$/src/components/App/Log/logActivity.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/User/userIndex.js" afterPath="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/user/form_user.js" afterPath="$PROJECT_DIR$/src/components/App/modals/user/form_user.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,7 +16,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="logActivity.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="logActivity.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/App/Log/logActivity.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="480">
@@ -33,6 +29,20 @@
                 <element signature="n#!!block;n#handleGet#0;n#LogActivity#0" expanded="false" />
                 <element signature="e#13658#17661#0" expanded="false" />
                 <element signature="e#18642#25095#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="faqIndex.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/App/Faq/faqIndex.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="183">
+              <caret line="152" column="104" lean-forward="false" selection-start-line="152" selection-start-column="104" selection-end-line="152" selection-end-column="104" />
+              <folding>
+                <element signature="n#!!block;n#handleModal#0;n#Faq#0" expanded="false" />
+                <element signature="n#!!block;n#handlePageChange#0;n#Faq#0" expanded="false" />
+                <element signature="e#8811#10412#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -161,7 +171,6 @@
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/redux/actions/faq/faq.action.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/penarikan/penarikan.action.js" />
-        <option value="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/_constants.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/deposit/deposit.action.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/deposit/deposit.reducer.js" />
@@ -171,6 +180,7 @@
         <option value="$PROJECT_DIR$/src/components/App/Log/logAuth.js" />
         <option value="$PROJECT_DIR$/src/components/App/Log/logTransaction.js" />
         <option value="$PROJECT_DIR$/src/components/App/Log/logActivity.js" />
+        <option value="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" />
       </list>
     </option>
   </component>
@@ -258,6 +268,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="Faq" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
@@ -366,12 +384,12 @@
       <workItem from="1605247369877" duration="18526000" />
       <workItem from="1605341334709" duration="6321000" />
       <workItem from="1605353067743" duration="3526000" />
-      <workItem from="1605505255556" duration="21247000" />
+      <workItem from="1605505255556" duration="21411000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="255821000" />
+    <option name="totallyTimeSpent" value="255985000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -384,7 +402,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5542763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35197368" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -800,18 +818,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/Faq/faqIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1392">
-          <caret line="150" column="75" lean-forward="false" selection-start-line="150" selection-start-column="75" selection-end-line="150" selection-end-column="75" />
-          <folding>
-            <element signature="n#!!block;n#handleModal#0;n#Faq#0" expanded="false" />
-            <element signature="n#!!block;n#handlePageChange#0;n#Faq#0" expanded="false" />
-            <element signature="e#8983#10584#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/actions/_constants.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="194">
@@ -935,6 +941,18 @@
             <element signature="n#!!block;n#handleGet#0;n#LogActivity#0" expanded="false" />
             <element signature="e#13658#17661#0" expanded="false" />
             <element signature="e#18642#25095#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/Faq/faqIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="152" column="104" lean-forward="false" selection-start-line="152" selection-start-column="104" selection-end-line="152" selection-end-column="104" />
+          <folding>
+            <element signature="n#!!block;n#handleModal#0;n#Faq#0" expanded="false" />
+            <element signature="n#!!block;n#handlePageChange#0;n#Faq#0" expanded="false" />
+            <element signature="e#8811#10412#0" expanded="false" />
           </folding>
         </state>
       </provider>

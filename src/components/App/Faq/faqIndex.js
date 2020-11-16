@@ -150,10 +150,8 @@ class Faq extends Component{
                                                                 </div>
                                                                 <MobileView>
                                                                     <div className="row">
-                                                                        <div className="col-4 col-xs-4 col-md-4">
-                                                                            <button className={"btn btn-primary"} onClick={(e)=>this.handleModal(e,i)}>Edit</button>
-                                                                        </div>
-                                                                        <div className="col-4 col-xs-4 col-md-4">
+                                                                        <div className="col-12 col-xs-12">
+                                                                            <button style={{marginRight:"5px"}} className={"btn btn-primary"} onClick={(e)=>this.handleModal(e,i)}>Edit</button>
                                                                             <button className={"btn btn-danger"} onClick={(e)=>this.handleDelete(e,v.id)}>Delete</button>
                                                                         </div>
                                                                     </div>
