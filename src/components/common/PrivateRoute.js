@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 const PrivateRoute = ({component: Component, auth, ...rest}) => {
-    console.log(`INFO AUTH ${auth.isAuthenticated===true?'ABUS':'GAGAL'}`, auth)
     return (
         <Route
            {...rest}

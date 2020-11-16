@@ -144,7 +144,13 @@ class FormFaq extends Component{
                 <ModalFooter>
                     <div className="form-group" style={{textAlign:"right"}}>
                         <button style={{color:"white"}} type="button" className="btn btn-warning mb-2 mr-2" onClick={this.toggle} ><i className="ti-close"/>Keluar</button>
-                        <button type="submit" className="btn btn-primary mb-2 mr-2" onClick={this.handleValidation} ><i className="ti-save" /> {!this.props.isLoadingPost?'Simpan':'Loading ......'}</button>
+                        {
+                            !this.props.isLoadingPost?(
+                                <button type="button" className="btn btn-primary mb-2 mr-2" onClick={this.handleValidation}><i className="ti-save" /> Save</button>
+                            ):(
+                                <button type="button" className="btn btn-primary mb-2 mr-2" disabled={true}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                            )
+                        }
                     </div>
                 </ModalFooter>
             </WrapperModal>

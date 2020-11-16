@@ -76,7 +76,6 @@ export const FetchUser = (where) => {
         if(where){
             url+=`?${where}`;
         }
-        console.log(url);
 
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
@@ -107,7 +106,6 @@ export const FetchAllUser = (where) => {
         if(where){
             url+=`?${where}`;
         }
-        console.log(url);
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
@@ -116,14 +114,14 @@ export const FetchAllUser = (where) => {
             })
             .catch(function (error) {
                 // handle error
-                if (error.message === 'Network Error') {
-                    Swal.fire(
-                        'Network Failed!.',
-                        'Please check your connection',
-                        'error'
-                    );
+                // if (error.message === 'Network Error') {
+                //     Swal.fire(
+                //         'Network Failed!.',
+                //         'Please check your connection',
+                //         'error'
+                //     );
                     dispatch(setLoadingSend(false));
-                }
+                // }
             })
 
     }
@@ -134,7 +132,6 @@ export const FetchDetailUser = (id) => {
     return (dispatch) => {
         dispatch(setLoadingDetail(true));
         let url = `user/${id}`;
-        console.log(url)
         axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
                 const data = response.data;
@@ -233,11 +230,9 @@ export const putUser = (data,id,where="") => {
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
                     if(data['isadmin']===1){
-                        console.log('page=1&isadmin=1');
                         dispatch(FetchUser(where===""?"page=1&isadmin=1":where));
                     }
                     else{
-                        console.log('page=1');
                         dispatch(FetchUser(where===""?"page=1":where));
                     }
                 } else {
@@ -295,11 +290,9 @@ export const confirmUser = (data,id,where="") => {
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
                     if(data['isadmin']===1){
-                        console.log('page=1&isadmin=1');
                         dispatch(FetchUser(where===""?"page=1&isadmin=1":where));
                     }
                     else{
-                        console.log('page=1');
                         dispatch(FetchUser(where===""?"page=1":where));
                     }
                 } else {
@@ -364,14 +357,7 @@ export const deleteUser = (id,where) => {
                     });
                 }
                 dispatch(setLoading(false));
-                // if(param['isadmin']===1){
-                //     console.log('page=1&isadmin=1');
-                //     dispatch(FetchUser(where===""?"page=1&isadmin=1":where));
-                // }
-                // else{
-                //     console.log('page=1');
-                //     dispatch(FetchUser(where===""?"page=1":where));
-                // }
+
                 dispatch(FetchUser(where));
             })
             .catch(function (error) {

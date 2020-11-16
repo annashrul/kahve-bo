@@ -24,7 +24,6 @@ class FormInbox extends Component{
     getProps(param){
         this.clearState();
         if(param.detail!==undefined){
-            console.log("ID AING",param.detail.id);
         }
 
     }

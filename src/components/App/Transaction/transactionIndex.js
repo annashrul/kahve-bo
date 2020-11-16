@@ -11,6 +11,7 @@ import {FetchDetailTransaction, FetchTransaction} from "../../../redux/actions/t
 import DetailTransaction from "../../App/modals/transaction/detail_transaction";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
+import {BrowserView, MobileView} from "react-device-detect";
 
 class Transaction extends Component{
     constructor(props){
@@ -111,24 +112,43 @@ class Transaction extends Component{
 
                             <div className="card-body" style={{zoom:"90%"}}>
                                 <div className="row">
-                                    <div className="col-5 col-xs-5 col-md-2">
+                                    <div className="col-6 col-xs-6 col-sm-4 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
                                             <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
-                                                <input type="text" className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                                <input type="text" readOnly={true} className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
                                             </DateRangePicker>
                                         </div>
                                     </div>
-                                    <div className="col-6 col-xs-6 col-md-3">
+                                    <div className="col-6 col-xs-6 col-sm-4 col-md-3">
                                         <div className="form-group">
                                             <label>Type something here ..</label>
                                             <input type="text" className="form-control" name="any" placeholder={"search by wallet address, name, email"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange}  onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
-                                    <div className="col-1 col-xs-1 col-md-4">
-                                        <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                        </div>
+                                    <div className="col-12 col-xs-12 col-sm-4 col-md-4">
+                                        <BrowserView>
+                                            <div className="form-group">
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                    ):(
+                                                        <button style={{marginTop:"27px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </BrowserView>
+                                        <MobileView>
+                                            <div className="form-group">
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button type="button" className="btn btn-primary btn-fixed-bottom" onClick={(e)=>this.handleSearch(e)}><i style={{fontSize:"30px"}} className="fa fa-search"/></button>
+                                                    ):(
+                                                        <button type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"30px"}} className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </MobileView>
                                     </div>
                                 </div>
                                 <div style={{overflowX: "auto"}}>
@@ -175,8 +195,8 @@ class Transaction extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={10} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                                        : <tr><td colSpan={10} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        : <tr><td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                                    : <tr><td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
@@ -220,7 +240,7 @@ class Transaction extends Component{
                                         </tfoot>
                                     </table>
                                 </div>
-                                <div style={{"marginTop":"20px","float":"right"}}>
+                                <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
                                     <Paginationq
                                         current_page={current_page}
                                         per_page={per_page}

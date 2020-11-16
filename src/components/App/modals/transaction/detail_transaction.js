@@ -4,7 +4,6 @@ import WrapperModal from '../_wrapper.modal'
 import {
     ModalHeader,
     ModalBody,
-    ModalFooter,
 } from 'reactstrap';
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import Paginationq, {copyTxt, isFloat, isFloatFix} from "../../../../helper";
@@ -20,7 +19,8 @@ class DetailTransaction extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.state={
             name:"",
-            any:""
+            any:"",
+            isNodata:false
         }
     }
 
@@ -82,7 +82,7 @@ class DetailTransaction extends Component{
         let totalPerAmountOut=0;
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "detailTransaction"} size="lg" style={{zoom:"90%"}}>
-                <ModalHeader toggle={this.toggle}>Detail Transaction {this.state.name}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>Detail Transaction {!this.props.isLoadingPost ?this.state.name:"...."}</ModalHeader>
                 <ModalBody>
                     <div className="form-group">
                         <label>Type something here ..</label>
@@ -114,6 +114,7 @@ class DetailTransaction extends Component{
                                     (
                                         typeof data === 'object' ? data.length>0?
                                             data.map((v,i)=>{
+                                                // this.setState({isNoData:false});
                                                 totalPerAmountIn = totalPerAmountIn+isFloat(v.amount_in);
                                                 totalPerAmountOut = totalPerAmountOut+isFloat(v.amount_out);
                                                 return(
@@ -136,8 +137,8 @@ class DetailTransaction extends Component{
                                                     </tr>
                                                 )
                                             })
-                                            : <tr><td colSpan={7} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                            : <tr><td colSpan={7} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                            : <tr><td colSpan={7} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                            : <tr><td colSpan={7} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
                                     ) : (()=>{
                                         let container =[];
                                         for(let x=0; x<10; x++){
@@ -159,14 +160,15 @@ class DetailTransaction extends Component{
                             </tbody>
                             <tfoot>
                             <tr style={{backgroundColor:this.props.isLoadingPost?"white":"#EEEEEE"}}>
-                                <th className="text-black" colspan={3}>TOTAL ALLPAGE</th>
+                                <th className="text-black" colspan={3}>TOTAL PERPAGE</th>
                                 <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoadingPost?<Skeleton/>:isFloatFix(totalPerAmountIn)}</th>
-                                <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoadingPost?<Skeleton/>:totalPerAmountOut}</th>
+                                <th className="text-black" style={rightStyle} colspan={1}>{this.props.isLoadingPost?<Skeleton/>:totalPerAmountOut.toFixed(8)}</th>
                                 <th colspan={2}/>
                             </tr>
                             </tfoot>
                         </table>
                     </div>
+
                     <div style={{"marginTop":"20px","float":"right"}}>
                         <Paginationq
                             current_page={current_page}

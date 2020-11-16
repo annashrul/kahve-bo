@@ -2,18 +2,14 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import Paginationq, {rangeDate, statusQ} from "../../../helper";
-import Skeleton from 'react-loading-skeleton';
-import {HEADERS, NOTIF_ALERT} from "../../../redux/actions/_constants";
+import {rangeDate} from "../../../helper";
 import {FetchLog} from "../../../redux/actions/log/log.action";
 import moment from "moment";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
-import DetailLogActivity from "../../App/modals/log/detail_log_activity";
 import { isArray } from 'lodash';
-import Preloader from "../../../Preloader";
-import axios from "axios"
 import * as Swal from "sweetalert2";
+import {BrowserView, MobileView} from 'react-device-detect';
+import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 
 class LogTransaction extends Component{
     constructor(props){
@@ -35,25 +31,19 @@ class LogTransaction extends Component{
             isLoading:false,
             scrollPage:0,
             isScroll:false,
-            transform: 'translateY(0px)'
         }
+    }
+    componentWillUnmount(){
+        localStorage.removeItem("numKeyTrx");
     }
     componentWillReceiveProps(nextProps){
-        console.log("componentWillReceiveProps",nextProps);
         if(typeof nextProps.data.data === 'object'){
             if(nextProps.data.data.length>0){
-                this.getData(nextProps.data.data[0].detail,0);
-            }
-            let perpage=this.state.perpage;
-            if(nextProps.data.data.length === perpage){
-                this.setState({
-                    perpage:perpage+5
-                });
+                // this.getData(nextProps.data.data[0].detail,0);
+                this.getData(nextProps.data.data[localStorage.numKeyTrx!==undefined?parseInt(localStorage.numKeyTrx):0].detail,localStorage.numKeyTrx!==undefined?parseInt(localStorage.numKeyTrx):0);
+
             }
         }
-    }
-    componentDidMount(){
-
     }
     componentWillMount(){
         let where = this.handleValidate();
@@ -73,7 +63,6 @@ class LogTransaction extends Component{
         let dateTo = this.state.dateTo;
         let any = this.state.any;
         let where=`perpage=${this.state.perpage}&datefrom=${dateFrom}&dateto=${dateTo}`;
-        console.log(where);
         if(page!==null&&page!==undefined&&page!==""){
             where+=`&page=${page}`;
         }else{
@@ -90,7 +79,6 @@ class LogTransaction extends Component{
         this.props.dispatch(FetchLog('transaction',where));
     }
     handleEvent = (event, picker) => {
-        console.log(picker);
         const from = moment(picker.startDate._d).format('YYYY-MM-DD');
         const to = moment(picker.endDate._d).format('YYYY-MM-DD');
         localStorage.setItem("dateFromLogTransaction",`${from}`);
@@ -118,6 +106,7 @@ class LogTransaction extends Component{
     }
     handleGet(e,data,i){
         e.preventDefault();
+        localStorage.setItem("numKeyTrx",i);
         this.setState({
             isScroll:false
         });
@@ -127,44 +116,29 @@ class LogTransaction extends Component{
     handleLoadMore(e){
         e.preventDefault();
         this.setState({
-            isScroll:true
+            isScroll:true,
+            perpage:this.state.perpage+=5
         });
         let perpage = parseInt(this.props.data.per_page,10);
         let lengthBrg = parseInt(this.props.data.data.length,10);
         if(perpage===lengthBrg || perpage<lengthBrg){
             let where = this.handleValidate();
             this.props.dispatch(FetchLog('transaction',where));
-            // this.props.dispatch(FetchBrg(1, searchby, localStorage.anyAdj!==undefined?localStorage.anyAdj:"", this.state.location, null, this.autoSetQty,this.state.perpage));
             this.setState({scrollPage:this.state.scrollPage+5});
         }
         else{
             Swal.fire({
                 title: 'Warning',
                 icon: 'warning',
-                text: NOTIF_ALERT.NO_DATA,
+                text: "No data.",
             });
         }
     }
 
-    handleScroll(){
-        let divToScrollTo;
-        console.log('bus');
-        divToScrollTo = document.getElementById(`item${this.state.scrollPage}`);
-        if (divToScrollTo) {
-            // divToScrollTo.scrollIntoView(false);
-            divToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
-    }
 
     render(){
-        if(this.state.isScroll===true)this.handleScroll();
-
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
-        // console.log("STATE",this.state.keyName_);
         const {
-            total,
-            per_page,
-            current_page,
             data
         } = this.props.data;
         return (
@@ -172,7 +146,7 @@ class LogTransaction extends Component{
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Log Activity</h5>
+                            <h5 className="mb-0 font-weight-bold">Log Transaction</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -187,7 +161,7 @@ class LogTransaction extends Component{
                                         <div className="form-group">
                                             <label>Periode </label>
                                             <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
-                                                <input type="text" className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                                <input type="text" readOnly={true} className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
                                             </DateRangePicker>
                                         </div>
                                     </div>
@@ -200,162 +174,143 @@ class LogTransaction extends Component{
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
                                         <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                            {
+                                                !this.props.isLoading?(
+                                                    <button className={"btn btn-primary"} style={{marginTop:"27px"}} onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                ):(
+                                                    <button disabled={true} className={"btn btn-primary"} style={{marginTop:"27px"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                )
+                                            }
+                                            {/*<button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>*/}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="card-body">
-                                <div className="row">
-                                    <div className="col-md-3">
-                                        <div className={"people-list"} style={{zoom:"80%",height:'300px',maxHeight:'100%',overflowY:'scroll'}}>
-                                            {/*<ul className="chat-list list-unstyled">*/}
-                                            {
-                                                !this.props.isLoading?(
-                                                    <div id="chat_user_2">
-                                                        <ul className="chat-list list-unstyled">
-                                                            {
-                                                                typeof data==='object'?data.length!==0?
+                                {
+                                    typeof data === 'object' ?
+                                        data.length !== 0 ? (
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <div className={"people-list"} style={{zoom:"80%",height:'300px',maxHeight:'100%',overflowY:'scroll'}}>
+                                                        {/*<ul className="chat-list list-unstyled">*/}
+
+                                                        <div id="chat_user_2">
+                                                            <ul className="chat-list list-unstyled">
+
+                                                                {
                                                                     data.map((i,inx)=>{
                                                                         return(
-                                                                            <li style={{backgroundColor:this.state.scrollPage===inx?"#eeeeee":""}} id={`item${inx}`} className="clearfix" key={inx} onClick={(e)=>this.handleGet(e,i.detail,i)}>
+                                                                            <li style={{backgroundColor:this.state.isClick===inx?"#eeeeee":""}} id={`item${inx}`} className="clearfix" key={inx} onClick={(e)=>this.handleGet(e,i.detail,inx)}>
                                                                                 {
                                                                                     <span class="circle">{inx+1}</span>
                                                                                 }
                                                                                 <div className="about">
-                                                                                    <div className="status" style={{color: 'black',fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{i.nama_user} | {i.aksi} <small style={{float:"right"}}>{i.transaksi}</small></div>
+                                                                                    <div className="status" style={{color: 'black',fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{i.transaksi} | {i.aksi}</div>
+                                                                                    <div className="status" style={{color: '#FC8213',fontWeight:"bold", wordBreak:"break-all", fontSize:"14px"}}>{i.nama_user}</div>
+
                                                                                     <div className="status" style={{color: '#a1887f', fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{moment(i.tgl).format('LLLL')}</div>
                                                                                 </div>
 
                                                                             </li>
                                                                         )
-                                                                    }):(
-                                                                        <div style={{textAlign:'center',fontSize:"11px",fontStyle:"italic"}}>{NOTIF_ALERT.NO_DATA}</div>
-                                                                    ) : ''
+                                                                    })
 
-                                                            }
-
-                                                        </ul>
+                                                                }
+                                                            </ul>
+                                                        </div>
                                                     </div>
-
-                                                ):(()=>{
-                                                    let container =[];
-                                                    for(let x=0; x<5; x++){
-                                                        container.push(
-                                                            <a href="!#" key={x}>
-                                                                <li className="d-flex align-items-center mb-15">
-                                                                    <div className={"timeline-icon mr-3"}>
-                                                                        <Skeleton circle={true} height={40} width={40}/>
-                                                                    </div>
-                                                                    <div className="timeline-info">
-                                                                        <p className="font-weight-bold mb-0"><Skeleton height={15} width={100}/></p>
-                                                                        <span><Skeleton height={15} width={150}/></span>
-                                                                        <p className="mb-0"><Skeleton height={15} width={200}/></p>
-                                                                    </div>
-                                                                </li>
-                                                            </a>
-                                                        )
-                                                    }
-                                                    return container;
-                                                })()
-                                            }
-                                        </div>
-                                        <hr/>
-                                        <div className="form-group">
-                                            <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>{this.state.isLoading?"loading":"Loadmore"}</button>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div style={{overflowX: "auto"}}>
-                                            <table className="table table-hover">
-
-                                                {
-                                                    !this.props.isLoading?(
-                                                        <thead>
-                                                        <tr>
+                                                    <hr/>
+                                                    <BrowserView>
+                                                        <div className="form-group">
                                                             {
-                                                                this.state.keyName_.length>0?
-                                                                    this.state.keyName_.map((v,i)=>{
-                                                                        return(
-                                                                            <th className="text-black" style={columnStyle} rowSpan="2" key={i}>{v.split('_').map(f=>{ return f.toUpperCase(); }).join(' ')}</th>
-                                                                        )
-                                                                    })
-                                                                    : ""
+                                                                !this.props.isLoading?(
+                                                                    <button className={"btn btn-primary"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
+                                                                ):(
+                                                                    <button disabled={true} className={"btn btn-primary"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                                )
                                                             }
-                                                        </tr>
-                                                        </thead>
-                                                    ):(()=>{
-                                                        let container =[];
-                                                        for(let x=0; x<1; x++){
-                                                            container.push(
-                                                                <tr key={x}>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                </tr>
-                                                            )
-                                                        }
-                                                        return container;
-                                                    })()
-                                                }
+                                                        </div>
+                                                    </BrowserView>
+                                                    <MobileView>
+                                                        <div className="form-group">
+                                                            {
+                                                                !this.props.isLoading?(
+                                                                    <button className={"btn btn-primary btn-fixed-bottom"} style={{width:"100%"}} onClick={this.handleLoadMore}>Loadmore</button>
+                                                                ):(
+                                                                    <button disabled={true} className={"btn btn-primary btn-fixed-bottom"} style={{width:"100%"}}><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                                )
+                                                            }
+                                                        </div>
+                                                    </MobileView>
 
-                                                {
-                                                    !this.props.isLoading?(
-                                                        <tbody>
-                                                        {
-                                                            (
-                                                                this.state.valData_.length>0?
-                                                                    this.state.valData_.map((v,i)=>{
-                                                                        return(
-                                                                            <tr key={i}>
-                                                                                {
-                                                                                    (
-                                                                                        typeof this.state.keyName_ === 'object' ? this.state.keyName_.length>0?
-                                                                                            this.state.keyName_.map((w,j)=>{
-                                                                                                return(
-                                                                                                    <td style={columnStyle} key={j}>{v[w]}</td>
-                                                                                                )
-                                                                                            })
-                                                                                            : "No data." : "No data."
-                                                                                    )
-                                                                                }
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <div style={{overflowX: "auto"}}>
+                                                        <table className="table table-hover">
 
-                                                                            </tr>
-                                                                        )
-                                                                    })
-                                                                    : ""
-                                                            )
-                                                        }
-                                                        </tbody>
-                                                    ):(()=>{
-                                                        let container =[];
-                                                        for(let x=0; x<10; x++){
-                                                            container.push(
-                                                                <tr key={x}>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                    <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                </tr>
-                                                            )
-                                                        }
-                                                        return container;
-                                                    })()
-                                                }
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                                                            <thead>
+                                                            <tr>
+                                                                {
+                                                                    this.state.keyName_.length>0?
+                                                                        this.state.keyName_.map((v,i)=>{
+                                                                            return(
+                                                                                <th className="text-black" style={columnStyle} rowSpan="2" key={i}>{v.split('_').map(f=>{ return f.toUpperCase(); }).join(' ')}</th>
+                                                                            )
+                                                                        })
+                                                                        : ""
+                                                                }
+                                                            </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                            {
+                                                                (
+                                                                    this.state.valData_.length>0?
+                                                                        this.state.valData_.map((v,i)=>{
+                                                                            return(
+                                                                                <tr key={i}>
+                                                                                    {
+                                                                                        (
+                                                                                            typeof this.state.keyName_ === 'object' ? this.state.keyName_.length>0?
+                                                                                                this.state.keyName_.map((w,j)=>{
+                                                                                                    return(
+                                                                                                        <td style={columnStyle} key={j}>{v[w]}</td>
+                                                                                                    )
+                                                                                                })
+                                                                                                : "No data." : "No data."
+                                                                                        )
+                                                                                    }
+
+                                                                                </tr>
+                                                                            )
+                                                                        })
+                                                                        : ""
+                                                                )
+                                                            }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <BrowserView>
+                                                        <img style={{marginLeft:"auto",marginRight:"auto",display:"block"}} src={NOTIF_ALERT.NO_DATA} alt=""/>
+                                                    </BrowserView>
+                                                    <MobileView>
+                                                        <img style={{width:"100%",marginLeft:"auto",marginRight:"auto",display:"block"}} src={NOTIF_ALERT.NO_DATA} alt=""/>
+                                                    </MobileView>
+                                                </div>
+                                            </div>
+                                        ) : ""
+                                }
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <DetailLogActivity/>
             </Layout>
         );
     }

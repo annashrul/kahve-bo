@@ -188,8 +188,8 @@ class Inbox extends Component{
                                                         </div>
                                                     );
                                                 })
-                                                : NOTIF_ALERT.NO_DATA
-                                            : NOTIF_ALERT.NO_DATA
+                                                : <img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/>
+                                            : <img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/>
                                         )
                                     :
                                         (()=>{

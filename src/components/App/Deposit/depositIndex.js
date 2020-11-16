@@ -10,6 +10,7 @@ import {approval, FetchDeposit} from "../../../redux/actions/deposit/deposit.act
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
+import {BrowserView, MobileView} from 'react-device-detect';
 
 class Deposit extends Component{
     constructor(props){
@@ -151,35 +152,18 @@ class Deposit extends Component{
         const column = e.target.name;
         const val = e.target.value;
 
-        // if(val==="0"){
-        //
-        // }
-        // if(parseFloat(val)>parseFloat("0.25")){
-        //     console.log("gagal");
-        // }else{
-        //     let data = [...this.state.data];
-        //     data[i] = {...data[i], [column]: val};
-        //     this.setState({ data });
-        // }
         let data = [...this.state.data];
         data[i] = {...data[i], [column]: val};
         this.setState({ data });
-        console.log("VALUE",val);
-        console.log("STATE",this.state.data[i].amount);
-
     }
 
     handleSubmit(e,i,note){
         e.preventDefault();
         if(note===""){
             let where = this.handleValidate();
-            console.log(this.state.data[i].id);
-            console.log(this.state.data[i].amount);
             this.props.dispatch(approval({amount:this.state.data[i].amount},this.state.data[i].id,where))
         }
-        else{
-            alert("gagal oiii")
-        }
+
     }
 
 
@@ -206,7 +190,7 @@ class Deposit extends Component{
                                         <div className="form-group">
                                             <label>Periode </label>
                                             <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
-                                                <input type="text" className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                                <input type="text" readOnly={true} className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
                                             </DateRangePicker>
                                         </div>
                                     </div>
@@ -221,16 +205,35 @@ class Deposit extends Component{
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-10 col-xs-10 col-md-3">
+                                    <div className="col-12 col-xs-12 col-md-3">
                                         <div className="form-group">
                                             <label>Type something here ..</label>
                                             <input type="text" className="form-control" name="any" placeholder={"search by amount,name"} defaultValue={this.state.any} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
                                     <div className="col-2 col-xs-2 col-md-4">
-                                        <div className="form-group">
-                                            <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
-                                        </div>
+                                        <BrowserView>
+                                            <div className="form-group">
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button style={{marginTop:"27px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                    ):(
+                                                        <button style={{marginTop:"27px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </BrowserView>
+                                        <MobileView>
+                                            <div className="form-group">
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button type="button" className="btn btn-primary btn-fixed-bottom" onClick={(e)=>this.handleSearch(e)}><i style={{fontSize:"30px"}} className="fa fa-search"/></button>
+                                                    ):(
+                                                        <button type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"30px"}} className="fa fa-circle-o-notch fa-spin"/></button>
+                                                    )
+                                                }
+                                            </div>
+                                        </MobileView>
                                     </div>
                                 </div>
                                 <div style={{overflowX: "auto",zoom:"80%"}}>
@@ -261,17 +264,13 @@ class Deposit extends Component{
                                                             if(v.status===2){badge="btn-danger";txt="Cancel";}
                                                             // if()
                                                             if(parseFloat(v.amount)===0){
-                                                                console.log("sama dengan 0");
                                                                 note = "input amount min 0.025 and max 0.25";
-                                                                // v.amount=0;
                                                             }
                                                             else if(parseFloat(v.amount)>0.25){
                                                                 note = "input amount min 0.025 and max 0.25";
-                                                                // v.amount=0;
                                                             }
                                                             else if(parseFloat(v.amount)<0.025){
                                                                 note = "input amount min 0.025 and max 0.25";
-                                                                // v.amount=0;
                                                             }
                                                             return(
                                                                 <tr key={i}>
@@ -284,34 +283,20 @@ class Deposit extends Component{
                                                                     <td style={columnStyle}>{v.wallet_address}</td>
                                                                     <td style={columnStyle}>{v.name}</td>
                                                                     <td style={columnStyle}>
-                                                                       <div className="form-group">
-                                                                           <div className="input-group mb-2">
-                                                                               <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
-                                                                                   <i className="fa fa-copy"/>
-                                                                               </div></div>
-                                                                               <input minLength="4" maxLength="5" type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={v.amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i,note);}}} />
-                                                                               <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
-                                                                           </div>
+                                                                        <div style={{width:"20em"}}>
+                                                                            <div className="form-group">
+                                                                                <div className="input-group mb-2">
+                                                                                    <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
+                                                                                        <i className="fa fa-copy"/>
+                                                                                    </div></div>
+                                                                                    <input minLength="4" maxLength="5" type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={v.amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i,note);}}} />
+                                                                                    <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
+                                                                                </div>
+                                                                                <small style={{color:"red",float:"left"}}>{note}</small>
+                                                                            </div>
+                                                                        </div>
 
-                                                                           {/*{*/}
-                                                                             {/*parseFloat(this.state.data[i].amount)<parseFloat(0.025)?(<small>tidak boleh</small>):(parseFloat(this.state.data[i].amount)>parseFloat(0.25)?<small>tidak boleh</small>:"")*/}
-                                                                           {/*}*/}
-                                                                           <small style={{color:"red",float:"left"}}>{note}</small>
-                                                                       </div>
-                                                                        {/*{*/}
-                                                                        {/*v.status===0?(*/}
-                                                                        {/*<div className="input-group mb-2">*/}
-                                                                        {/*<div className="input-group-prepend"><div className="input-group-text">*/}
-                                                                        {/*<i className="fa fa-copy"/>*/}
-                                                                        {/*</div></div>*/}
-                                                                        {/*<input type="text" className="form-control form-control-sm" name="monthly_profit" value={""} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />*/}
-                                                                        {/*<div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red"}}>{v.coin}</small></div></div>*/}
-                                                                        {/*</div>*/}
-                                                                        {/*):(*/}
-                                                                        {/*{copyTxt(parseFloat(v.amount).toFixed(8))}*/}
-                                                                        {/*// <span style={{color:"red"}}>({v.coin})</span>*/}
-                                                                        {/*)*/}
-                                                                        {/*}*/}
+
 
 
                                                                     </td>
@@ -320,8 +305,8 @@ class Deposit extends Component{
                                                                 </tr>
                                                             )
                                                         })
-                                                        : <tr><td colSpan={8} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                                        : <tr><td colSpan={8} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                                        : <tr><td colSpan={8} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                                        : <tr><td colSpan={8} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
                                                 ) : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
@@ -345,7 +330,7 @@ class Deposit extends Component{
                                         </tbody>
                                     </table>
                                 </div>
-                                <div style={{"marginTop":"20px","float":"right"}}>
+                                <div style={{"marginTop":"20px","marginBottom":"20px","float":"right"}}>
                                     <Paginationq
                                         current_page={current_page}
                                         per_page={per_page}

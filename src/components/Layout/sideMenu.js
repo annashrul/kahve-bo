@@ -25,7 +25,6 @@ class SideMenu extends Component {
 
     changeMenu(e,param){
         e.preventDefault();
-        console.log(param)
 
         if(param === 'isPengguna'){
             this.setState({
@@ -95,7 +94,6 @@ class SideMenu extends Component {
     };
     render() {
         const path = this.props.location.pathname;
-        console.log(path.split("/"));
         let pathArray=path.split("/");
         let sub = pathArray.length;
         let isActiveInv=false;
@@ -112,8 +110,6 @@ class SideMenu extends Component {
                 isActiveWit=true;
             }
         }
-        console.log(pathArray);
-        console.log(sub);
         return (
             <nav>
                 <ul className="sidebar-menu" data-widget="tree">

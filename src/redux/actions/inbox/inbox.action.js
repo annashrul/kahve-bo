@@ -90,9 +90,12 @@ export const putInbox = (data,id) => {
                 if (data.status === 'success') {
                     dispatch(setIsError(true));
                     dispatch(FetchInbox('page=1&perpage=5&q='+id));
-                    console.log("success");
                 } else {
-                    console.log("error");
+                    Swal.fire({
+                        title: 'failed',
+                        icon: 'error',
+                        text: NOTIF_ALERT.FAILED,
+                    });
                 }
                 dispatch(setLoadingPost(false));
 

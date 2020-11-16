@@ -59,7 +59,6 @@ class Dashboard extends Component {
                     stacked: true,
                     events: {
                         selection: function (chart, e) {
-                            console.log(new Date(e.xaxis.min))
                         }
                     },
                 },
@@ -90,12 +89,10 @@ class Dashboard extends Component {
         };
 
         socket.on('refresh_dashboard',(data)=>{
-            console.log(data);
             this.refreshData();
         })
         
         socket.on("set_dashboard", (data) => {
-            console.log(data);
             this.setState({
                 series:data.series,
                 totalBalance:data.total_balance,
@@ -120,7 +117,6 @@ class Dashboard extends Component {
 
 
     componentWillReceiveProps = (nextProps) => {
-        console.log("CHECKING DAILY",nextProps.skipped)
         this.setState({
             isDaily:nextProps.skipped
         })

@@ -53,7 +53,6 @@ class Header extends Component {
 
         }
         socket.on('set_notif',(data)=>{
-            console.log("set_notif",data);
             let investData=[];
             let withdrawData=[];
             let userData=[];
@@ -79,7 +78,6 @@ class Header extends Component {
             // this.refreshDat/**/a();
         });
         socket.on('refresh_notif',(data)=>{
-            console.log("refresh_notif",data.invest);
             const audioEl = document.getElementsByClassName("audio-element")[0];
             audioEl.play()
             this.refreshData();
@@ -127,7 +125,6 @@ class Header extends Component {
     }
 
     refreshData(){
-        console.log("naon")
         socket.emit('get_notif', {})
         // this.forceUpdate();
     }
@@ -205,7 +202,6 @@ class Header extends Component {
     }
 
     handleUpdate=(e,id,param)=>{
-        console.log(id);
         e.preventDefault();
         this.props.putInbox({status:1},id);
         this.refreshData();
@@ -230,7 +226,6 @@ class Header extends Component {
         })
     }
     render() {
-        console.log("NOTIFIKASI",this.state.isNotif);
         const columnStyle ={verticalAlign: "middle", textAlign: "left",whiteSpace: "nowrap"};
 
         const {isShowNotif,isDay,isNotif} = this.state;
@@ -273,11 +268,13 @@ class Header extends Component {
                 <div className="right-side-navbar d-flex align-items-center justify-content-end">
                     {/* <!-- Mobile AREAAAAAA --> */}
                     <div className="right-side-trigger" style={{width:'unset',height:'unset',marginRight:'unset'}} >
-                        <li className="nav-item dropdown"  style={{listStyleType:'none', float:"left"}}>
-                            <UncontrolledButtonDropdown nav inNavbar>
-                                <DropdownToggle caret inNavbar className="nohover">
-                                    <i className="fa fa-bell-o"/>
-                                    <span className="badge badge-xs badge-pill badge-primary inbox">
+
+                        <ul className={"right-side-content d-flex align-items-center"}>
+                            <li className="nav-item dropdown"  style={{listStyleType:'none', float:"left"}}>
+                                <UncontrolledButtonDropdown nav>
+                                    <DropdownToggle caret className="nohover">
+                                        <i className="fa fa-bell-o"/>
+                                        <span className="badge badge-xs badge-pill badge-primary inbox">
                                         {
                                             (
                                                 this.state.invest.length+
@@ -287,186 +284,164 @@ class Header extends Component {
                                             )
                                         }
                                     </span>
-                                </DropdownToggle>
-                                <DropdownMenu right>
-                                    <div className="top-message-area">
-                                        <div className="top-message-heading">
-                                            <div className="heading-title">
-                                                <h6>Notification</h6>
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <div className="top-message-area">
+                                            <div className="top-message-heading">
+                                                <div className="heading-title">
+                                                    <h6>Notification</h6>
+                                                </div>
+                                                <span>{
+                                                    (
+                                                        this.state.invest.length+
+                                                        this.state.withdraw.length+
+                                                        this.state.user.length+
+                                                        this.state.contact.length
+                                                    )
+                                                } New</span>
                                             </div>
-                                            <span>{
-                                                (
-                                                    this.state.invest.length+
-                                                    this.state.withdraw.length+
-                                                    this.state.user.length+
-                                                    this.state.contact.length
-                                                )
-                                            } New</span>
-                                        </div>
-                                        <br/>
-                                        <div className="row" id="toggleInvestM" style={{cursor:"pointer"}} onClick={(e)=>this.handleSetHeight(e,'invest')}>
-                                            <div className="col-10 col-xs-10 col-md-10" onClick={(e)=>this.handleSetHeight(e,'invest')}>
-                                                <h6 style={{textAlign:"left",marginLeft:"5px",color:"green"}}>INVESTEMENT <span className="badge badge-danger">{this.state.invest.length}</span></h6>
+                                            <br/>
+                                            <div className="row" id="toggleInvestM" style={{cursor:"pointer"}} onClick={(e)=>this.handleSetHeight(e,'invest')}>
+                                                <div className="col-10 col-xs-10 col-md-10" onClick={(e)=>this.handleSetHeight(e,'invest')}>
+                                                    <h6 style={{textAlign:"left",marginLeft:"5px",color:"green"}}>INVESTEMENT <span className="badge badge-danger">{this.state.invest.length}</span></h6>
+                                                </div>
+                                                <div className="col-2 col-xs-2 col-md-2">
+                                                    <i className="fa fa-sort-down"/>
+                                                </div>
                                             </div>
-                                            <div className="col-2 col-xs-2 col-md-2">
-                                                <i className="fa fa-sort-down"/>
-                                            </div>
-                                        </div>
-                                        <UncontrolledCollapse toggler="#toggleInvestM" style={{marginLeft:"5px",marginRight:"5px",overflowY: "auto",height:`${this.state.isSetHeightInvest===false?"0px":(this.state.invest.length>4?(this.state.isSetHeightInvest===false?"0px":"200px"):"auto")}`}}>
-                                            {
-                                                this.state.invest.map((v,i)=>{
-                                                    return (
-                                                        <table className="table table-hover" key={i}>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td className="text-black" style={columnStyle}>
-                                                                    {v.name} -
-                                                                    &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
-                                                                    <small style={{color:"green"}}>{v.kd_trx}</small><br/>
-                                                                    <small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-
-
-                                                    );
-                                                })
-                                            }
-                                        </UncontrolledCollapse>
-
-                                        <div className="row" id="toggleWithdrawM" style={{cursor:"pointer"}} onClick={(e)=>this.handleSetHeight(e,'withdraw')}>
-                                            <div className="col-10 col-xs-10 col-md-10">
-                                                <h6 style={{textAlign:"left",marginLeft:"5px",color:"green"}}>WITHDRAW <span className="badge badge-danger">{this.state.withdraw.length}</span></h6>
-                                            </div>
-                                            <div className="col-2 col-xs-2 col-md-2">
-                                                <i className="fa fa-sort-down"/>
-                                            </div>
-                                        </div>
-                                        <UncontrolledCollapse toggler="#toggleWithdrawM" style={{overflowY: "auto",height:`${this.state.isSetHeightWithdraw===false?"0px":(this.state.withdraw.length>4?(this.state.isSetHeightWithdraw===false?"0px":"200px"):"auto")}`}}>
-
-                                        {/*<div style={{overflowY: "auto",height:`${this.state.isSetHeightWithdraw===false?"0px":(this.state.withdraw.length>4?(this.state.isSetHeightWithdraw===false?"0px":"200px"):"auto")}`}}>*/}
-
-                                            {
-                                                this.state.withdraw.map((v,i)=>{
-                                                    return (
-                                                        <table className="table table-hover" key={i}>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td className="text-black" style={columnStyle}>
-                                                                    {v.users} -
-                                                                    &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.kd_trx}</small><br/><small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small></td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-
-
-                                                    );
-                                                })
-                                            }
-                                        {/*</div>*/}
-                                        </UncontrolledCollapse>
-
-
-                                        <div className="row" id="toggleUserM" style={{cursor:"pointer"}} onClick={(e)=>this.handleSetHeight(e,'user')}>
-                                            <div className="col-10 col-xs-10 col-md-10">
-                                                <h6 style={{textAlign:"left",marginLeft:"5px",color:"green"}}>USER <span className="badge badge-danger">{this.state.user.length}</span></h6>
-                                            </div>
-                                            <div className="col-2 col-xs-2 col-md-2">
-                                                <i className="fa fa-sort-down"/>
-                                            </div>
-                                        </div>
-                                        <UncontrolledCollapse toggler="#toggleUserM" style={{overflowY: "auto",height:`${this.state.isSetHeightUser===false?"auto":"200px"}`}}>
-                                        {
-                                            this.state.user.map((v,i)=>{
-                                                return (
-                                                    <table className="table table-hover" key={i}>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td className="text-black" style={columnStyle}>
-                                                                <Link to={`/user`}>
-                                                                    {v.name.length>20?v.name.substr(0,20)+"..":v.name} -
-                                                                    &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
-                                                                    <small style={{color:"green"}}>{v.email}</small>
-                                                                </Link>
-                                                            </td>
-                                                            {/*<td className="text-black" style={columnStyle}>{v.name.length>20?v.name.substr(0,20)+"..":v.name} - <small>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.email}</small></td>*/}
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-
-                                                );
-                                            })
-                                        }
-                                        </UncontrolledCollapse>
-
-                                        <div className="row" id="toggleContactM" style={{cursor:"pointer"}} onClick={(e)=>this.handleSetHeight(e,'contact')}>
-                                            <div className="col-10 col-xs-10 col-md-10">
-                                                <h6 style={{textAlign:"left",marginLeft:"5px",color:"green"}}>CONTACT <span className="badge badge-danger">{this.state.contact.length}</span></h6>
-                                            </div>
-                                            <div className="col-2 col-xs-2 col-md-2">
-                                                <i className="fa fa-sort-down"/>
-                                            </div>
-                                        </div>
-                                        <UncontrolledCollapse toggler="#toggleContactM" style={{overflowY: "auto",height:`${this.state.isSetHeightContact===false?"0px":(this.state.contact.length>4?(this.state.isSetHeightContact===false?"0px":"200px"):"auto")}`}} >
-
-                                            {
-                                                this.state.contact.map((v,i)=>{
-                                                    return (
-                                                        <table className="table table-hover"key={i}>
-                                                            <tbody>
-                                                            <tr onClick={(e)=>this.handleUpdate(e,v.id,'contact')}>
-                                                                <Link to={`/contact/${v.id}`}>
+                                            <UncontrolledCollapse toggler="#toggleInvestM" style={{marginLeft:"5px",marginRight:"5px",overflowY: "auto",height:`${this.state.isSetHeightInvest===false?"0px":(this.state.invest.length>4?(this.state.isSetHeightInvest===false?"0px":"200px"):"auto")}`}}>
+                                                {
+                                                    this.state.invest.map((v,i)=>{
+                                                        return (
+                                                            <table className="table table-hover" key={i}>
+                                                                <tbody>
+                                                                <tr>
                                                                     <td className="text-black" style={columnStyle}>
-                                                                        {v.name.length>20?v.name.substr(0,20)+"..":v.name} -
+                                                                        {v.name} -
                                                                         &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
-                                                                        <small style={{color:"green"}}>{v.title}</small>
+                                                                        <small style={{color:"green"}}>{v.kd_trx}</small><br/>
+                                                                        <small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small>
                                                                     </td>
-                                                                </Link>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
 
 
-                                                    );
-                                                })
-                                            }
-                                        </UncontrolledCollapse>
-                                    </div>
-                                </DropdownMenu>
-                            </UncontrolledButtonDropdown>
-                        </li>
-                        {/*<li className="nav-item dropdown" style={{listStyleType:'none'}}>*/}
-                            {/*<UncontrolledButtonDropdown nav inNavbar>*/}
-                                {/*<DropdownToggle caret inNavbar className="nohover">*/}
-                                    {/*<img src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>*/}
-                                {/*</DropdownToggle>*/}
-                                {/*<DropdownMenu right>*/}
-                                    {/*<div className="user-profile-area">*/}
-                                        {/*<div className="user-profile-heading">*/}
-                                            {/*<div className="profile-img">*/}
-                                                {/*<img className="chat-img mr-2" src={this.props.auth.user.foto} onError={(e)=>{e.target.onerror = null; e.target.src=`${Default}`}}  alt=""/>*/}
-                                            {/*</div>*/}
-                                            {/*<div className="profile-text">*/}
-                                                {/*<h6>{this.props.auth.user.name}</h6>*/}
-                                                {/*<span>{this.props.auth.user.email}</span>*/}
-                                            {/*</div>*/}
-                                        {/*</div>*/}
-                                        {/*<DropdownItem  onClick={this.handleLogout}>*/}
-                                            {/*<i className="fa fa-chain-broken profile-icon bg-warning" aria-hidden="true"/> Sign-out*/}
-                                        {/*</DropdownItem>*/}
-                                    {/*</div>*/}
-                                {/*</DropdownMenu>*/}
-                            {/*</UncontrolledButtonDropdown>*/}
-                        {/*</li>*/}
+                                                        );
+                                                    })
+                                                }
+                                            </UncontrolledCollapse>
+
+                                            <div className="row" id="toggleWithdrawM" style={{cursor:"pointer"}} onClick={(e)=>this.handleSetHeight(e,'withdraw')}>
+                                                <div className="col-10 col-xs-10 col-md-10">
+                                                    <h6 style={{textAlign:"left",marginLeft:"5px",color:"green"}}>WITHDRAW <span className="badge badge-danger">{this.state.withdraw.length}</span></h6>
+                                                </div>
+                                                <div className="col-2 col-xs-2 col-md-2">
+                                                    <i className="fa fa-sort-down"/>
+                                                </div>
+                                            </div>
+                                            <UncontrolledCollapse toggler="#toggleWithdrawM" style={{overflowY: "auto",height:`${this.state.isSetHeightWithdraw===false?"0px":(this.state.withdraw.length>4?(this.state.isSetHeightWithdraw===false?"0px":"200px"):"auto")}`}}>
+
+                                                {/*<div style={{overflowY: "auto",height:`${this.state.isSetHeightWithdraw===false?"0px":(this.state.withdraw.length>4?(this.state.isSetHeightWithdraw===false?"0px":"200px"):"auto")}`}}>*/}
+
+                                                {
+                                                    this.state.withdraw.map((v,i)=>{
+                                                        return (
+                                                            <table className="table table-hover" key={i}>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td className="text-black" style={columnStyle}>
+                                                                        {v.users} -
+                                                                        &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.kd_trx}</small><br/><small style={{color:"black"}}>{parseFloat(v.amount).toFixed(8)}</small></td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+
+
+                                                        );
+                                                    })
+                                                }
+                                                {/*</div>*/}
+                                            </UncontrolledCollapse>
+
+
+                                            <div className="row" id="toggleUserM" style={{cursor:"pointer"}} onClick={(e)=>this.handleSetHeight(e,'user')}>
+                                                <div className="col-10 col-xs-10 col-md-10">
+                                                    <h6 style={{textAlign:"left",marginLeft:"5px",color:"green"}}>USER <span className="badge badge-danger">{this.state.user.length}</span></h6>
+                                                </div>
+                                                <div className="col-2 col-xs-2 col-md-2">
+                                                    <i className="fa fa-sort-down"/>
+                                                </div>
+                                            </div>
+                                            <UncontrolledCollapse toggler="#toggleUserM" style={{overflowY: "auto",height:`${this.state.isSetHeightUser===false?"auto":"200px"}`}}>
+                                                {
+                                                    this.state.user.map((v,i)=>{
+                                                        return (
+                                                            <table className="table table-hover" key={i}>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td className="text-black" style={columnStyle}>
+                                                                        <Link to={`/user`}>
+                                                                            {v.name.length>20?v.name.substr(0,20)+"..":v.name} -
+                                                                            &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
+                                                                            <small style={{color:"green"}}>{v.email}</small>
+                                                                        </Link>
+                                                                    </td>
+                                                                    {/*<td className="text-black" style={columnStyle}>{v.name.length>20?v.name.substr(0,20)+"..":v.name} - <small>{moment(v.created_at).fromNow()}</small><br/><small style={{color:"green"}}>{v.email}</small></td>*/}
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                        );
+                                                    })
+                                                }
+                                            </UncontrolledCollapse>
+
+                                            <div className="row" id="toggleContactM" style={{cursor:"pointer"}} onClick={(e)=>this.handleSetHeight(e,'contact')}>
+                                                <div className="col-10 col-xs-10 col-md-10">
+                                                    <h6 style={{textAlign:"left",marginLeft:"5px",color:"green"}}>CONTACT <span className="badge badge-danger">{this.state.contact.length}</span></h6>
+                                                </div>
+                                                <div className="col-2 col-xs-2 col-md-2">
+                                                    <i className="fa fa-sort-down"/>
+                                                </div>
+                                            </div>
+                                            <UncontrolledCollapse toggler="#toggleContactM" style={{overflowY: "auto",height:`${this.state.isSetHeightContact===false?"0px":(this.state.contact.length>4?(this.state.isSetHeightContact===false?"0px":"200px"):"auto")}`}} >
+
+                                                {
+                                                    this.state.contact.map((v,i)=>{
+                                                        return (
+                                                            <table className="table table-hover"key={i}>
+                                                                <tbody>
+                                                                <tr onClick={(e)=>this.handleUpdate(e,v.id,'contact')}>
+                                                                    <Link to={`/contact/${v.id}`}>
+                                                                        <td className="text-black" style={columnStyle}>
+                                                                            {v.name.length>20?v.name.substr(0,20)+"..":v.name} -
+                                                                            &nbsp;<small style={{color:"#FC8213"}}>{moment(v.created_at).fromNow()}</small><br/>
+                                                                            <small style={{color:"green"}}>{v.title}</small>
+                                                                        </td>
+                                                                    </Link>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+
+
+                                                        );
+                                                    })
+                                                }
+                                            </UncontrolledCollapse>
+                                        </div>
+                                    </DropdownMenu>
+                                </UncontrolledButtonDropdown>
+                            </li>
+                        </ul>
                     </div>
                     {/* <!-- END Mobile AREAAAAAA --> */}
 
                     {/* <!-- Top Bar Nav --> */}
                     <ul className={"right-side-content d-flex align-items-center " + (this.state.toggleMobileNav === true? "active":"")}>
                         <li className="nav-item dropdown">
-                            <UncontrolledButtonDropdown nav inNavbar>
-                                <DropdownToggle caret inNavbar className="nohover">
+                            <UncontrolledButtonDropdown nav>
+                                <DropdownToggle caret className="nohover">
                                     <i className="fa fa-bell-o"/>
                                     <span className="badge badge-pill badge-primary inbox ml-0">
                                         {
