@@ -63,8 +63,8 @@ class DetailUser extends Component{
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.detail !== prevProps.detail) {
-            this.props.dispatch(FetchDetailUser(this.props.detail.id));
+        if (this.props.detailUser !== prevProps.detailUser) {
+            this.props.dispatch(FetchDetailUser(this.props.detailUser.id));
         }
     }
     componentWillReceiveProps(nextProps){
@@ -132,7 +132,7 @@ class DetailUser extends Component{
 
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "detailUser"} size="lg"  className="custom-map-modal">
-                <ModalHeader toggle={this.toggle}>Detail User {this.props.dataDetail.name}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>Detail User {this.props.detailUser.name}</ModalHeader>
                 <ModalBody>
                     <div style={{overflowX: "auto"}}>
                         <table className="table table-hover">

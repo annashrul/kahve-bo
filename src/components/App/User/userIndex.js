@@ -9,13 +9,10 @@ import {
 } from "../../../redux/actions/user/user.action";
 import FormUser from "../../App/modals/user/form_user";
 import DetailUser from "../../App/modals/user/detail_user";
-import Paginationq, {copyTxt, statusQ, ToastQ} from "../../../helper";
-import {noImage} from "../../../helper";
+import Paginationq, {copyTxt, statusQ} from "../../../helper";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
-import moment from "moment";
-import {CopyToClipboard} from "react-copy-to-clipboard";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {BrowserView, MobileView} from "react-device-detect";
 
@@ -29,18 +26,51 @@ class User extends Component{
         this.state={
             detail:{},
             detail_:{},
+            dataEmail:[],
             status:"",
             formatEmail:"",
             email:"",
-            perpage:0,
-            lastpage:0,
             any:"",
         }
     }
-    componentDidUpdate(prevProps) {
+    getProps(param){
+        let data = [];let data1=[];
+        if(param.dataAll!==undefined){
+            // this.launchEmail();
+            if(param.dataAll.data!==undefined){
+                if(param.dataAll.data.length>0){
+                    param.dataAll.data.map((v,i)=>{
+                        data.push(v.email);
+                        // hasId = true;
+                        // return;
+                        // exit;
+                    });
+                    // if(data!==[]){
+                    //     window.location = `mailto:${data.toString()}`;
+                    //     // return;
+                    // }
+                    // this.setState({dataEmail:data});
+                }
+                // this.launcEmail();
+            }
+
+        }
+        if(data!==[]){
+            if(data.toString()!==''){
+                window.location = `mailto:${data.toString()}`;
+            }
+            this.props.dispatch(setUserListAll([]));
+        }
+        // return data;
+    }
+
+    componentDidUpdate(prevProps,nextProps) {
         if (prevProps.match.params.id !== this.props.match.params.id) {
             this.forceUpdate();
             this.props.dispatch(FetchUser("page=1&q="+this.props.match.params.id));
+        }
+        if(prevProps.dataAll!==undefined){
+            this.getProps(prevProps);
         }
     }
 
@@ -53,13 +83,7 @@ class User extends Component{
             this.props.dispatch(FetchUser('page=1'));
         }
     }
-    componentDidMount(){
-        this.setState({
-            perpage:this.props.data.per_page,
-            lastpage:this.props.data.last_page,
-            // email:data.toString()
-        });
-    }
+
     handleModal(e,param) {
         e.preventDefault();
         const bool = !this.props.isOpen;
@@ -96,35 +120,13 @@ class User extends Component{
         this.props.dispatch(setUserListAll([]));
     }
 
-    componentWillReceiveProps(nextProps){
-        let data = [];
-        if(nextProps.dataAll!==undefined){
-            console.log("ie nextprops", nextProps);
-            if(nextProps.dataAll.data!==undefined){
-                if(nextProps.dataAll.data.length>0){
-                    nextProps.dataAll.data.map((v,i)=>{
-                        data.push(v.email);
-                    });
-                    console.log("IEU DATA EMAIL",data);
-                    window.location = `mailto:${data.toString()}`;
-                }
-            }
 
-        }
-        else{
-            Swal.fire({
-                title: 'failed',
-                icon: 'error',
-                text: NOTIF_ALERT.FAILED,
-            });
-        }
-    }
 
     handleDetail(e,param) {
         e.preventDefault();
-        // this.props.dispatch(setUserListAll([]));
+        this.props.dispatch(setUserListAll([]));
         // this.props.dispatch(FetchDetailUser(param));
-        this.setState({detail_:{id:param}});
+        this.setState({detail_:{id:param.id,name:param.name}});
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("detailUser"));
@@ -176,9 +178,9 @@ class User extends Component{
         localStorage.setItem("pagePengguna",pageNumber);
         let where = this.handleValidate();
         this.props.dispatch(FetchUser(where));
-        this.props.dispatch(setUserListAll([]));
     }
     handleValidate(){
+        this.props.dispatch(setUserListAll([]));
         let where="";
         let page = localStorage.getItem("pagePengguna");
         let any = this.state.any;
@@ -208,6 +210,8 @@ class User extends Component{
         this.props.dispatch(FetchAllUser(`page=1&perpage=${perpage*lastpage}`));
     }
 
+
+
     render(){
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const rightStyle = {verticalAlign: "middle", textAlign: "right",whiteSpace: "nowrap"};
@@ -228,7 +232,7 @@ class User extends Component{
                 <div className="row align-items-center">
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
-                            <h5 className="mb-0 font-weight-bold">Member</h5>
+                            <h5 className="mb-0 font-weight-bold">Member {this.state.dataEmail.toString()}</h5>
                         </div>
                     </div>
                     {/* Dashboard Info Area */}
@@ -253,6 +257,7 @@ class User extends Component{
                                     <div className="col-10 col-xs-10 col-md-3">
                                         <div className="form-group">
                                             <label>Write something here ..</label>
+
                                             <input type="text" className="form-control" name="any" placeholder={"search by wallet address,name,email"} value={this.state.any} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSearch(event);}}}/>
                                         </div>
                                     </div>
@@ -260,7 +265,14 @@ class User extends Component{
                                     <div className="col-1 col-xs-1 col-md-4">
                                         <BrowserView>
                                             <div className="form-group">
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                {
+                                                    !this.props.isLoading?(
+                                                        <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
+                                                    ):(
+                                                        <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+
+                                                    )
+                                                }
                                                 {
                                                     this.props.isLoadingSend?(
 
@@ -346,7 +358,7 @@ class User extends Component{
                                                                 <tr key={i} style={{backgroundColor:this.props.match.params.id===v.id?"#eeeeee":""}}>
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                                     <td style={columnStyle}>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
+                                                                        <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,{"id":v.id,"name":v.name})}><i className={"fa fa-eye"}/></button>
                                                                         <button style={{marginRight:"5px"}} className={`btn ${isColor} btn-sm`} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name,"regist":v.regist_token})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
                                                                         <a style={{marginRight:"5px"}} href={`mailto:${v.email}`} className="btn btn-primary btn-sm"><i className="fa fa-send"/></a>
 
@@ -435,7 +447,7 @@ class User extends Component{
                     </div>
                 </div>
                 <FormUser detail={this.state.detail} isAdmin={0}/>
-                <DetailUser detail={this.state.detail_}/>
+                <DetailUser detailUser={this.state.detail_}/>
             </Layout>
         );
     }

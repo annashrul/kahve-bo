@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d1e4ad1b-e693-4a35-9562-d95ffc171052" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Transaction/transactionIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Transaction/transactionIndex.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Setting/settingIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Setting/settingIndex.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/User/userIndex.js" afterPath="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/transaction/detail_transaction.js" afterPath="$PROJECT_DIR$/src/components/App/modals/transaction/detail_transaction.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" afterPath="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,43 +19,56 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="detail_transaction.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/App/modals/transaction/detail_transaction.js">
+      <file leaf-file-name="userIndex.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-272">
-              <caret line="95" column="30" lean-forward="true" selection-start-line="95" selection-start-column="30" selection-end-line="95" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="transactionIndex.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/App/Transaction/transactionIndex.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="258" column="5" lean-forward="true" selection-start-line="258" selection-start-column="5" selection-end-line="258" selection-end-column="5" />
+            <state relative-caret-position="206">
+              <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
               <folding>
-                <element signature="n#!!block;n#handleValidate#0;n#Transaction#0" expanded="false" />
-                <element signature="n#!!block;n#handleSearch#0;n#Transaction#0" expanded="false" />
+                <element signature="e#0#38#0" expanded="true" />
+                <element signature="e#1410#2084#0" expanded="false" />
+                <element signature="n#!!block;n#componentWillMount#0;n#User#0" expanded="false" />
+                <element signature="n#!!block;n#handleModal#0;n#User#0" expanded="false" />
+                <element signature="n#!!block;n#componentWillUnmount#0;n#User#0" expanded="false" />
+                <element signature="n#!!block;n#handleIsActive#0;n#User#0" expanded="false" />
+                <element signature="n#!!block;n#handleZoom#0;n#User#0" expanded="false" />
+                <element signature="e#5806#6042#0" expanded="false" />
+                <marker date="1605510007299" expanded="true" signature="4618:4627" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="userIndex.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
+      <file leaf-file-name="detail_user.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/App/modals/user/detail_user.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="278" column="206" lean-forward="false" selection-start-line="278" selection-start-column="206" selection-end-line="278" selection-end-column="206" />
+            <state relative-caret-position="177">
+              <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+              <folding>
+                <element signature="e#2990#3131#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settingIndex.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/App/Setting/settingIndex.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="167" column="42" lean-forward="true" selection-start-line="167" selection-start-column="42" selection-end-line="167" selection-end-column="42" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
-                <element signature="n#!!block;n#handleModal#0;n#User#0" expanded="false" />
-                <element signature="n#!!block;n#handleIsActive#0;n#User#0" expanded="false" />
-                <element signature="n#!!block;n#handleZoom#0;n#User#0" expanded="false" />
-                <element signature="e#5771#6007#0" expanded="false" />
-                <element signature="n#!!block;n#handleValidate#0;n#User#0" expanded="false" />
-                <element signature="n#!!block;n#handleSearch#0;n#User#0" expanded="false" />
-                <marker date="1605506543372" expanded="true" signature="4583:4592" ph="..." />
+                <element signature="n#!!block;n#handleFile1#0;n#Setting#0" expanded="false" />
+                <element signature="e#3750#3986#0" expanded="false" />
+                <element signature="e#8231#14969#0" expanded="false" />
+                <element signature="e#8411#9341#0" expanded="false" />
+                <element signature="e#9386#10314#0" expanded="false" />
+                <element signature="e#10359#11495#0" expanded="false" />
+                <element signature="e#17228#17418#0" expanded="false" />
+                <element signature="e#17459#18666#0" expanded="false" />
+                <element signature="e#18707#19284#0" expanded="false" />
+                <element signature="e#28146#29119#0" expanded="false" />
+                <element signature="e#29278#30228#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -97,9 +110,11 @@
       <find>scrollPage</find>
       <find>wallet</find>
       <find>console.</find>
-      <find>console</find>
       <find>send to all</find>
       <find>sche</find>
+      <find>perpage</find>
+      <find>componentDidUpdate</find>
+      <find>console</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -136,7 +151,6 @@
         <option value="$PROJECT_DIR$/src/components/App/Dashboard/Dashboard.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/inbox/form_inbox.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/log/detail_log_activity.js" />
-        <option value="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" />
         <option value="$PROJECT_DIR$/src/components/Layout/sideMenu.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/deposit/deposit.action.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/inbox/inbox.action.js" />
@@ -155,10 +169,11 @@
         <option value="$PROJECT_DIR$/src/components/App/Log/logTransaction.js" />
         <option value="$PROJECT_DIR$/src/components/App/Log/logActivity.js" />
         <option value="$PROJECT_DIR$/src/components/App/Log/logAuth.js" />
-        <option value="$PROJECT_DIR$/src/components/App/Setting/settingIndex.js" />
-        <option value="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/Transaction/transactionIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/transaction/detail_transaction.js" />
+        <option value="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
+        <option value="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" />
+        <option value="$PROJECT_DIR$/src/components/App/Setting/settingIndex.js" />
       </list>
     </option>
   </component>
@@ -273,6 +288,15 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="modals" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="Penarikan" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -377,12 +401,12 @@
       <workItem from="1605247369877" duration="18526000" />
       <workItem from="1605341334709" duration="6321000" />
       <workItem from="1605353067743" duration="3526000" />
-      <workItem from="1605505255556" duration="1317000" />
+      <workItem from="1605505255556" duration="4835000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="235891000" />
+    <option name="totallyTimeSpent" value="239409000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -423,7 +447,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/App/Setting/settingIndex.js</url>
-          <line>482</line>
+          <line>480</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -546,18 +570,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
           <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/modals/user/detail_user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-          <folding>
-            <element signature="e#2548#2739#0" expanded="false" />
-            <element signature="n#!!block;n#calculateCountdown#0;n#DetailUser#0" expanded="false" />
-            <element signature="n#!!block;n#addLeadingZeros#0;n#DetailUser#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -741,6 +753,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1728">
           <caret line="111" column="47" lean-forward="false" selection-start-line="111" selection-start-column="47" selection-end-line="111" selection-end-column="47" />
+          <folding>
+            <element signature="e#5797#7806#0" expanded="false" />
+            <element signature="e#7856#9851#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -813,7 +829,7 @@
         <state relative-caret-position="3264">
           <caret line="303" column="65" lean-forward="false" selection-start-line="303" selection-start-column="65" selection-end-line="303" selection-end-column="65" />
           <folding>
-            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#0#38#0" expanded="false" />
             <element signature="e#8412#17389#0" expanded="false" />
             <element signature="e#13331#17334#0" expanded="false" />
           </folding>
@@ -828,44 +844,6 @@
             <element signature="n#!!block;n#componentWillMount#0;n#LogAuth#0" expanded="false" />
             <element signature="n#!!block;n#handlePageChange#0;n#LogAuth#0" expanded="false" />
             <element signature="e#2149#2222#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/Setting/settingIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="20" column="24" lean-forward="true" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <element signature="n#!!block;n#handleFile1#0;n#Setting#0" expanded="false" />
-            <element signature="e#3750#3986#0" expanded="false" />
-            <element signature="e#8346#15084#0" expanded="false" />
-            <element signature="e#8526#9456#0" expanded="false" />
-            <element signature="e#9501#10429#0" expanded="false" />
-            <element signature="e#10474#11610#0" expanded="false" />
-            <element signature="e#17343#17533#0" expanded="false" />
-            <element signature="e#17574#18781#0" expanded="false" />
-            <element signature="e#18822#19399#0" expanded="false" />
-            <element signature="e#28261#29234#0" expanded="false" />
-            <element signature="e#29393#30343#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="278" column="206" lean-forward="false" selection-start-line="278" selection-start-column="206" selection-end-line="278" selection-end-column="206" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <element signature="n#!!block;n#handleModal#0;n#User#0" expanded="false" />
-            <element signature="n#!!block;n#handleIsActive#0;n#User#0" expanded="false" />
-            <element signature="n#!!block;n#handleZoom#0;n#User#0" expanded="false" />
-            <element signature="e#5771#6007#0" expanded="false" />
-            <element signature="n#!!block;n#handleValidate#0;n#User#0" expanded="false" />
-            <element signature="n#!!block;n#handleSearch#0;n#User#0" expanded="false" />
-            <marker date="1605506543372" expanded="true" signature="4583:4592" ph="..." />
           </folding>
         </state>
       </provider>
@@ -886,6 +864,55 @@
         <state relative-caret-position="-272">
           <caret line="95" column="30" lean-forward="true" selection-start-line="95" selection-start-column="30" selection-end-line="95" selection-end-column="30" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#1410#2084#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillMount#0;n#User#0" expanded="false" />
+            <element signature="n#!!block;n#handleModal#0;n#User#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillUnmount#0;n#User#0" expanded="false" />
+            <element signature="n#!!block;n#handleIsActive#0;n#User#0" expanded="false" />
+            <element signature="n#!!block;n#handleZoom#0;n#User#0" expanded="false" />
+            <element signature="e#5806#6042#0" expanded="false" />
+            <marker date="1605510007299" expanded="true" signature="4618:4627" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/modals/user/detail_user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+          <folding>
+            <element signature="e#2990#3131#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/Setting/settingIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="167" column="42" lean-forward="true" selection-start-line="167" selection-start-column="42" selection-end-line="167" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="n#!!block;n#handleFile1#0;n#Setting#0" expanded="false" />
+            <element signature="e#3750#3986#0" expanded="false" />
+            <element signature="e#8231#14969#0" expanded="false" />
+            <element signature="e#8411#9341#0" expanded="false" />
+            <element signature="e#9386#10314#0" expanded="false" />
+            <element signature="e#10359#11495#0" expanded="false" />
+            <element signature="e#17228#17418#0" expanded="false" />
+            <element signature="e#17459#18666#0" expanded="false" />
+            <element signature="e#18707#19284#0" expanded="false" />
+            <element signature="e#28146#29119#0" expanded="false" />
+            <element signature="e#29278#30228#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

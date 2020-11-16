@@ -161,20 +161,18 @@ class Setting extends Component{
                                 <BrowserView>
                                     <div>
                                         {!this.props.isLoadingPost?(
-                                            <button className="btn btn-primary" onClick={this.handleSubmit}>Save</button>
+                                            <button className="btn btn-primary" onClick={this.handleSubmit}><i className="fa fa-send"/> Save</button>
                                         ):(
-                                            <button style={{marginTop:"27px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                            <button type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/> Loading ..</button>
                                         )}
                                     </div>
                                 </BrowserView>
                                 <MobileView>
                                     <div>
                                         {!this.props.isLoadingPost?(
-                                            <button type="button" className="btn btn-primary btn-fixed-bottom" onClick={this.handleSubmit}><i style={{fontSize:"30px"}} className="fa fa-send"/></button>
-
-                                            // <button className="btn btn-primary btn-fixed-bottom" onClick={this.handleSubmit}>Save</button>
+                                            <button type="button" className="btn btn-primary btn-fixed-bottom" onClick={this.handleSubmit}><i style={{fontSize:"20px"}} className="fa fa-send"/> Save</button>
                                         ):(
-                                            <button type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"30px"}} className="fa fa-circle-o-notch fa-spin"/></button>
+                                            <button type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"20px"}} className="fa fa-circle-o-notch fa-spin"/> Loading ..</button>
                                         )}
                                     </div>
                                 </MobileView>
