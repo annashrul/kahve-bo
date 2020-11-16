@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d1e4ad1b-e693-4a35-9562-d95ffc171052" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Setting/settingIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Setting/settingIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/User/userIndex.js" afterPath="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" afterPath="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/User/adminIndex.js" afterPath="$PROJECT_DIR$/src/components/App/User/adminIndex.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,11 +17,48 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="logActivity.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/App/Log/logActivity.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="198" column="48" lean-forward="true" selection-start-line="198" selection-start-column="48" selection-end-line="198" selection-end-column="48" />
+              <folding>
+                <element signature="e#13331#17334#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="402">
+              <caret line="212" column="0" lean-forward="true" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="adminIndex.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/App/User/adminIndex.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="64" column="0" lean-forward="true" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!block;n#handleModal#0;n#Admin#0" expanded="false" />
+                <element signature="e#1395#1955#0" expanded="false" />
+                <element signature="e#1465#1943#0" expanded="false" />
+                <element signature="e#13379#13822#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="userIndex.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+            <state relative-caret-position="48">
+              <caret line="360" column="178" lean-forward="false" selection-start-line="360" selection-start-column="0" selection-end-line="361" selection-end-column="0" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
                 <element signature="e#1410#2084#0" expanded="false" />
@@ -34,41 +69,6 @@
                 <element signature="n#!!block;n#handleZoom#0;n#User#0" expanded="false" />
                 <element signature="e#5806#6042#0" expanded="false" />
                 <marker date="1605510007299" expanded="true" signature="4618:4627" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="detail_user.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/App/modals/user/detail_user.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
-              <folding>
-                <element signature="e#2990#3131#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settingIndex.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/App/Setting/settingIndex.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="167" column="42" lean-forward="true" selection-start-line="167" selection-start-column="42" selection-end-line="167" selection-end-column="42" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-                <element signature="n#!!block;n#handleFile1#0;n#Setting#0" expanded="false" />
-                <element signature="e#3750#3986#0" expanded="false" />
-                <element signature="e#8231#14969#0" expanded="false" />
-                <element signature="e#8411#9341#0" expanded="false" />
-                <element signature="e#9386#10314#0" expanded="false" />
-                <element signature="e#10359#11495#0" expanded="false" />
-                <element signature="e#17228#17418#0" expanded="false" />
-                <element signature="e#17459#18666#0" expanded="false" />
-                <element signature="e#18707#19284#0" expanded="false" />
-                <element signature="e#28146#29119#0" expanded="false" />
-                <element signature="e#29278#30228#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -138,7 +138,6 @@
         <option value="$PROJECT_DIR$/src/redux/actions/faq/faq.action.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/setting/setting.action.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/transaction/transaction.action.js" />
-        <option value="$PROJECT_DIR$/src/components/App/User/adminIndex.js" />
         <option value="$PROJECT_DIR$/src/helper.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/coinType/form_coin_type.js" />
         <option value="$PROJECT_DIR$/src/components/App/Log/logIndex.js" />
@@ -162,7 +161,6 @@
         <option value="$PROJECT_DIR$/src/components/App/modals/user/form_user.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/faq/form_faq.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/user/user.action.js" />
-        <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/components/App/Penarikan/penarikanIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js" />
         <option value="$PROJECT_DIR$/src/redux/actions/_constants.js" />
@@ -174,6 +172,8 @@
         <option value="$PROJECT_DIR$/src/components/App/User/userIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/user/detail_user.js" />
         <option value="$PROJECT_DIR$/src/components/App/Setting/settingIndex.js" />
+        <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/src/components/App/User/adminIndex.js" />
       </list>
     </option>
   </component>
@@ -263,64 +263,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="Log" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="modals" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="modals" type="462c0819:PsiDirectoryNode" />
-              <item name="transaction" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="modals" type="462c0819:PsiDirectoryNode" />
-              <item name="user" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="Penarikan" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="Setting" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="Transaction" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="User" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -401,12 +343,12 @@
       <workItem from="1605247369877" duration="18526000" />
       <workItem from="1605341334709" duration="6321000" />
       <workItem from="1605353067743" duration="3526000" />
-      <workItem from="1605505255556" duration="4835000" />
+      <workItem from="1605505255556" duration="5868000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="239409000" />
+    <option name="totallyTimeSpent" value="240442000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -419,7 +361,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34703946" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34703946" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -466,19 +408,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/App/User/adminIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="202" column="101" lean-forward="false" selection-start-line="202" selection-start-column="101" selection-end-line="202" selection-end-column="101" />
-          <folding>
-            <element signature="n#!!block;n#handleModal#0;n#Admin#0" expanded="false" />
-            <element signature="e#1370#1930#0" expanded="false" />
-            <element signature="e#1440#1918#0" expanded="false" />
-            <element signature="e#13266#13709#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/redux/reducers/inbox/inbox.reducer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -775,13 +704,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="41" column="17" lean-forward="false" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/Deposit/depositIndex.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
@@ -824,18 +746,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/Log/logActivity.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3264">
-          <caret line="303" column="65" lean-forward="false" selection-start-line="303" selection-start-column="65" selection-end-line="303" selection-end-column="65" />
-          <folding>
-            <element signature="e#0#38#0" expanded="false" />
-            <element signature="e#8412#17389#0" expanded="false" />
-            <element signature="e#13331#17334#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/Log/logAuth.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4160">
@@ -867,24 +777,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <element signature="e#1410#2084#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillMount#0;n#User#0" expanded="false" />
-            <element signature="n#!!block;n#handleModal#0;n#User#0" expanded="false" />
-            <element signature="n#!!block;n#componentWillUnmount#0;n#User#0" expanded="false" />
-            <element signature="n#!!block;n#handleIsActive#0;n#User#0" expanded="false" />
-            <element signature="n#!!block;n#handleZoom#0;n#User#0" expanded="false" />
-            <element signature="e#5806#6042#0" expanded="false" />
-            <marker date="1605510007299" expanded="true" signature="4618:4627" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/App/modals/user/detail_user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
@@ -912,6 +804,55 @@
             <element signature="e#18707#19284#0" expanded="false" />
             <element signature="e#28146#29119#0" expanded="false" />
             <element signature="e#29278#30228#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/Log/logActivity.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="198" column="48" lean-forward="true" selection-start-line="198" selection-start-column="48" selection-end-line="198" selection-end-column="48" />
+          <folding>
+            <element signature="e#13331#17334#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="212" column="0" lean-forward="true" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/User/userIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="360" column="178" lean-forward="false" selection-start-line="360" selection-start-column="0" selection-end-line="361" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#1410#2084#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillMount#0;n#User#0" expanded="false" />
+            <element signature="n#!!block;n#handleModal#0;n#User#0" expanded="false" />
+            <element signature="n#!!block;n#componentWillUnmount#0;n#User#0" expanded="false" />
+            <element signature="n#!!block;n#handleIsActive#0;n#User#0" expanded="false" />
+            <element signature="n#!!block;n#handleZoom#0;n#User#0" expanded="false" />
+            <element signature="e#5806#6042#0" expanded="false" />
+            <marker date="1605510007299" expanded="true" signature="4618:4627" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/User/adminIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="64" column="0" lean-forward="true" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#handleModal#0;n#Admin#0" expanded="false" />
+            <element signature="e#1395#1955#0" expanded="false" />
+            <element signature="e#1465#1943#0" expanded="false" />
+            <element signature="e#13379#13822#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -21,6 +21,8 @@ class Admin extends Component{
         this.handleZoom = this.handleZoom.bind(this);
         this.state={
             detail:{},
+            detail_:{},
+
             any:"",
         }
     }
@@ -55,7 +57,8 @@ class Admin extends Component{
 
     handleDetail(e,param) {
         e.preventDefault();
-        this.props.dispatch(FetchDetailUser(param));
+        // this.props.dispatch(FetchDetailUser(param));
+        this.setState({detail_:{id:param.id,name:param.name}});
         const bool = !this.props.isOpen;
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("detailUser"));
@@ -187,7 +190,7 @@ class Admin extends Component{
                                                                     <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
                                                                     <td style={columnStyle}>
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id)}><i className={"fa fa-eye"}/></button>
+                                                                        <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,{"id":v.id,"name":v.name})}><i className={"fa fa-eye"}/></button>
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
                                                                     </td>
                                                                     {/*<td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer",objectFit:"cover",objectPosition:"center"}} onClick={(e)=>this.handleZoom(e,v.id_card)} src={v.id_card} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>*/}
@@ -240,8 +243,7 @@ class Admin extends Component{
                     </div>
                 </div>
                 <FormUser detail={this.state.detail} isAdmin={1}/>
-                <DetailUser detail={this.props.detail}/>
-
+                <DetailUser detailUser={this.state.detail_}/>
             </Layout>
         );
     }
@@ -253,7 +255,6 @@ const mapStateToProps = (state) => {
         isLoadingDetail: state.userReducer.isLoadingDetail,
         isOpen:state.modalReducer,
         data:state.userReducer.data,
-        detail:state.userReducer.detail
     }
 }
 
