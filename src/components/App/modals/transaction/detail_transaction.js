@@ -114,12 +114,13 @@ class DetailTransaction extends Component{
                                     (
                                         typeof data === 'object' ? data.length>0?
                                             data.map((v,i)=>{
-                                                // this.setState({isNoData:false});
                                                 totalPerAmountIn = totalPerAmountIn+isFloat(v.amount_in);
                                                 totalPerAmountOut = totalPerAmountOut+isFloat(v.amount_out);
                                                 return(
                                                     <tr key={i}>
-                                                        <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
+                                                        <td style={columnStyle}>
+                                                            <span class="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
+                                                        </td>
                                                         <td style={columnStyle}>{copyTxt(v.kd_trx)}</td>
                                                         <td style={columnStyle}>{v.name}</td>
                                                         <td style={rightStyle}>
@@ -138,13 +139,13 @@ class DetailTransaction extends Component{
                                                 )
                                             })
                                             : <tr><td colSpan={7} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                            : <tr><td colSpan={7} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                            : ""
                                     ) : (()=>{
                                         let container =[];
                                         for(let x=0; x<10; x++){
                                             container.push(
                                                 <tr key={x}>
-                                                    <td style={columnStyle}>{<Skeleton/>}</td>
+                                                    <td style={columnStyle}>{<Skeleton circle={true} height={40} width={40}/>}</td>
                                                     <td style={columnStyle}>{<Skeleton/>}</td>
                                                     <td style={columnStyle}>{<Skeleton/>}</td>
                                                     <td style={columnStyle}>{<Skeleton/>}</td>

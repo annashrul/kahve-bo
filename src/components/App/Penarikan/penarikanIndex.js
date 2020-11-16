@@ -52,7 +52,13 @@ class Penarikan extends Component{
             this.forceUpdate();
         }
         else{
-            this.props.dispatch(FetchPenarikan(`page=1&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`));
+            let sessDateFrom=localStorage.dateFromPenarikan!==undefined?localStorage.dateFromPenarikan:this.state.dateFrom;
+            let sessDateTo=localStorage.dateToPenarikan!==undefined?localStorage.dateToPenarikan:this.state.dateTo;
+            this.setState({
+                dateFrom:sessDateFrom,
+                dateTo:sessDateTo,
+            });
+            this.props.dispatch(FetchPenarikan(`page=1&datefrom=${sessDateFrom}&dateto=${sessDateTo}`));
         }
     }
     handleChange = (event) => {
@@ -91,8 +97,7 @@ class Penarikan extends Component{
     handleEvent = (event, picker) => {
         const from = moment(picker.startDate._d).format('YYYY-MM-DD');
         const to = moment(picker.endDate._d).format('YYYY-MM-DD');
-        localStorage.setItem("dateFromPenarikan",`${from}`);
-        localStorage.setItem("dateToPenarikan",`${to}`);
+
         this.setState({
             dateFrom:from,
             dateTo:to
@@ -105,6 +110,8 @@ class Penarikan extends Component{
         let dateTo = this.state.dateTo;
         let status = this.state.status;
         let any = this.state.any;
+        localStorage.setItem("dateFromPenarikan",`${dateFrom}`);
+        localStorage.setItem("dateToPenarikan",`${dateTo}`);
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
         }else{
@@ -150,8 +157,9 @@ class Penarikan extends Component{
                                     <div className="col-6 col-xs-6 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
-                                            <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
-                                                <input type="text" readOnly={true} className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                            <DateRangePicker
+                                                autoUpdateInput={true} showDropdowns={true} style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onApply={this.handleEvent}>
+                                                <input type="text" readOnly={true} className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
                                             </DateRangePicker>
                                         </div>
                                     </div>
@@ -214,58 +222,58 @@ class Penarikan extends Component{
                                         </thead>
                                         <tbody>
                                         {
-                                            !this.props.isLoading ?
-                                                (
-                                                    typeof data === 'object' ? data.length>0?
-                                                        data.map((v,i)=>{
-                                                            let badge = "";
-                                                            let txt = "";
-                                                            if(v.status===0){badge="btn-warning";txt="Pending";}
-                                                            if(v.status===1){badge="btn-success";txt="Success";}
-                                                            if(v.status===2){badge="btn-danger";txt="Cancel";}
-                                                            return(
-                                                                <tr key={i}>
-                                                                    <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1||v.status === 2} onClick={(e)=>this.handleApproval(e,v.id,1)}><i className={"fa fa-check"}/></button>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1||v.status === 2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
-                                                                    </td>
-                                                                    <td style={columnStyle}>
-                                                                        {copyTxt(v.kd_trx?v.kd_trx:'-')}
-                                                                    </td>
-                                                                    <td style={columnStyle}>{v.users}</td>
-                                                                    <td style={columnStyle}>
-                                                                        {copyTxt(v.wallet?v.wallet:'-')}
-                                                                    </td>
-                                                                    <td style={columnStyle}>
-                                                                        {copyTxt(v.amount?parseFloat(v.amount).toFixed(8):'0')}
-                                                                        <span style={{color:"red"}}>({v.coin})</span>
-                                                                    </td>
-                                                                    <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
-                                                                    <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
-                                                                </tr>
-                                                            )
-                                                        })
-                                                        : <tr><td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                    : <tr><td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                ) : (()=>{
-                                                    let container =[];
-                                                    for(let x=0; x<10; x++){
-                                                        container.push(
-                                                            <tr key={x}>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                            </tr>
-                                                        )
-                                                    }
-                                                    return container;
-                                                })()
+
+                                            typeof data === 'object' ? data.length>0?
+                                                data.map((v,i)=>{
+                                                    let badge = "";
+                                                    let txt = "";
+                                                    if(v.status===0){badge="btn-warning";txt="Pending";}
+                                                    if(v.status===1){badge="btn-success";txt="Success";}
+                                                    if(v.status===2){badge="btn-danger";txt="Cancel";}
+                                                    return(
+                                                        <tr key={i}>
+                                                            <td style={columnStyle}>
+                                                                <span class="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
+                                                            </td>
+                                                            <td style={columnStyle}>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1||v.status === 2} onClick={(e)=>this.handleApproval(e,v.id,1)}><i className={"fa fa-check"}/></button>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1||v.status === 2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
+                                                            </td>
+                                                            <td style={columnStyle}>
+                                                                {copyTxt(v.kd_trx?v.kd_trx:'-')}
+                                                            </td>
+                                                            <td style={columnStyle}>{v.users}</td>
+                                                            <td style={columnStyle}>
+                                                                {copyTxt(v.wallet?v.wallet:'-')}
+                                                            </td>
+                                                            <td style={columnStyle}>
+                                                                {copyTxt(v.amount?parseFloat(v.amount).toFixed(8):'0')}
+                                                                <span style={{color:"red"}}>({v.coin})</span>
+                                                            </td>
+                                                            <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
+                                                            <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
+                                                        </tr>
+                                                    )
+                                                })
+                                                : <tr><td colSpan={9} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                            : (()=>{
+                                                let container =[];
+                                                for(let x=0; x<10; x++){
+                                                    container.push(
+                                                        <tr key={x}>
+                                                            <td style={columnStyle}>{<Skeleton circle={true} height={40} width={40}/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                        </tr>
+                                                    )
+                                                }
+                                                return container;
+                                            })()
                                         }
                                         </tbody>
                                     </table>

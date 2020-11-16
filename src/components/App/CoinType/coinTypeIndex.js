@@ -120,39 +120,38 @@ class CoinType extends Component{
                                         <tbody>
 
                                         {
-                                            !this.props.isLoading ?
-                                                (
-                                                    typeof data === 'object' ? data.length>0?
-                                                        data.map((v,i)=>{
-                                                            return(
-                                                                <tr key={i}>
-                                                                    <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
-                                                                    </td>
-                                                                    <td style={columnStyle}>{v.title}</td>
-                                                                    <td style={columnStyle}>{v.symbol}</td>
-                                                                    <td style={columnStyle}>{statusQ(v.status)}</td>
-                                                                </tr>
-                                                            )
-                                                        })
-                                                        :<tr><td style={columnStyle} colSpan={5}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                    : <tr><td style={columnStyle} colSpan={5}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                ) : (()=>{
-                                                    let container =[];
-                                                    for(let x=0; x<10; x++){
-                                                        container.push(
-                                                            <tr key={x}>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                            </tr>
-                                                        )
-                                                    }
-                                                    return container;
-                                                })()
+
+                                            typeof data === 'object' ? data.length>0?
+                                                data.map((v,i)=>{
+                                                    return(
+                                                        <tr key={i}>
+                                                            <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
+                                                            <td style={columnStyle}>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
+                                                            </td>
+                                                            <td style={columnStyle}>{v.title}</td>
+                                                            <td style={columnStyle}>{v.symbol}</td>
+                                                            <td style={columnStyle}>{statusQ(v.status)}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                                :<tr><td style={columnStyle} colSpan={5}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                            : (()=>{
+                                                let container =[];
+                                                for(let x=0; x<10; x++){
+                                                    container.push(
+                                                        <tr key={x}>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                            <td style={columnStyle}>{<Skeleton/>}</td>
+                                                        </tr>
+                                                    )
+                                                }
+                                                return container;
+                                            })()
+
                                         }
                                         </tbody>
                                     </table>

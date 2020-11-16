@@ -156,8 +156,8 @@ class Inbox extends Component{
                                 </div>
 
                                 {
-                                    !this.props.isLoading ?
-                                        (
+                                    // !this.props.isLoading ?
+                                    //     (
                                             typeof data === 'object' ? data.length > 0 ?
                                                 data.map((v, i) => {
                                                     return (
@@ -189,43 +189,42 @@ class Inbox extends Component{
                                                     );
                                                 })
                                                 : <img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/>
-                                            : <img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/>
-                                        )
-                                    :
-                                        (()=>{
-                                            let container =[];
-                                            for(let x=0; x<10; x++){
-                                                container.push(
-                                                    <div className="admi-mail-list mb-30" key={x} style={{zoom:"80%"}}>
-                                                        <div className="admi-mail-item">
-                                                            <div className="admi-mail-checkbox">
-                                                                <div className="form-group mb-0">
-                                                                    <div className="checkbox d-inline">
-                                                                        <input type="checkbox" name="checkbox-1" id="checkbox-2"/>
-                                                                        <label for="checkbox-2" className="cr"/>
+                                            : (()=>{
+                                                    let container =[];
+                                                    for(let x=0; x<10; x++){
+                                                        container.push(
+                                                            <div className="admi-mail-list mb-30" key={x} style={{zoom:"80%"}}>
+                                                                <div className="admi-mail-item">
+                                                                    <div className="admi-mail-checkbox">
+                                                                        <div className="form-group mb-0">
+                                                                            <div className="checkbox d-inline">
+                                                                                <input type="checkbox" name="checkbox-1" id="checkbox-2"/>
+                                                                                <label for="checkbox-2" className="cr"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="admi-mail-body d-flex align-items-center mr-3">
+                                                                        <div className="mail-thumb flex-40-thubm mr-3">
+                                                                            <Skeleton circle={true} height={50} width={50}/>
+                                                                        </div>
+                                                                        <div className="div">
+                                                                            <div className="admi-mail-from">
+                                                                                <Skeleton width={500}/>
+                                                                            </div>
+                                                                            <div className="admi-mail-subject">
+                                                                                <Skeleton width={500}/>
+                                                                                <Skeleton width={1000}/>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="admi-mail-body d-flex align-items-center mr-3">
-                                                                <div className="mail-thumb flex-40-thubm mr-3">
-                                                                    <Skeleton circle={true} height={50} width={50}/>
-                                                                </div>
-                                                                <div className="div">
-                                                                    <div className="admi-mail-from">
-                                                                        <Skeleton width={500}/>
-                                                                    </div>
-                                                                    <div className="admi-mail-subject">
-                                                                        <Skeleton width={500}/>
-                                                                        <Skeleton width={1000}/>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            }
-                                            return container;
-                                        })()
+                                                        )
+                                                    }
+                                                    return container;
+                                                })()
+                                        // )
+
 
 
                                 }

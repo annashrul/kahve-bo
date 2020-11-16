@@ -9,7 +9,8 @@ import {
 import FileBase64 from "react-file-base64";
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {isEmpty, validateEmail} from "../../../../helper";
-import {putUser, storeUser} from "../../../../redux/actions/user/user.action";
+import {putUserMember, storeUserMember} from "../../../../redux/actions/user/userMember.action";
+import {putUserAdmin, storeUserAdmin} from "../../../../redux/actions/user/userAdmin.action";
 
 class FormUser extends Component{
     constructor(props){
@@ -163,10 +164,20 @@ class FormUser extends Component{
             parsedata['selfie'] = param['selfie'];
             parsedata['foto'] = param['foto'];
             parsedata['isadmin'] = param['isadmin'];
-            this.props.dispatch(putUser(parsedata,this.state.id,this.state.where));
+            if(param['isadmin']===0){
+                this.props.dispatch(putUserMember(parsedata,this.state.id,this.state.where));
+            }
+            else{
+                this.props.dispatch(putUserAdmin(parsedata,this.state.id,this.state.where));
+            }
         }
         else{
-            this.props.dispatch(storeUser(param));
+            if(param['isadmin']===0){
+                this.props.dispatch(storeUserMember(param));
+            }
+            else{
+                this.props.dispatch(storeUserAdmin(param));
+            }
         }
 
         if(this.props.isError===true){
@@ -250,11 +261,10 @@ class FormUser extends Component{
 }
 const mapStateToProps = (state) => {
     return {
-        isLoadingPost: state.userReducer.isLoadingPost,
-        isError: state.userReducer.isError,
+        isLoadingPost: state.userMemberReducer.isLoadingPost,
+        isError: state.userMemberReducer.isError,
         isOpen: state.modalReducer,
         type: state.modalTypeReducer,
-
     }
 }
 export default connect(mapStateToProps)(FormUser);

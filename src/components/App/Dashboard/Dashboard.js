@@ -198,7 +198,7 @@ class Dashboard extends Component {
     render() {
         return (
             <Layout page="Dashboard">
-                <div className="row align-items-center">
+                <div className="row align-items-center" style={{zoom:"80%"}}>
                     <div className="col-6">
                         <div className="dashboard-header-title mb-3">
                         <h5 className="mb-0 font-weight-bold">Dashboard</h5>
@@ -217,49 +217,58 @@ class Dashboard extends Component {
 
                         </div>
                     </div>
+                    <div className="col-md-12">
+                        <Filter
+                            className="mb-3"
+                            handleEvent={this.handleEvent}
+                            startDate={this.state.startDate}
+                            endDate={this.state.endDate}
+                            location_data={this.state.location_data}
+                            HandleChangeLokasi={this.HandleChangeLokasi}
+                            location={this.state.location}
+                            handleDailyProfit={this.handleDailyProfit.bind(this)}
+                            isDaily={this.state.isDaily}
+                            isLoadingDaily={this.props.isLoadingCheck}
+                        />
+                    </div>
+
+                    <div className="col-md-12">
+                        {/* Dashboard Widget Area */}
+                        <div className="row">
+                            <Cards title="TOTAL INVESTMENT" data={this.state.totalInvest} icon="fa fa-area-chart text-primary"/>
+                            <Cards title="ACTIVE BALANCE" data={this.state.totalBalance} icon="fa fa-area-chart text-primary"/>
+                            <Cards title="TOTAL WITHDRAW" data={this.state.totalWD} icon="fa fa-area-chart text-primary"/>
+                            <Cards title="MEMBER ACTIVE" data={this.state.totalMember} icon="fa fa-area-chart text-primary"/>
+                        </div>
+                        {/* Dashboard Widget Area */}
+                    </div>
+
+
+                    <div className="col-md-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="card-header bg-transparent text-center">
+                                    <h4 className="card-title mt-3">ACTIVE BALANCE</h4>
+                                </div>
+                                <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={350} />
+
+                                {/*<div className="row">*/}
+                                {/*<div className="col-md-12">*/}
+                                {/*<Chart*/}
+                                {/*options={this.state.options}*/}
+                                {/*series={this.state.series}*/}
+                                {/*height="400"*/}
+                                {/*/>*/}
+                                {/*</div>*/}
+                                {/*</div>*/}
+                            </div>
+                        </div>
+                    </div>
                     {/*<Info handleSubmit={this.handleSubmit}/>*/}
                 </div>
 
                 {/* Dashboard Filter Area */}
-                <Filter
-                    className="mb-3"
-                    handleEvent={this.handleEvent}                        
-                    startDate={this.state.startDate}
-                    endDate={this.state.endDate}
-                    location_data={this.state.location_data}
-                    HandleChangeLokasi={this.HandleChangeLokasi}
-                    location={this.state.location}
-                    handleDailyProfit={this.handleDailyProfit.bind(this)}
-                    isDaily={this.state.isDaily}
-                    isLoadingDaily={this.props.isLoadingCheck}
-                />
 
-                {/* Dashboard Widget Area */}
-                <div className="row">
-                    <Cards title="TOTAL INVESTMENT" data={this.state.totalInvest} icon="fa fa-area-chart text-primary"/>
-                    <Cards title="ACTIVE BALANCE" data={this.state.totalBalance} icon="fa fa-area-chart text-primary"/>
-                    <Cards title="TOTAL WITHDRAW" data={this.state.totalWD} icon="fa fa-area-chart text-primary"/>
-                    <Cards title="MEMBER ACTIVE" data={this.state.totalMember} icon="fa fa-area-chart text-primary"/>
-                </div>
-                {/* Dashboard Widget Area */}
-                <div className="card">
-                    <div className="card-body">
-                        <div className="card-header bg-transparent text-center">
-                            <h4 className="card-title mt-3">ACTIVE BALANCE</h4>
-                        </div>
-                        <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={350} />
-
-                        {/*<div className="row">*/}
-                            {/*<div className="col-md-12">*/}
-                                {/*<Chart*/}
-                                    {/*options={this.state.options}*/}
-                                    {/*series={this.state.series}*/}
-                                    {/*height="400"*/}
-                                {/*/>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-                    </div>
-                </div>
         </Layout>
        
         );

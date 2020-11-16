@@ -30,9 +30,9 @@ export function setData(data = []) {
     }
 }
 
-export function setDataEdit(data = []) {
+export function setDataConfig(data = []) {
     return {
-        type: DEPOSIT.EDIT,
+        type: DEPOSIT.CONFIG,
         data
     }
 }
@@ -78,60 +78,83 @@ export const FetchDeposit = (where) => {
     }
 };
 
-export const approval = (data,id,where) => {
+
+export const FetchConfigDeposit = () => {
     return (dispatch) => {
-        dispatch(setLoadingPost(true));
-        const url = HEADERS.URL + `topup/${id}`;
-        axios.put(url,data)
+        let url = 'topup/config';
+        axios.get(HEADERS.URL + `${url}`)
             .then(function (response) {
-                const data = (response.data);
-                if (data.status === 'success') {
-                    Swal.fire({
-                        title: 'Success',
-                        icon: 'success',
-                        text: NOTIF_ALERT.SUCCESS,
-                    });
-                    dispatch(setIsError(true));
-                    dispatch(ModalToggle(false));
-                    dispatch(FetchDeposit(where));
-                } else {
-                    Swal.fire({
-                        title: 'failed',
-                        icon: 'error',
-                        text: NOTIF_ALERT.FAILED,
-                    });
-                    dispatch(setIsError(false));
-                    dispatch(ModalToggle(true));
-                }
-                dispatch(setLoadingPost(false));
-
-
+                const data = response.data;
+                dispatch(setDataConfig(data));
             })
             .catch(function (error) {
-                dispatch(setLoadingPost(false));
-                dispatch(setIsError(false));
-                dispatch(ModalToggle(true));
-                if (error.message === 'Network Error') {
-                    Swal.fire(
-                        'Network Failed!.',
-                        'Please check your connection',
-                        'error'
-                    );
-                }
-                else{
-                    Swal.fire({
-                        title: 'failed',
-                        icon: 'error',
-                        text: error.response.data.msg,
-                    });
-
-                    if (error.response) {
-
-                    }
-                }
 
             })
-    }
-}
 
+    }
+};
+
+
+export const approval = (data,id,where) => async dispatch =>{
+    Swal.fire({
+        title: 'Please Wait.',
+        html: NOTIF_ALERT.CHECKING,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        },
+        onClose: () => {}
+    });
+    const url = HEADERS.URL + `topup/${id}`;
+
+    axios.put(url,data)
+        .then(response=>{
+            setTimeout(
+                function () {
+                    Swal.close() ;
+                    const data = (response.data);
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            icon: 'success',
+                            text: NOTIF_ALERT.SUCCESS,
+                        });
+                        dispatch(setIsError(true));
+                        dispatch(ModalToggle(false));
+                        dispatch(FetchDeposit(where));
+                    }
+                    else {
+                        Swal.fire({
+                            title: 'failed',
+                            icon: 'error',
+                            text: NOTIF_ALERT.FAILED,
+                        });
+                        dispatch(setIsError(false));
+                        dispatch(ModalToggle(true));
+                    }
+                    dispatch(setLoadingPost(false));
+                },800)
+
+        }).catch(error =>{
+        Swal.close()
+        dispatch(setLoading(false));
+        if (error.message === 'Network Error') {
+            Swal.fire(
+                'Network Failed!.',
+                'Please check your connection',
+                'error'
+            );
+        }
+        else {
+            Swal.fire({
+                title: 'failed',
+                icon: 'error',
+                text: error.response.data.msg,
+            });
+            if (error.response) {
+
+            }
+        }
+
+    });
+}
 

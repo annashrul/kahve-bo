@@ -79,60 +79,67 @@ export const FetchPenarikan = (where) => {
     }
 };
 
-export const approvalPenarikan = (data,id,where) => {
-    return (dispatch) => {
-        dispatch(setLoadingPost(true));
-        const url = HEADERS.URL + `withdraw/${id}`;
-        axios.put(url,data)
-            .then(function (response) {
-                const data = (response.data);
-                if (data.status === 'success') {
-                    Swal.fire({
-                        title: 'Success',
-                        icon: 'success',
-                        text: NOTIF_ALERT.SUCCESS,
-                    });
-                    dispatch(setIsError(true));
-                    dispatch(ModalToggle(false));
-                    dispatch(FetchPenarikan(where));
-                } else {
-                    Swal.fire({
-                        title: 'failed',
-                        icon: 'error',
-                        text: NOTIF_ALERT.FAILED,
-                    });
-                    dispatch(setIsError(false));
-                    dispatch(ModalToggle(true));
-                }
-                dispatch(setLoadingPost(false));
 
 
-            })
-            .catch(function (error) {
-                dispatch(setLoadingPost(false));
-                dispatch(setIsError(false));
-                dispatch(ModalToggle(true));
-                if (error.message === 'Network Error') {
-                    Swal.fire(
-                        'Network Failed!.',
-                        'Please check your connection',
-                        'error'
-                    );
-                }
-                else{
-                    Swal.fire({
-                        title: 'failed',
-                        icon: 'error',
-                        text: error.response.data.msg,
-                    });
 
-                    if (error.response) {
-
+export const approvalPenarikan = (data,id,where) => async dispatch =>{
+    Swal.fire({
+        title: 'Please Wait.',
+        html: NOTIF_ALERT.CHECKING,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        },
+        onClose: () => {}
+    });
+    const url = HEADERS.URL + `withdraw/${id}`;
+    axios.put(url,data)
+        .then(response=>{
+            setTimeout(
+                function () {
+                    Swal.close() ;
+                    const data = (response.data);
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            icon: 'success',
+                            text: NOTIF_ALERT.SUCCESS,
+                        });
+                        dispatch(setIsError(true));
+                        dispatch(ModalToggle(false));
+                        dispatch(FetchPenarikan(where));
                     }
-                }
+                    else {
+                        Swal.fire({
+                            title: 'failed',
+                            icon: 'error',
+                            text: NOTIF_ALERT.FAILED,
+                        });
+                        dispatch(setIsError(false));
+                        dispatch(ModalToggle(true));
+                    }
+                    dispatch(setLoadingPost(false));
+                },800)
 
-            })
-    }
+        }).catch(error =>{
+        Swal.close();
+        dispatch(setLoading(false));
+        if (error.message === 'Network Error') {
+            Swal.fire(
+                'Network Failed!.',
+                'Please check your connection',
+                'error'
+            );
+        }
+        else {
+            Swal.fire({
+                title: 'failed',
+                icon: 'error',
+                text: error.response.data.msg,
+            });
+            if (error.response) {
+
+            }
+        }
+
+    });
 }
-
-

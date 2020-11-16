@@ -1,80 +1,80 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import {USER_LIST, HEADERS, NOTIF_ALERT} from "../_constants";
+import {USER_ADMIN, HEADERS, NOTIF_ALERT} from "../_constants";
 import {ModalToggle} from "../modal.action";
 
 
 export function setLoading(load) {
     return {
-        type: USER_LIST.LOADING,
+        type: USER_ADMIN.LOADING,
         load
     }
 }
 export function setLoadingPost(load) {
     return {
-        type: USER_LIST.LOADING_POST,
+        type: USER_ADMIN.LOADING_POST,
         load
     }
 }
 export function setLoadingSend(load) {
     return {
-        type: USER_LIST.LOADING_SEND,
+        type: USER_ADMIN.LOADING_SEND,
         load
     }
 }
 export function setLoadingDetail(load) {
     return {
-        type: USER_LIST.LOADING_DETAIL,
+        type: USER_ADMIN.LOADING_DETAIL,
         load
     }
 }
 export function setIsError(load) {
     return {
-        type: USER_LIST.IS_ERROR,
+        type: USER_ADMIN.IS_ERROR,
         load
     }
 }
 
 export function setUserList(data = []) {
     return {
-        type: USER_LIST.SUCCESS,
+        type: USER_ADMIN.SUCCESS,
         data
     }
 }
 
 export function setUserListAll(data = []) {
     return {
-        type: USER_LIST.SUCCESS_ALL,
+        type: USER_ADMIN.SUCCESS_ALL,
         data
     }
 }
 
 export function setUserListEdit(data = []) {
     return {
-        type: USER_LIST.EDIT,
+        type: USER_ADMIN.EDIT,
         data
     }
 }
 export function setUserListDetail(data = []) {
     return {
-        type: USER_LIST.DETAIL,
+        type: USER_ADMIN.DETAIL,
         data
     }
 }
 
 export function setUserListFailed(data = []) {
     return {
-        type: USER_LIST.FAILED,
+        type: USER_ADMIN.FAILED,
         data
     }
 }
 
-export const FetchUser = (where) => {
+export const FetchUserAdmin = (where) => {
     return (dispatch) => {
         dispatch(setLoading(true));
-        let url = 'user';
+        let url = 'user?isadmin=1';
         if(where){
-            url+=`?${where}`;
+            url+=`${where}`;
         }
 
         axios.get(HEADERS.URL + `${url}`)
@@ -99,36 +99,9 @@ export const FetchUser = (where) => {
     }
 };
 
-export const FetchAllUser = (where) => {
-    return (dispatch) => {
-        dispatch(setLoadingSend(true));
-        let url = 'user';
-        if(where){
-            url+=`?${where}`;
-        }
-        axios.get(HEADERS.URL + `${url}`)
-            .then(function (response) {
-                const data = response.data;
-                dispatch(setUserListAll(data));
-                dispatch(setLoadingSend(false));
-            })
-            .catch(function (error) {
-                // handle error
-                // if (error.message === 'Network Error') {
-                //     Swal.fire(
-                //         'Network Failed!.',
-                //         'Please check your connection',
-                //         'error'
-                //     );
-                    dispatch(setLoadingSend(false));
-                // }
-            })
-
-    }
-};
 
 
-export const FetchDetailUser = (id) => {
+export const FetchDetailUserAdmin = (id) => {
     return (dispatch) => {
         dispatch(setLoadingDetail(true));
         let url = `user/${id}`;
@@ -153,7 +126,7 @@ export const FetchDetailUser = (id) => {
 
     }
 };
-export const storeUser = (data) => {
+export const storeUserAdmin = (data) => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         const url = HEADERS.URL + `user`;
@@ -168,12 +141,7 @@ export const storeUser = (data) => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    if(data['isadmin']===0){
-                        dispatch(FetchUser('page=1'));
-                    }
-                    else{
-                        dispatch(FetchUser('page=1&isadmin=1'));
-                    }
+                    dispatch(FetchUserAdmin('page=1&isadmin=1'));
 
                 } else {
                     Swal.fire({
@@ -214,7 +182,7 @@ export const storeUser = (data) => {
             })
     }
 }
-export const putUser = (data,id,where="") => {
+export const putUserAdmin = (data,id,where="") => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         const url = HEADERS.URL + `user/${id}`;
@@ -229,12 +197,8 @@ export const putUser = (data,id,where="") => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    if(data['isadmin']===1){
-                        dispatch(FetchUser(where===""?"page=1&isadmin=1":where));
-                    }
-                    else{
-                        dispatch(FetchUser(where===""?"page=1":where));
-                    }
+                    dispatch(FetchUserAdmin(where));
+
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -274,7 +238,7 @@ export const putUser = (data,id,where="") => {
             })
     }
 }
-export const confirmUser = (data,id,where="") => {
+export const confirmUserAdmin = (data,id,where="") => {
     return (dispatch) => {
         dispatch(setLoadingPost(true));
         const url = HEADERS.URL + `auth/confirm/${id}`;
@@ -289,12 +253,8 @@ export const confirmUser = (data,id,where="") => {
                     });
                     dispatch(setIsError(true));
                     dispatch(ModalToggle(false));
-                    if(data['isadmin']===1){
-                        dispatch(FetchUser(where===""?"page=1&isadmin=1":where));
-                    }
-                    else{
-                        dispatch(FetchUser(where===""?"page=1":where));
-                    }
+                    dispatch(FetchUserAdmin(where));
+
                 } else {
                     Swal.fire({
                         title: 'failed',
@@ -334,9 +294,7 @@ export const confirmUser = (data,id,where="") => {
             })
     }
 }
-
-
-export const deleteUser = (id,where) => {
+export const deleteUserAdmin = (id,where) => {
     return (dispatch) => {
         dispatch(setLoading(true));
         const url = HEADERS.URL + `user/${id}`;
@@ -358,7 +316,7 @@ export const deleteUser = (id,where) => {
                 }
                 dispatch(setLoading(false));
 
-                dispatch(FetchUser(where));
+                dispatch(FetchUserAdmin(where));
             })
             .catch(function (error) {
                 dispatch(setLoading(false));

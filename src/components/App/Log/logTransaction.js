@@ -10,6 +10,7 @@ import { isArray } from 'lodash';
 import * as Swal from "sweetalert2";
 import {BrowserView, MobileView} from 'react-device-detect';
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
+import Skeleton from 'react-loading-skeleton';
 
 class LogTransaction extends Component{
     constructor(props){
@@ -203,7 +204,7 @@ class LogTransaction extends Component{
                                                                         return(
                                                                             <li style={{backgroundColor:this.state.isClick===inx?"#eeeeee":""}} id={`item${inx}`} className="clearfix" key={inx} onClick={(e)=>this.handleGet(e,i.detail,inx)}>
                                                                                 {
-                                                                                    <span class="circle">{inx+1}</span>
+                                                                                    <span className="circle" style={{float:"left"}}>{inx+1}</span>
                                                                                 }
                                                                                 <div className="about">
                                                                                     <div className="status" style={{color: 'black',fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}>{i.transaksi} | {i.aksi}</div>
@@ -304,7 +305,88 @@ class LogTransaction extends Component{
                                                     </MobileView>
                                                 </div>
                                             </div>
-                                        ) : ""
+                                        ) : <div className="row">
+                                            <div className="col-md-3">
+                                                <div className={"people-list"} style={{zoom:"80%",height:'300px',maxHeight:'100%',overflowY:'scroll'}}>
+                                                    {/*<ul className="chat-list list-unstyled">*/}
+
+                                                    <div id="chat_user_2">
+                                                        <ul className="chat-list list-unstyled">
+
+                                                            {
+                                                                (()=>{
+                                                                    let container =[];
+                                                                    for(let x=0; x<10; x++){
+                                                                        container.push(
+                                                                            <li className="clearfix" key={x}>
+                                                                                <span style={{float:"left"}}><Skeleton width={40} height={40} circle={true}/></span>
+                                                                                <div className="about">
+                                                                                    <div className="status" style={{color: 'black',fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}><Skeleton width={200}/></div>
+                                                                                    <div className="status" style={{color: '#FC8213',fontWeight:"bold", wordBreak:"break-all", fontSize:"14px"}}><Skeleton/></div>
+
+                                                                                    <div className="status" style={{color: '#a1887f', fontWeight:"bold", wordBreak:"break-all", fontSize:"12px"}}><Skeleton/></div>
+                                                                                </div>
+
+                                                                            </li>
+                                                                        )
+                                                                    }
+                                                                    return container;
+                                                                })()
+
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div className="col-md-9">
+                                                <div style={{overflowX: "auto"}}>
+                                                    <table className="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            {
+                                                                this.state.keyName_.length>0?
+                                                                    this.state.keyName_.map((v,i)=>{
+                                                                        return(
+                                                                            <th className="text-black" style={columnStyle} rowSpan="2" key={i}>{v.split('_').map(f=>{ return f.toUpperCase(); }).join(' ')}</th>
+                                                                        )
+                                                                    })
+                                                                    : ""
+                                                            }
+                                                        </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        {
+                                                            (
+                                                                this.state.valData_.length>0?
+                                                                    this.state.valData_.map((v,i)=>{
+                                                                        return(
+                                                                            <tr key={i}>
+                                                                                {
+                                                                                    (
+                                                                                        typeof this.state.keyName_ === 'object' ? this.state.keyName_.length>0?
+                                                                                            this.state.keyName_.map((w,j)=>{
+                                                                                                return(
+                                                                                                    <td style={columnStyle} key={j}>{v[w]}</td>
+                                                                                                )
+                                                                                            })
+                                                                                            : "No data." : "No data."
+                                                                                    )
+                                                                                }
+
+                                                                            </tr>
+                                                                        )
+                                                                    })
+                                                                    : ""
+                                                            )
+                                                        }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                 }
 
                             </div>

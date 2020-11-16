@@ -8,9 +8,9 @@ import {
 import {ModalToggle} from "../../../../redux/actions/modal.action";
 import {statusQ} from "../../../../helper";
 import moment from "moment";
-import {FetchDetailUser} from "../../../../redux/actions/user/user.action";
 import Skeleton from 'react-loading-skeleton';
 import {NOTIF_ALERT} from "../../../../redux/actions/_constants";
+import {FetchDetailUserMember} from "../../../../redux/actions/user/userMember.action";
 
 class DetailUser extends Component{
     constructor(props){
@@ -64,7 +64,7 @@ class DetailUser extends Component{
 
     componentDidUpdate(prevProps) {
         if (this.props.detailUser !== prevProps.detailUser) {
-            this.props.dispatch(FetchDetailUser(this.props.detailUser.id));
+            this.props.dispatch(FetchDetailUserMember(this.props.detailUser.id));
         }
     }
     componentWillReceiveProps(nextProps){
@@ -206,8 +206,8 @@ const mapStateToProps = (state) => {
     return {
         isOpen: state.modalReducer,
         type: state.modalTypeReducer,
-        isLoadingDetail: state.userReducer.isLoadingDetail,
-        dataDetail:state.userReducer.detail
+        isLoadingDetail: state.userMemberReducer.isLoadingDetail,
+        dataDetail:state.userMemberReducer.detail
 
     }
 }

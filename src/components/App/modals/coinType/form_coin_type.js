@@ -2,16 +2,12 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import WrapperModal from '../_wrapper.modal'
 import {
-    Button,
     ModalHeader,
     ModalBody,
     ModalFooter,
 } from 'reactstrap';
-import ProfileImage from "../../../../assets/profile.png";
-import FileBase64 from "react-file-base64";
 import {ModalToggle} from "../../../../redux/actions/modal.action";
-import {isEmpty, stringifyFormData, validateEmail, validateForm} from "../../../../helper";
-import {storeUser} from "../../../../redux/actions/user/user.action";
+import {isEmpty} from "../../../../helper";
 import {putCoinType, storeCoinType} from "../../../../redux/actions/coinType/coinType.action";
 
 class FormCoinType extends Component{

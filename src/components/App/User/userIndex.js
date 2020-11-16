@@ -2,11 +2,6 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import {
-    confirmUser,
-    deleteUser, FetchAllUser, FetchDetailUser, FetchUser, putUser,
-    setUserListAll
-} from "../../../redux/actions/user/user.action";
 import FormUser from "../../App/modals/user/form_user";
 import DetailUser from "../../App/modals/user/detail_user";
 import Paginationq, {copyTxt, statusQ} from "../../../helper";
@@ -15,6 +10,10 @@ import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {BrowserView, MobileView} from "react-device-detect";
+import {
+    confirmUserMember, FetchAllUserMember, FetchUserMember, putUserMember,
+    setUserListAll
+} from "../../../redux/actions/user/userMember.action";
 
 class User extends Component{
     constructor(props){
@@ -67,7 +66,7 @@ class User extends Component{
     componentDidUpdate(prevProps,nextProps) {
         if (prevProps.match.params.id !== this.props.match.params.id) {
             this.forceUpdate();
-            this.props.dispatch(FetchUser("page=1&q="+this.props.match.params.id));
+            this.props.dispatch(FetchUserMember("page=1&q="+this.props.match.params.id));
         }
         if(prevProps.dataAll!==undefined){
             this.getProps(prevProps);
@@ -76,11 +75,11 @@ class User extends Component{
 
     componentWillMount(){
         if(this.props.match.params.id!==undefined){
-            this.props.dispatch(FetchUser("page=1&q="+this.props.match.params.id));
+            this.props.dispatch(FetchUserMember("page=1&q="+this.props.match.params.id));
             this.forceUpdate();
         }
         else{
-            this.props.dispatch(FetchUser('page=1'));
+            this.props.dispatch(FetchUserMember('page=1'));
         }
     }
 
@@ -90,8 +89,6 @@ class User extends Component{
         this.props.dispatch(ModalToggle(bool));
         this.props.dispatch(ModalType("formUser"));
         this.props.dispatch(setUserListAll([]));
-
-
         if(param!==''){
             const {data}=this.props.data;
             let where = this.handleValidate();
@@ -148,10 +145,10 @@ class User extends Component{
                 let data  = {"status":param['status'],'isadmin':0};
                 let where = this.handleValidate();
                 if(param['status']===1){
-                    this.props.dispatch(confirmUser({'isadmin':0},btoa(param['regist'].split("|")[0]),where));
+                    this.props.dispatch(confirmUserMember({'isadmin':0},btoa(param['regist'].split("|")[0]),where));
                 }
                 else{
-                    this.props.dispatch(putUser(data,id,where));
+                    this.props.dispatch(putUserMember(data,id,where));
                 }
             }
         })
@@ -177,7 +174,7 @@ class User extends Component{
     handlePageChange(pageNumber){
         localStorage.setItem("pagePengguna",pageNumber);
         let where = this.handleValidate();
-        this.props.dispatch(FetchUser(where));
+        this.props.dispatch(FetchUserMember(where));
     }
     handleValidate(){
         this.props.dispatch(setUserListAll([]));
@@ -203,11 +200,11 @@ class User extends Component{
         e.preventDefault();
         this.props.history.push('/user');
         let where = this.handleValidate();
-        this.props.dispatch(FetchUser(where));
+        this.props.dispatch(FetchUserMember(where));
     }
     handleSendEmail(e,perpage,lastpage){
         e.preventDefault();
-        this.props.dispatch(FetchAllUser(`page=1&perpage=${perpage*lastpage}`));
+        this.props.dispatch(FetchAllUserMember(`page=1&perpage=${perpage*lastpage}`));
     }
 
 
@@ -319,8 +316,7 @@ class User extends Component{
                                         <tbody>
 
                                         {
-                                            !this.props.isLoading ?
-                                                (
+
                                                     typeof data === 'object' ? data.length>0?
                                                         data.map((v,i)=>{
                                                             totalPerInvestment = totalPerInvestment+parseFloat(v.investment);
@@ -356,7 +352,9 @@ class User extends Component{
 
                                                             return(
                                                                 <tr key={i} style={{backgroundColor:this.props.match.params.id===v.id?"#eeeeee":""}}>
-                                                                    <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
+                                                                    <td style={columnStyle}>
+                                                                        <span class="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
+                                                                    </td>
                                                                     <td style={columnStyle}>
                                                                         <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,{"id":v.id,"name":v.name})}><i className={"fa fa-eye"}/></button>
                                                                         <button style={{marginRight:"5px"}} className={`btn ${isColor} btn-sm`} onClick={(e)=>this.handleIsActive(e,{"status":isStatus,"id":v.id,"nama":v.name,"regist":v.regist_token})}><i className={`fa ${faIsActive}`} style={{color:"white"}}/></button>
@@ -380,46 +378,38 @@ class User extends Component{
                                                             )
                                                         })
                                                         : <tr><td colSpan={13} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                    : <tr><td colSpan={13} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                ) : (()=>{
-                                                    let container =[];
-                                                    for(let x=0; x<10; x++){
-                                                        container.push(
-                                                            <tr key={x}>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>
-                                                                    <div className="row">
-                                                                        <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
-                                                                        <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
-                                                                        <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
-                                                                    </div>
-                                                                </td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
-                                                            </tr>
-                                                        )
-                                                    }
-                                                    return container;
-                                                })()
+                                                    : (()=>{
+                                                            let container =[];
+                                                            for(let x=0; x<10; x++){
+                                                                container.push(
+                                                                    <tr key={x}>
+                                                                        <td style={columnStyle}>{<Skeleton circle={true} height={40} width={40}/>}</td>
+                                                                        <td style={columnStyle}>
+                                                                            <div className="row">
+                                                                                <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
+                                                                                <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
+                                                                                <div className="col-md-2">{<Skeleton height={30} width={30}/>}</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
+                                                                    </tr>
+                                                                )
+                                                            }
+                                                            return container;
+                                                        })()
+
                                         }
                                         </tbody>
-                                        {/*<tfoot>*/}
-                                            {/*<th className="text-black" colspan={5}>Total Allpage</th>*/}
-                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerInvestment}</th>*/}
-                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance}</th>*/}
-                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>*/}
-                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment}</th>*/}
-                                            {/*<th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>*/}
-                                            {/*<th className="text-black" colspan={3}/>*/}
-                                        {/*</tfoot>*/}
+
                                         <tfoot>
                                             <tr style={{backgroundColor:"#eeeeee"}}>
                                                 <th className="text-black" colspan={5}>TOTAL PERPAGE</th>
@@ -455,13 +445,13 @@ class User extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.userReducer.isLoading,
-        isLoadingDetail: state.userReducer.isLoadingDetail,
-        isLoadingSend: state.userReducer.isLoadingSend,
+        isLoading: state.userMemberReducer.isLoading,
+        isLoadingDetail: state.userMemberReducer.isLoadingDetail,
+        isLoadingSend: state.userMemberReducer.isLoadingSend,
         isOpen:state.modalReducer,
-        data:state.userReducer.data,
-        dataAll:state.userReducer.dataAll,
-        detail:state.userReducer.detail
+        data:state.userMemberReducer.data,
+        dataAll:state.userMemberReducer.dataAll,
+        detail:state.userMemberReducer.detail
     }
 }
 

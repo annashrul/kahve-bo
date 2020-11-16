@@ -2,16 +2,15 @@ import React,{Component} from 'react';
 import Layout from 'components/Layout';
 import Info from "../Dashboard/src/Info";
 import connect from "react-redux/es/connect/connect";
-import {deleteUser, FetchDetailUser, FetchUser} from "../../../redux/actions/user/user.action";
 import FormUser from "../../App/modals/user/form_user";
 import DetailUser from "../../App/modals/user/detail_user";
 import Paginationq, {statusQ} from "../../../helper";
-import {noImage} from "../../../helper";
 import {ModalToggle, ModalType} from "../../../redux/actions/modal.action";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import moment from "moment";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
+import {deleteUserAdmin, FetchUserAdmin} from "../../../redux/actions/user/userAdmin.action";
 
 class Admin extends Component{
     constructor(props){
@@ -27,7 +26,7 @@ class Admin extends Component{
         }
     }
     componentWillMount(){
-        this.props.dispatch(FetchUser('page=1&isadmin=1'));
+        this.props.dispatch(FetchUserAdmin('&page=1'));
     }
     handleModal(e,param) {
         e.preventDefault();
@@ -78,7 +77,7 @@ class Admin extends Component{
         }).then((result) => {
             if (result.value) {
                 let where = this.handleValidate();
-                this.props.dispatch(deleteUser(id,where));
+                this.props.dispatch(deleteUserAdmin(id,where));
             }
         })
     }
@@ -103,10 +102,10 @@ class Admin extends Component{
     handlePageChange(pageNumber){
         localStorage.setItem("pageAdmin",pageNumber);
         let where = this.handleValidate();
-        this.props.dispatch(FetchUser(where));
+        this.props.dispatch(FetchUserAdmin(where));
     }
     handleValidate(){
-        let where="isadmin=1";
+        let where="";
         let page = localStorage.getItem("pageAdmin");
         let any = this.state.any;
         if(page!==null&&page!==undefined&&page!==""){
@@ -122,7 +121,7 @@ class Admin extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-        this.props.dispatch(FetchUser(where));
+        this.props.dispatch(FetchUserAdmin(where));
     }
     render(){
         const columnStyle = {verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
@@ -180,41 +179,35 @@ class Admin extends Component{
                                         <tbody>
 
                                         {
-                                            !this.props.isLoading ?
-                                                (
-                                                    typeof data === 'object' ? data.length>0?
-                                                        data.map((v,i)=>{
+                                            typeof data === 'object' ? data.length>0?
+                                                data.map((v,i)=>{
 
-                                                            return(
-                                                                <tr key={i}>
-                                                                    <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,{"id":v.id,"name":v.name})}><i className={"fa fa-eye"}/></button>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
-                                                                    </td>
-                                                                    {/*<td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer",objectFit:"cover",objectPosition:"center"}} onClick={(e)=>this.handleZoom(e,v.id_card)} src={v.id_card} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>*/}
-                                                                    {/*<td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer",objectFit:"cover",objectPosition:"center"}} onClick={(e)=>this.handleZoom(e,v.selfie)} src={v.selfie} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>*/}
-                                                                    {/*<td style={columnStyle}><img style={{height:"50px",width:"50px",cursor:"pointer",objectFit:"cover",objectPosition:"center"}} onClick={(e)=>this.handleZoom(e,v.foto)} src={v.foto} onError={(e)=>{e.target.onerror = null; e.target.src=noImage()}} alt=""/></td>*/}
-                                                                    <td style={columnStyle}>{v.name}</td>
-                                                                    <td style={columnStyle}>{v.email}</td>
-                                                                    <td style={columnStyle}>{moment(v.created_at).locale('id').format("LLLL")}</td>
-                                                                    <td style={columnStyle}>{statusQ(v.status)}</td>
-                                                                </tr>
-                                                            )
-                                                        })
-                                                        : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                                        : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
-                                                ) : (()=>{
+                                                    return(
+                                                        <tr key={i}>
+                                                            <td style={columnStyle}>
+                                                                <span class="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
+                                                            </td>
+                                                            {/*<td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>*/}
+                                                            <td style={columnStyle}>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-pencil"}/></button>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,{"id":v.id,"name":v.name})}><i className={"fa fa-eye"}/></button>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></button>
+                                                            </td>
+                                                            <td style={columnStyle}>{v.name}</td>
+                                                            <td style={columnStyle}>{v.email}</td>
+                                                            <td style={columnStyle}>{moment(v.created_at).locale('id').format("LLLL")}</td>
+                                                            <td style={columnStyle}>{statusQ(v.status)}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                                : <tr><td colSpan={9} style={columnStyle}>{NOTIF_ALERT.NO_DATA}</td></tr>
+                                            : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={50} width={50} duration={0.5}/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
-                                                                <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
-                                                                {/*<td style={columnStyle}>{<Skeleton circle={true} height={50} width={50} duration={0.5}/>}</td>*/}
-                                                                {/*<td style={columnStyle}>{<Skeleton circle={true} height={50} width={50} duration={0.5}/>}</td>*/}
-                                                                {/*<td style={columnStyle}>{<Skeleton circle={true} height={50} width={50} duration={0.5}/>}</td>*/}
                                                                 <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton duration={0.5}/>}</td>
@@ -251,10 +244,10 @@ class Admin extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.userReducer.isLoading,
-        isLoadingDetail: state.userReducer.isLoadingDetail,
+        isLoading: state.userAdminReducer.isLoading,
+        isLoadingDetail: state.userAdminReducer.isLoadingDetail,
         isOpen:state.modalReducer,
-        data:state.userReducer.data,
+        data:state.userAdminReducer.data,
     }
 }
 

@@ -12,6 +12,7 @@ import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
 import {deleteFaq, FetchFaq} from "../../../redux/actions/faq/faq.action";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
+import {BrowserView, MobileView} from "react-device-detect";
 
 class Faq extends Component{
     constructor(props){
@@ -19,7 +20,9 @@ class Faq extends Component{
         this.handleModal = this.handleModal.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.state={
-            detail:{}
+            detail:{},
+            idx:0,
+            isLoad:false
         }
     }
     componentWillMount(){
@@ -50,26 +53,30 @@ class Faq extends Component{
     }
 
 
-    handleDelete(e,id){
+    handleDelete(e,id,i){
         e.preventDefault();
+        this.setState({isLoad:true,idx:i});
         Swal.fire({
-            title: 'Perhatian !!!',
-            text: "Anda yakin akan menghapus data ini ??",
+            title: 'Warning !!!',
+            text: "Are you sure delete this data ??",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Oke, hapus sekarang!',
-            cancelButtonText: 'Batal',
+            confirmButtonText: 'Oke',
+            cancelButtonText: 'Cancel',
         }).then((result) => {
             if (result.value) {
                 this.props.dispatch(deleteFaq(id));
+                this.setState({isLoad:false})
             }
         })
+
+        console.log("isLoad",this.state.isLoad)
+
     }
 
     render(){
-
         const {
             total,
             last_page,
@@ -95,84 +102,91 @@ class Faq extends Component{
                         <div className="card">
 
                             <div className="card-body">
-                                <form onSubmit={this.handlesearch} noValidate>
-                                    <div className="row">
-                                        <div className="col-6 col-xs-6 col-md-3">
-                                            <div className="form-group">
-                                                <label>Type something here ..</label>
-                                                <input type="text" className="form-control" name="any"/>
-                                            </div>
-                                        </div>
-                                        <div className="col-4 col-xs-4 col-md-4">
-                                            <div className="form-group">
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary"><i className="fa fa-search"/></button>
-                                                <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>
-                                            </div>
+                                <div className="row">
+                                    <div className="col-6 col-xs-6 col-md-3">
+                                        <div className="form-group">
+                                            <label>Type something here ..</label>
+                                            <input type="text" className="form-control" name="any"/>
                                         </div>
                                     </div>
-                                </form>
+                                    <div className="col-4 col-xs-4 col-md-4">
+                                        <div className="form-group">
+                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary"><i className="fa fa-search"/></button>
+                                            <button style={{marginTop:"27px",marginRight:"2px"}} type="button" onClick={(e)=>this.handleModal(e,'')} className="btn btn-primary"><i className="fa fa-plus"/></button>
+                                        </div>
+                                    </div>
+                                </div>
                                 {
-                                    !this.props.isLoading ?
-                                        (
-                                            typeof data === 'object' ?
-                                                data.map((v, i) => {
-                                                    return (
-                                                        <div className="ibox-content" id="ibox-content" key={i}>
-                                                            <div id="vertical-timeline" className="vertical-container light--timeline">
-                                                                <div className="vertical-timeline-block">
-                                                                    <div className="vertical-timeline-icon bg-info btn-floating pulse">
-                                                                        <i className="fa fa-briefcase"/>
-                                                                    </div>
+                                    typeof data === 'object' ? data.length>0?
+                                        data.map((v, i) => {
+                                            return (
+                                                <div className="ibox-content" id="ibox-content" key={i}>
+                                                    <div id="vertical-timeline" className="vertical-container light--timeline">
+                                                        <div className="vertical-timeline-block">
+                                                            <div className="vertical-timeline-icon bg-info btn-floating pulse">
+                                                                <i className="fa fa-briefcase"/>
+                                                            </div>
 
-                                                                    <div className="vertical-timeline-content">
-                                                                        <p style={{fontWeight:"normal!important"}}>{v.question}</p>
-                                                                        <p style={{color:"grey"}}>{v.answer}</p>
-                                                                        <div className="single-browser-area d-flex align-items-center justify-content-between mb-4">
-                                                                            <div className="d-flex align-items-center mr-3">
-                                                                                <span className="vertical-date">
-                                                                                    <small>{moment(v.created_at).locale('id').format("LLLL")}</small>
-                                                                                </span>
+                                                            <div className="vertical-timeline-content">
+                                                                <p style={{fontWeight:"normal!important"}}>{v.question}</p>
+                                                                <p style={{color:"grey"}}>{v.answer}</p>
+
+                                                                <div className="single-browser-area d-flex align-items-center justify-content-between mb-4">
+                                                                    <div className="d-flex align-items-center mr-3">
+                                                                        <span className="vertical-date">
+                                                                            <small>{moment(v.created_at).locale('id').format("LLLL")}</small>
+                                                                        </span>
+                                                                    </div>
+                                                                    <BrowserView>
+                                                                        <div className="row">
+                                                                            <div className="col-4 col-xs-4 col-md-4">
+                                                                                <button className={"btn btn-primary"} onClick={(e)=>this.handleModal(e,i)}>Edit</button>
                                                                             </div>
-                                                                            <div className="row">
-                                                                                <div className="col-4 col-xs-4 col-md-4">
-                                                                                    <button className={"btn btn-primary"} onClick={(e)=>this.handleModal(e,i)}>Edit</button>
-                                                                                </div>
-                                                                                <div className="col-4 col-xs-4 col-md-4">
-                                                                                    <button className={"btn btn-danger"} onClick={(e)=>this.handleDelete(e,v.id)}>Delete</button>
-                                                                                </div>
+                                                                            <div className="col-4 col-xs-4 col-md-4">
+                                                                                <button className={"btn btn-danger"} onClick={(e)=>this.handleDelete(e,v.id)}>Delete</button>
                                                                             </div>
                                                                         </div>
-
+                                                                    </BrowserView>
+                                                                </div>
+                                                                <MobileView>
+                                                                    <div className="row">
+                                                                        <div className="col-4 col-xs-4 col-md-4">
+                                                                            <button className={"btn btn-primary"} onClick={(e)=>this.handleModal(e,i)}>Edit</button>
+                                                                        </div>
+                                                                        <div className="col-4 col-xs-4 col-md-4">
+                                                                            <button className={"btn btn-danger"} onClick={(e)=>this.handleDelete(e,v.id)}>Delete</button>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })
-                                            : <img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/>
-                                        )
-                                    :
-                                        (()=>{
-                                            let container =[];
-                                            for(let x=0; x<10; x++){
-                                                container.push(
-                                                    <div className="ibox-content" id="ibox-content" key={x}>
-                                                        <div id="vertical-timeline" className="vertical-container light--timeline">
-                                                            <div className="vertical-timeline-block">
+                                                                </MobileView>
 
-                                                                <div className="vertical-timeline-content">
-                                                                    <p style={{fontWeight:"normal!important"}}><Skeleton/></p>
-                                                                    <p style={{color:"grey"}}><Skeleton/></p>
-                                                                    <p style={{color:"grey"}}><Skeleton/></p>
-
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                )
-                                            }
-                                            return container;
-                                        })()
+                                                </div>
+                                            );
+                                        })
+                                    : <img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/>
+                                    : (()=>{
+                                                    let container =[];
+                                                    for(let x=0; x<10; x++){
+                                                        container.push(
+                                                            <div className="ibox-content" id="ibox-content" key={x}>
+                                                                <div id="vertical-timeline" className="vertical-container light--timeline">
+                                                                    <div className="vertical-timeline-block">
+
+                                                                        <div className="vertical-timeline-content">
+                                                                            <p style={{fontWeight:"normal!important"}}><Skeleton/></p>
+                                                                            <p style={{color:"grey"}}><Skeleton/></p>
+                                                                            <p style={{color:"grey"}}><Skeleton/></p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
+                                                    return container;
+                                                })()
 
                                 }
 

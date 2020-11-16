@@ -8,9 +8,7 @@ import {HEADERS} from "./_constants";
 // user register
 
 // Login user -- get token
-export const loginUser = (userData) =>
-
-    async dispatch =>{
+export const loginUser = (userData) => async dispatch =>{
         destroy('sess');
         Swal.fire({
             title: 'Please Wait.',

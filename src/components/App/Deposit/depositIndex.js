@@ -6,11 +6,12 @@ import Paginationq, {copyTxt, rangeDate, ToastQ} from "../../../helper";
 import moment from "moment";
 import Skeleton from 'react-loading-skeleton';
 import * as Swal from "sweetalert2";
-import {approval, FetchDeposit} from "../../../redux/actions/deposit/deposit.action";
+import {approval, FetchConfigDeposit, FetchDeposit, setData} from "../../../redux/actions/deposit/deposit.action";
 import {DateRangePicker} from "react-bootstrap-daterangepicker";
-import {CopyToClipboard} from "react-copy-to-clipboard";
 import {NOTIF_ALERT} from "../../../redux/actions/_constants";
 import {BrowserView, MobileView} from 'react-device-detect';
+import { CustomInput } from 'reactstrap';
+
 
 class Deposit extends Component{
     constructor(props){
@@ -21,6 +22,7 @@ class Deposit extends Component{
         this.handleSearch = this.handleSearch.bind(this);
         this.HandleChangeInputValue = this.HandleChangeInputValue.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSlider = this.handleSlider.bind(this);
         this.state={
             detail:{},
             status:"",
@@ -28,6 +30,10 @@ class Deposit extends Component{
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD"),
             data:[],
+            error:{
+                amount: "",
+            },
+
         }
     }
     componentDidUpdate(prevProps) {
@@ -42,6 +48,7 @@ class Deposit extends Component{
         }
     }
     componentWillMount(){
+        this.props.dispatch(FetchConfigDeposit());
         if(this.props.match.params.id!==undefined){
             let tgl = atob(this.props.match.params.tgl);
             this.props.dispatch(FetchDeposit(`page=1&q=${this.props.match.params.id}&datefrom=${tgl}&dateto=${tgl}`));
@@ -52,22 +59,25 @@ class Deposit extends Component{
             this.forceUpdate();
         }
         else{
-            this.props.dispatch(FetchDeposit(`page=1&datefrom=${this.state.dateFrom}&dateto=${this.state.dateTo}`));
+            let sessDateFrom=localStorage.dateFromDeposit!==undefined?localStorage.dateFromDeposit:this.state.dateFrom;
+            let sessDateTo=localStorage.dateToDeposit!==undefined?localStorage.dateToDeposit:this.state.dateTo;
+            this.setState({
+                dateFrom:sessDateFrom,
+                dateTo:sessDateTo,
+            });
+            this.props.dispatch(FetchDeposit(`page=1&datefrom=${sessDateFrom}&dateto=${sessDateTo}`));
         }
     }
-
     componentWillReceiveProps(nextProps){
         this.setState({
             data:nextProps.data.data
         })
     }
-
     handlePageChange(pageNumber){
         localStorage.setItem("pageDeposit",pageNumber);
         let where = this.handleValidate();
         this.props.dispatch(FetchDeposit(where));
     }
-
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
         let err = Object.assign({}, this.state.error, {
@@ -108,14 +118,15 @@ class Deposit extends Component{
         })
     }
     handleEvent = (event, picker) => {
+        event.preventDefault();
         const from = moment(picker.startDate._d).format('YYYY-MM-DD');
         const to = moment(picker.endDate._d).format('YYYY-MM-DD');
-        localStorage.setItem("dateFromDeposit",`${from}`);
-        localStorage.setItem("dateToDeposit",`${to}`);
         this.setState({
             dateFrom:from,
             dateTo:to
         });
+        console.log(from)
+        console.log(to)
     };
     handleValidate(){
         let where="";
@@ -124,6 +135,8 @@ class Deposit extends Component{
         let dateTo = this.state.dateTo;
         let status = this.state.status;
         let any = this.state.any;
+        localStorage.setItem("dateFromDeposit",`${dateFrom}`);
+        localStorage.setItem("dateToDeposit",`${dateTo}`);
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
         }else{
@@ -149,16 +162,28 @@ class Deposit extends Component{
 
 
     HandleChangeInputValue(e,i) {
-        const column = e.target.name;
-        const val = e.target.value;
+        let column = e.target.name;
+        let value = e.target.value;
+        if (column === 'amount'){
+            if(value>this.props.config.max) value=this.props.config.max;
+            let data = [...this.state.data];
+            data[i] = {...data[i], [column]: value};
+            this.setState({ data });
 
-        let data = [...this.state.data];
-        data[i] = {...data[i], [column]: val};
-        this.setState({ data });
+        }
     }
+    handleSlider = (e,i) => {
+        let column = e.target.name;
+        let value = e.target.value;
+        this.state.data[i].amount = value;
+        this.state.error.amount = "";
+        this.setState({});
+    }
+
 
     handleSubmit(e,i,note){
         e.preventDefault();
+        console.log(note)
         if(note===""){
             let where = this.handleValidate();
             this.props.dispatch(approval({amount:this.state.data[i].amount},this.state.data[i].id,where))
@@ -168,6 +193,7 @@ class Deposit extends Component{
 
 
     render(){
+        console.log("CONFIG",this.props.config);
         const columnStyle ={verticalAlign: "middle", textAlign: "center",whiteSpace: "nowrap"};
         const {total,per_page, current_page,data} = this.props.data;
         return (
@@ -189,8 +215,9 @@ class Deposit extends Component{
                                     <div className="col-6 col-xs-6 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
-                                            <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
-                                                <input type="text" readOnly={true} className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                            <DateRangePicker
+                                                autoUpdateInput={true} showDropdowns={true} style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onApply={this.handleEvent}>
+                                                <input type="text" readOnly={true} className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
                                             </DateRangePicker>
                                         </div>
                                     </div>
@@ -252,67 +279,88 @@ class Deposit extends Component{
                                         <tbody>
 
                                         {
-                                            !this.props.isLoading ?
-                                                (
-                                                    this.state.data!==undefined?this.state.data.length>0?
-                                                        this.state.data.map((v,i)=>{
-                                                            let badge = "";
-                                                            let txt = "";
-                                                            let note = "";
-                                                            if(v.status===0){badge="btn-warning";txt="Pending";}
-                                                            if(v.status===1){badge="btn-success";txt="Success";}
-                                                            if(v.status===2){badge="btn-danger";txt="Cancel";}
-                                                            // if()
-                                                            if(parseFloat(v.amount)===0){
-                                                                note = "input amount min 0.025 and max 0.25";
-                                                            }
-                                                            else if(parseFloat(v.amount)>0.25){
-                                                                note = "input amount min 0.025 and max 0.25";
-                                                            }
-                                                            else if(parseFloat(v.amount)<0.025){
-                                                                note = "input amount min 0.025 and max 0.25";
-                                                            }
-                                                            return(
-                                                                <tr key={i}>
-                                                                    <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,1)}><i className={"fa fa-check"}/></button>
-                                                                        <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
-                                                                        <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-eye"}/></button>
-                                                                    </td>
-                                                                    <td style={columnStyle}>{v.wallet_address}</td>
-                                                                    <td style={columnStyle}>{v.name}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <div style={{width:"20em"}}>
-                                                                            <div className="form-group">
-                                                                                <div className="input-group mb-2">
-                                                                                    <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} copied successful.`})}}><div className="input-group-text">
-                                                                                        <i className="fa fa-copy"/>
-                                                                                    </div></div>
-                                                                                    <input minLength="4" maxLength="5" type="text" className="form-control form-control-sm" readOnly={v.status===1||v.status===2} name="amount" value={v.amount} onChange={(e) => this.HandleChangeInputValue(e, i)} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i,note);}}} />
-                                                                                    <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
-                                                                                </div>
-                                                                                <small style={{color:"red",float:"left"}}>{note}</small>
-                                                                            </div>
+                                            typeof data === "object" ? this.state.data.length>0?
+                                                this.state.data.map((v,i)=>{
+                                                    let badge = "";
+                                                    let txt = "";
+                                                    let note = "";
+                                                    let isDisabled = false;
+                                                    if(v.status===0){badge="btn-warning";txt="Pending";}
+                                                    if(v.status===1){badge="btn-success";txt="Success";}
+                                                    if(v.status===2){badge="btn-danger";txt="Cancel";}
+                                                    if(this.state.data[i].amount < this.props.config.min || this.state.data[i].amount > this.props.config.max){
+                                                        note = "Nominal not included in the range";
+                                                    }
+                                                    if(this.state.data[i].amount===''){
+                                                        note = "Wrong amount";
+                                                    }
+                                                    return(
+                                                        <tr key={i}>
+                                                            <td style={columnStyle}>
+                                                                <span class="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
+                                                            </td>
+                                                            <td style={columnStyle}>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-primary btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,1)}><i className={"fa fa-check"}/></button>
+                                                                <button style={{marginRight:"5px"}} className={"btn btn-danger btn-sm"} disabled={v.status === 1 || v.status===2} onClick={(e)=>this.handleApproval(e,v.id,2)}><i className={"fa fa-close"}/></button>
+                                                                <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handleModal(e,i)}><i className={"fa fa-eye"}/></button>
+                                                            </td>
+                                                            <td style={columnStyle}>{v.wallet_address}</td>
+                                                            <td style={columnStyle}>{v.name}</td>
+                                                            <td style={columnStyle}>
+                                                                <div style={{width:"20em"}}>
+                                                                    <div className="form-group">
+                                                                        <div className="d-flex align-items-center justify-content-between">
+                                                                            <small>{this.props.config.min}</small>
+                                                                            <small>{this.props.config.max}</small>
                                                                         </div>
 
+                                                                        <CustomInput disabled={v.status===1||v.status===2} type="range" min={this.props.config.min} max={this.props.config.max} step="0.00000001" value={this.state.data[i].amount} onChange={(e)=>this.handleSlider(e,i)}/>
 
+                                                                        <div className="input-group mb-2">
+                                                                            <div className="input-group-prepend" onClick={(e) => {e.preventDefault();navigator.clipboard.writeText(parseFloat(v.amount).toFixed(8));ToastQ.fire({icon:'success',title:`${parseFloat(v.amount).toFixed(8)} has been copied.`})}}><div className="input-group-text">
+                                                                                <i className="fa fa-copy"/>
+                                                                            </div></div>
+                                                                            <input
+                                                                                type="number"
+                                                                                maxLength="8"
+                                                                                min={this.props.config.min}
+                                                                                max={this.props.config.max}
+                                                                                step="0.00000001"
+                                                                                minLength="4"
+                                                                                className="form-control form-control-sm"
+                                                                                readOnly={v.status===1||v.status===2}
+                                                                                name="amount"
+                                                                                value={v.amount}
+                                                                                onChange={(e) => this.HandleChangeInputValue(e, i)}
+                                                                                onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event,i,note);}}}
+                                                                            />
+                                                                            <div className="input-group-prepend"><div className="input-group-text"><small style={{color:"red",fontWeight:"bold"}}>{v.coin}</small></div></div>
+                                                                        </div>
+                                                                        <div className="invalid-feedback"
+                                                                             style={this.state.error.amount !== "" ? {display: 'block'} : {display: 'none'}}>
+                                                                            {this.state.error.amount}
+                                                                        </div>
 
+                                                                        <div className="invalid-feedback" style={this.state.data[i].amount < this.props.config.min || this.state.data[i].amount > this.props.config.max ? {display: 'block'} : {display: 'none'}}>
+                                                                            {note}
+                                                                        </div>
 
-                                                                    </td>
-                                                                    <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
-                                                                    <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
-                                                                </tr>
-                                                            )
-                                                        })
-                                                        : <tr><td colSpan={8} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                        : <tr><td colSpan={8} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                ) : (()=>{
+                                                                        {/*<small style={{color:"red",float:"left"}}>{note}</small>*/}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
+                                                            <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
+                                                        </tr>
+                                                    )
+                                                })
+                                                : <tr><td colSpan={8} style={columnStyle}><img className="img-fluid" src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                             : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={40} width={40}/>}</td>
                                                                 <td style={columnStyle}>
                                                                     <Skeleton height={30} width={30}/>
                                                                 </td>
@@ -325,7 +373,7 @@ class Deposit extends Component{
                                                         )
                                                     }
                                                     return container;
-                                                })()
+                                            })()
                                         }
                                         </tbody>
                                     </table>
@@ -352,7 +400,8 @@ const mapStateToProps = (state) => {
     return {
         isLoading: state.depositReducer.isLoading,
         isOpen:state.modalReducer,
-        data:state.depositReducer.data
+        data:state.depositReducer.data,
+        config:state.depositReducer.config,
 
     }
 }

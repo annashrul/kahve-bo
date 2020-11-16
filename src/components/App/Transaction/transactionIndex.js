@@ -29,9 +29,13 @@ class Transaction extends Component{
         }
     }
     componentWillMount(){
-        this.props.dispatch(FetchTransaction('page=1'));
-        localStorage.setItem("dateFromTransaction",`${this.state.dateFrom}`);
-        localStorage.setItem("dateToTransaction",`${this.state.dateTo}`);
+        let sessDateFrom=localStorage.dateFromTransaction!==undefined?localStorage.dateFromPenarikan:this.state.dateFrom;
+        let sessDateTo=localStorage.dateToTransaction!==undefined?localStorage.dateToPenarikan:this.state.dateTo;
+        this.setState({
+            dateFrom:sessDateFrom,
+            dateTo:sessDateTo,
+        });
+        this.props.dispatch(FetchTransaction(`page=1&datefrom=${sessDateFrom}&dateto=${sessDateTo}`));
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
@@ -49,8 +53,7 @@ class Transaction extends Component{
             dateFrom:from,
             dateTo:to
         });
-        localStorage.setItem("dateFromTransaction",`${this.state.dateFrom}`);
-        localStorage.setItem("dateToTransaction",`${this.state.dateTo}`);
+
     };
     handleValidate(){
         let where="";
@@ -58,6 +61,9 @@ class Transaction extends Component{
         let dateFrom = this.state.dateFrom;
         let dateTo = this.state.dateTo;
         let any = this.state.any;
+        localStorage.setItem("dateFromTransaction",`${dateFrom}`);
+        localStorage.setItem("dateToTransaction",`${dateTo}`);
+
         if(page!==null&&page!==undefined&&page!==""){
             where+=`page=${page}`;
         }else{
@@ -115,9 +121,13 @@ class Transaction extends Component{
                                     <div className="col-6 col-xs-6 col-sm-4 col-md-2">
                                         <div className="form-group">
                                             <label>Periode </label>
-                                            <DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>
-                                                <input type="text" readOnly={true} className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
+                                            <DateRangePicker
+                                                autoUpdateInput={true} showDropdowns={true} style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onApply={this.handleEvent}>
+                                                <input type="text" readOnly={true} className="form-control" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>
                                             </DateRangePicker>
+                                            {/*<DateRangePicker style={{display:'unset'}} ranges={rangeDate} alwaysShowCalendars={true} onEvent={this.handleEvent}>*/}
+                                                {/*<input type="text" readOnly={true} className="form-control" name="date_sale_report" value={`${this.state.dateFrom} to ${this.state.dateTo}`}/>*/}
+                                            {/*</DateRangePicker>*/}
                                         </div>
                                     </div>
                                     <div className="col-6 col-xs-6 col-sm-4 col-md-3">
@@ -169,40 +179,39 @@ class Transaction extends Component{
                                         </thead>
                                         <tbody>
                                         {
-                                            !this.props.isLoading ?
-                                                (
-                                                    typeof data === 'object' ? data.length>0?
-                                                        data.map((v,i)=>{
-                                                            totPerIn = totPerIn+parseFloat(v.amount_in);
-                                                            totPerOut = totPerOut+parseFloat(v.amount_out);
-                                                            totPerSaldoAwal = totPerSaldoAwal+parseFloat(v.saldo_awal);
-                                                            totPerSaldoAkhir = totPerSaldoAkhir+parseFloat(v.saldo_akhr);
-                                                            return(
-                                                                <tr key={i}>
-                                                                    <td style={columnStyle}> {i+1 + (10 * (parseInt(current_page,10)-1))}</td>
-                                                                    <td style={columnStyle}>
-                                                                        <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id,v.name)}><i className={"fa fa-eye"}/></button>
-                                                                    </td>
-                                                                    <td style={columnStyle}>{copyTxt(v.wallet)}</td>
-                                                                    <td style={columnStyle}>{copyTxt(v.kd_referral)}</td>
-                                                                    <td style={columnStyle}>{v.name}</td>
-                                                                    <td style={columnStyle}>{v.email}</td>
-                                                                    <td style={rightStyle}>{parseFloat(v.saldo_awal).toFixed(8)}</td>
-                                                                    <td style={rightStyle}>{copyTxt(parseFloat(v.amount_in).toFixed(8))}</td>
-                                                                    <td style={rightStyle}>{copyTxt(parseFloat(v.amount_out).toFixed(8))}</td>
-                                                                    <td style={rightStyle}>{parseFloat(v.saldo_akhr).toFixed(8)}</td>
+                                            typeof data === 'object' ? data.length>0?
+                                                data.map((v,i)=>{
+                                                    totPerIn = totPerIn+parseFloat(v.amount_in);
+                                                    totPerOut = totPerOut+parseFloat(v.amount_out);
+                                                    totPerSaldoAwal = totPerSaldoAwal+parseFloat(v.saldo_awal);
+                                                    totPerSaldoAkhir = totPerSaldoAkhir+parseFloat(v.saldo_akhr);
+                                                    return(
+                                                        <tr key={i}>
+                                                            <td style={columnStyle}>
+                                                                <span class="circle">{i+1 + (10 * (parseInt(current_page,10)-1))}</span>
+                                                            </td>
+                                                            <td style={columnStyle}>
+                                                                <button className={"btn btn-success btn-sm"} onClick={(e)=>this.handleDetail(e,v.id,v.name)}><i className={"fa fa-eye"}/></button>
+                                                            </td>
+                                                            <td style={columnStyle}>{copyTxt(v.wallet)}</td>
+                                                            <td style={columnStyle}>{copyTxt(v.kd_referral)}</td>
+                                                            <td style={columnStyle}>{v.name}</td>
+                                                            <td style={columnStyle}>{v.email}</td>
+                                                            <td style={rightStyle}>{parseFloat(v.saldo_awal).toFixed(8)}</td>
+                                                            <td style={rightStyle}>{copyTxt(parseFloat(v.amount_in).toFixed(8))}</td>
+                                                            <td style={rightStyle}>{copyTxt(parseFloat(v.amount_out).toFixed(8))}</td>
+                                                            <td style={rightStyle}>{parseFloat(v.saldo_akhr).toFixed(8)}</td>
 
-                                                                </tr>
-                                                            )
-                                                        })
-                                                        : <tr><td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                    : <tr><td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
-                                                ) : (()=>{
+                                                        </tr>
+                                                    )
+                                                })
+                                                : <tr><td colSpan={10} style={columnStyle}><img src={NOTIF_ALERT.NO_DATA}/></td></tr>
+                                            : (()=>{
                                                     let container =[];
                                                     for(let x=0; x<10; x++){
                                                         container.push(
                                                             <tr key={x}>
-                                                                <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                <td style={columnStyle}>{<Skeleton circle={true} height={40} width={40}/>}</td>
                                                                 <td style={columnStyle}><Skeleton height={30} width={30}/></td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
                                                                 <td style={columnStyle}>{<Skeleton/>}</td>
@@ -216,7 +225,9 @@ class Transaction extends Component{
                                                         )
                                                     }
                                                     return container;
-                                                })()
+                                        })()
+
+
                                         }
                                         </tbody>
 

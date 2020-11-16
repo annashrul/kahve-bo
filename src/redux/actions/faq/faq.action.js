@@ -191,51 +191,108 @@ export const putFaq = (data,id) => {
             })
     }
 }
-export const deleteFaq = (id) => {
-    return (dispatch) => {
-        dispatch(setLoading(true));
-        const url = HEADERS.URL + `faq/${id}`;
-        axios.delete(url)
-            .then(function (response) {
-                const data = (response.data);
-                if (data.status === 'success') {
-                    Swal.fire({
-                        title: 'Success',
-                        icon: 'success',
-                        text: NOTIF_ALERT.SUCCESS,
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'failed',
-                        icon: 'error',
-                        text: NOTIF_ALERT.FAILED,
-                    });
-                }
-                dispatch(setLoading(false));
-                dispatch(FetchFaq('page=1'));
-            })
-            .catch(function (error) {
-                dispatch(setLoading(false));
-                if (error.message === 'Network Error') {
-                    Swal.fire(
-                        'Network Failed!.',
-                        'Please check your connection',
-                        'error'
-                    );
-                }
-                else {
-                    Swal.fire({
-                        title: 'failed',
-                        icon: 'error',
-                        text: error.response.data.msg,
-                    });
-                    if (error.response) {
+// export const deleteFaq = (id) => {
+//     return (dispatch) => {
+//         dispatch(setLoading(true));
+//         const url = HEADERS.URL + `faq/${id}`;
+//         axios.delete(url)
+//             .then(function (response) {
+//                 const data = (response.data);
+//                 if (data.status === 'success') {
+//                     Swal.fire({
+//                         title: 'Success',
+//                         icon: 'success',
+//                         text: NOTIF_ALERT.SUCCESS,
+//                     });
+//                 } else {
+//                     Swal.fire({
+//                         title: 'failed',
+//                         icon: 'error',
+//                         text: NOTIF_ALERT.FAILED,
+//                     });
+//                 }
+//                 dispatch(setLoading(false));
+//                 dispatch(FetchFaq('page=1'));
+//             })
+//             .catch(function (error) {
+//                 dispatch(setLoading(false));
+//                 if (error.message === 'Network Error') {
+//                     Swal.fire(
+//                         'Network Failed!.',
+//                         'Please check your connection',
+//                         'error'
+//                     );
+//                 }
+//                 else {
+//                     Swal.fire({
+//                         title: 'failed',
+//                         icon: 'error',
+//                         text: error.response.data.msg,
+//                     });
+//                     if (error.response) {
+//
+//                     }
+//                 }
+//
+//             })
+//     }
+// }
 
+export const deleteFaq = (id) => async dispatch =>{
+    Swal.fire({
+        title: 'Please Wait.',
+        html: NOTIF_ALERT.CHECKING,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        },
+        onClose: () => {}
+    })
+
+    axios.delete(HEADERS.URL+`faq/${id}`)
+        .then(response=>{
+            setTimeout(
+                function () {
+                    Swal.close() ;
+                    const data = (response.data);
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            icon: 'success',
+                            text: NOTIF_ALERT.SUCCESS,
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'failed',
+                            icon: 'error',
+                            text: NOTIF_ALERT.FAILED,
+                        });
                     }
-                }
+                    dispatch(setLoading(false));
+                    dispatch(FetchFaq('page=1'));
+                },800)
 
-            })
-    }
+        }).catch(error =>{
+        Swal.close()
+        dispatch(setLoading(false));
+        if (error.message === 'Network Error') {
+            Swal.fire(
+                'Network Failed!.',
+                'Please check your connection',
+                'error'
+            );
+        }
+        else {
+            Swal.fire({
+                title: 'failed',
+                icon: 'error',
+                text: error.response.data.msg,
+            });
+            if (error.response) {
+
+            }
+        }
+
+    });
 }
 
 
