@@ -168,7 +168,7 @@ class Inbox extends Component{
                                                                         <a href="javascript:void(0)" className="badge badge-danger" onClick={(e)=>this.handleDelete(e,v.id)}><i className={"fa fa-trash"}/></a>
                                                                     </div>
                                                                 </div>
-                                                                <div className="admi-mail-body d-flex align-items-center mr-3" style={{width:"70%"}}  onClick={(e)=>this.handleDetail(e,i)}>
+                                                                <div className="admi-mail-body d-flex align-items-center mr-3"  onClick={(e)=>this.handleDetail(e,i)}>
                                                                     <div className="mail-thumb flex-40-thubm mr-3">
                                                                         <img className="border-radius-50" src={noImage()} alt=""/>
                                                                     </div>
