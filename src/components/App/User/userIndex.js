@@ -264,7 +264,7 @@ class User extends Component{
                                                 {
                                                     this.props.isLoadingSend?(
 
-                                                        <button disabled={true} style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/></button>
+                                                        <button disabled={true} style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary"><i className="fa fa-circle-o-notch fa-spin"/> Loading ..</button>
                                                     ):(
                                                         <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i className={"fa fa-send"}/> Send to all</button>
                                                     )
@@ -276,9 +276,9 @@ class User extends Component{
                                                 <button style={{marginTop:"27px",marginRight:"2px"}} type="submit" className="btn btn-primary" onClick={(e)=>this.handleSearch(e)}><i className="fa fa-search"/></button>
                                                 {
                                                     this.props.isLoadingSend?(
-                                                        <button disabled={true} style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"30px"}} className="fa fa-circle-o-notch fa-spin"/></button>
+                                                        <button disabled={true} style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary btn-fixed-bottom"><i style={{fontSize:"20px"}} className="fa fa-circle-o-notch fa-spin"/> Loading ..</button>
                                                     ):(
-                                                        <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary btn-fixed-bottom" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i style={{fontSize:"30px"}} className={"fa fa-send"}/></button>
+                                                        <button style={{marginTop:"27px",marginRight:"2px"}} type="button" className="btn btn-primary btn-fixed-bottom" onClick={(e)=>this.handleSendEmail(e,per_page,last_page)}><i style={{fontSize:"20px"}} className={"fa fa-send"}/> Send to all</button>
                                                     )
                                                 }
                                             </div>

@@ -26,9 +26,9 @@ class DetailTransaction extends Component{
 
 
     componentDidUpdate(prevProps) {
-        if (this.props.detail !== prevProps.detail) {
-            this.setState({name:this.props.detail.name});
-            this.props.dispatch(FetchDetailTransaction(this.props.detail.id,"page=1"));
+        if (this.props.dataDetail !== prevProps.dataDetail) {
+            this.setState({name:this.props.dataDetail.name});
+            this.props.dispatch(FetchDetailTransaction(this.props.dataDetail.id,"page=1"));
         }
     }
     handleValidate(){
@@ -50,7 +50,7 @@ class DetailTransaction extends Component{
     handlePageChange(pageNumber){
         localStorage.setItem("pageDetailTransaction",pageNumber);
         let where = this.handleValidate();
-        this.props.dispatch(FetchDetailTransaction(this.props.detail.id,where));
+        this.props.dispatch(FetchDetailTransaction(this.props.dataDetail.id,where));
 
     }
     handleChange = (event) => {
@@ -59,7 +59,7 @@ class DetailTransaction extends Component{
     handleSearch(e){
         e.preventDefault();
         let where = this.handleValidate();
-            this.props.dispatch(FetchDetailTransaction(this.props.detail.id,where));
+            this.props.dispatch(FetchDetailTransaction(this.props.dataDetail.id,where));
 
     }
 
@@ -82,7 +82,7 @@ class DetailTransaction extends Component{
         let totalPerAmountOut=0;
         return (
             <WrapperModal isOpen={this.props.isOpen && this.props.type === "detailTransaction"} size="lg" style={{zoom:"90%"}}>
-                <ModalHeader toggle={this.toggle}>Detail Transaction {!this.props.isLoadingPost ?this.state.name:"...."}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>Detail Transaction {this.state.name}</ModalHeader>
                 <ModalBody>
                     <div className="form-group">
                         <label>Type something here ..</label>

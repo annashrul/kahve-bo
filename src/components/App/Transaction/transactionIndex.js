@@ -21,7 +21,7 @@ class Transaction extends Component{
         this.handleSearch   = this.handleSearch.bind(this);
         this.handleDetail   = this.handleDetail.bind(this);
         this.state={
-            detail:{},
+            dataDetail:{},
             any:"",
             dateFrom:moment(new Date()).format("yyyy-MM-DD"),
             dateTo:moment(new Date()).format("yyyy-MM-DD"),
@@ -79,7 +79,7 @@ class Transaction extends Component{
         this.props.dispatch(FetchTransaction(where));
     }
     handleDetail(e,id,name){
-        this.setState({detail:{id:id,name:name}});
+        this.setState({dataDetail:{id:id,name:name}});
         // this.props.dispatch(FetchDetailTransaction(id));
         e.preventDefault();
         const bool = !this.props.isOpen;
@@ -252,7 +252,7 @@ class Transaction extends Component{
                         </div>
                     </div>
                 </div>
-                <DetailTransaction detail={this.state.detail}/>
+                <DetailTransaction dataDetail={this.state.dataDetail}/>
 
             </Layout>
         );
@@ -264,7 +264,7 @@ const mapStateToProps = (state) => {
         isLoading: state.transactionReducer.isLoading,
         isOpen:state.modalReducer,
         data:state.transactionReducer.data,
-        detail:state.transactionReducer.detail
+        // detail:state.transactionReducer.detail
     }
 }
 
