@@ -12,7 +12,7 @@ class Setting extends Component{
     constructor(props){
         super(props);
         this.state={
-            hari:['monday','tuesday','wednesday','thursday','friday','saturday','sunday'],
+            hari:['sunday','monday','tuesday','wednesday','thursday','friday','saturday'],
             monthly_profit:"",
             contract:"",
             charge:"",
