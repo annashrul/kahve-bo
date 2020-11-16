@@ -159,13 +159,17 @@ class Faq extends Component{
                                                     <div className="ibox-content" id="ibox-content" key={x}>
                                                         <div id="vertical-timeline" className="vertical-container light--timeline">
                                                             <div className="vertical-timeline-block">
-                                                                <div className="vertical-timeline-icon bg-info btn-floating pulse">
-                                                                    <i className="fa fa-briefcase"/>
-                                                                </div>
+
                                                                 <div className="vertical-timeline-content">
-                                                                    <Skeleton/>
-                                                                    <Skeleton width={1000}/>
-                                                                    <Skeleton width={900}/>
+                                                                    <p style={{fontWeight:"normal!important"}}><Skeleton/></p>
+                                                                    <p style={{color:"grey"}}><Skeleton/></p>
+                                                                    <div className="single-browser-area d-flex align-items-center justify-content-between mb-4">
+                                                                        <div className="d-flex align-items-center mr-3">
+                                                                                <span className="vertical-date">
+                                                                                    <small><Skeleton/></small>
+                                                                                </span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

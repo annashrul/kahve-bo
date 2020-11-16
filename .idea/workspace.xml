@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d1e4ad1b-e693-4a35-9562-d95ffc171052" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/User/adminIndex.js" afterPath="$PROJECT_DIR$/src/components/App/User/adminIndex.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" afterPath="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -39,7 +39,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="adminIndex.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="adminIndex.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/App/User/adminIndex.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="228">
@@ -49,6 +49,18 @@
                 <element signature="e#1395#1955#0" expanded="false" />
                 <element signature="e#1465#1943#0" expanded="false" />
                 <element signature="e#13379#13822#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="faqIndex.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/App/Faq/faqIndex.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="168" column="100" lean-forward="false" selection-start-line="168" selection-start-column="100" selection-end-line="168" selection-end-column="100" />
+              <folding>
+                <element signature="e#4801#7803#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -145,7 +157,6 @@
         <option value="$PROJECT_DIR$/src/redux/reducers/index.js" />
         <option value="$PROJECT_DIR$/src/redux/reducers/log/log.reducer.js" />
         <option value="$PROJECT_DIR$/src/components/App/CoinType/coinTypeIndex.js" />
-        <option value="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/Inbox/inboxIndex.js" />
         <option value="$PROJECT_DIR$/src/components/App/Dashboard/Dashboard.js" />
         <option value="$PROJECT_DIR$/src/components/App/modals/inbox/form_inbox.js" />
@@ -174,6 +185,7 @@
         <option value="$PROJECT_DIR$/src/components/App/Setting/settingIndex.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/components/App/User/adminIndex.js" />
+        <option value="$PROJECT_DIR$/src/components/App/Faq/faqIndex.js" />
       </list>
     </option>
   </component>
@@ -263,6 +275,22 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="Faq" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="Inbox" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="polos_bo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="polos_bo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="User" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -343,12 +371,12 @@
       <workItem from="1605247369877" duration="18526000" />
       <workItem from="1605341334709" duration="6321000" />
       <workItem from="1605353067743" duration="3526000" />
-      <workItem from="1605505255556" duration="5868000" />
+      <workItem from="1605505255556" duration="6194000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="240442000" />
+    <option name="totallyTimeSpent" value="240768000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -361,7 +389,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34703946" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34703946" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -444,14 +472,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
           <caret line="139" column="148" lean-forward="false" selection-start-line="139" selection-start-column="148" selection-end-line="139" selection-end-column="148" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/Faq/faqIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="201" column="4" lean-forward="false" selection-start-line="201" selection-start-column="4" selection-end-line="201" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -853,6 +873,16 @@
             <element signature="e#1395#1955#0" expanded="false" />
             <element signature="e#1465#1943#0" expanded="false" />
             <element signature="e#13379#13822#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/Faq/faqIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="168" column="100" lean-forward="false" selection-start-line="168" selection-start-column="100" selection-end-line="168" selection-end-column="100" />
+          <folding>
+            <element signature="e#4801#7803#0" expanded="false" />
           </folding>
         </state>
       </provider>
