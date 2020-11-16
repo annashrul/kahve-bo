@@ -163,13 +163,8 @@ class Faq extends Component{
                                                                 <div className="vertical-timeline-content">
                                                                     <p style={{fontWeight:"normal!important"}}><Skeleton/></p>
                                                                     <p style={{color:"grey"}}><Skeleton/></p>
-                                                                    <div className="single-browser-area d-flex align-items-center justify-content-between mb-4">
-                                                                        <div className="d-flex align-items-center mr-3">
-                                                                                <span className="vertical-date">
-                                                                                    <small><Skeleton/></small>
-                                                                                </span>
-                                                                        </div>
-                                                                    </div>
+                                                                    <p style={{color:"grey"}}><Skeleton/></p>
+
                                                                 </div>
                                                             </div>
                                                         </div>
