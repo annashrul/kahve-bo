@@ -30,6 +30,7 @@ class Setting extends Component{
             jamInvestFrom2:"",
             jamInvestTo1:"",
             jamInvestTo2:"",
+            deposit_fee:"",
 
             hariWD1:"",
             hariWD2:"",
@@ -76,7 +77,7 @@ class Setting extends Component{
                 // jamInvestFrom2:nextProps.data.schedule_invest.time[0].split("-")[1],
                 jamInvestTo1:nextProps.data.schedule_invest.time[1].split("-")[0],
                 // jamInvestTo2:nextProps.data.schedule_invest.time[1].split("-")[1],
-
+                deposit_fee:nextProps.data.deposit_fee,
                 hariWD1:nextProps.data.schedule_wd.days[0],
                 hariWD2:nextProps.data.schedule_wd.days[1],
                 jamWDFrom1:nextProps.data.schedule_wd.time[0].split("-")[0],
@@ -123,6 +124,7 @@ class Setting extends Component{
         parsedata["invest_max"]=this.state.invest_max;
         parsedata["wd_min"]=this.state.wd_min;
         parsedata["wd_max"]=this.state.wd_max;
+        parsedata["deposit_fee"]=this.state.deposit_fee;
         parsedata["schedule_invest"] =  {
             "days": [this.state.hariInvest1, this.state.hariInvest2],
             "time": [`${this.state.jamInvestFrom1}`, `${this.state.jamInvestTo1}`]
@@ -353,6 +355,17 @@ class Setting extends Component{
                                 {/*START SECTION INVESTMENT*/}
                                 <TabPanel>
                                     <div className="form-group">
+                                        <label>Invest Fee</label>
+                                        {
+                                            this.props.isLoading?<Skeleton height={30}/>:
+                                                <div className="input-group mb-2">
+                                                    <input type="text" className="form-control" name="deposit_fee" value={this.state.deposit_fee} onChange={this.handleChange} onKeyPress={event=>{if(event.key==='Enter'){this.handleSubmit(event);}}} />
+                                                    <div className="input-group-prepend"><div className="input-group-text"><i className="fa fa-bitcoin"/></div></div>
+
+                                                </div>
+                                        }
+                                    </div>
+                                    <div className="form-group">
                                         <label>Invest Min</label>
                                         {
                                             this.props.isLoading?<Skeleton height={30}/>:
@@ -365,6 +378,7 @@ class Setting extends Component{
 
                                     </div>
                                     <div className="form-group">
+
                                         <label>Invest Max</label>
                                         {
                                             this.props.isLoading?<Skeleton height={30}/>:

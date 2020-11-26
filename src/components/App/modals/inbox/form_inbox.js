@@ -75,7 +75,6 @@ class FormInbox extends Component{
                                     </div>
                                 </div>
                                 <p>{this.props.detail.message}</p>
-
                             </div>
                         </div>
                     </div>

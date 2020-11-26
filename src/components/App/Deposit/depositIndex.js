@@ -268,6 +268,8 @@ class Deposit extends Component{
                                             <th className="text-black" style={columnStyle}>Wallet Address</th>
                                             <th className="text-black" style={columnStyle}>Name</th>
                                             <th className="text-black" style={columnStyle}>Amount (Coin)</th>
+                                            <th className="text-black" style={columnStyle}>Fee</th>
+                                            <th className="text-black" style={columnStyle}>Raw Amount</th>
                                             <th className="text-black" style={columnStyle}>Invest Date</th>
                                             <th className="text-black" style={columnStyle}>Status</th>
                                         </tr>
@@ -345,6 +347,9 @@ class Deposit extends Component{
                                                                     </div>
                                                                 </div>
                                                             </td>
+                                                            <td style={columnStyle}>{v.fee}</td>
+                                                            <td style={columnStyle}>{v.raw_amount}</td>
+
                                                             <td style={columnStyle}>{moment(v.created_at).locale('id').format("ddd, Do MMM YYYY hh:mm:ss")}</td>
                                                             <td style={columnStyle}><button className={`btn ${badge} btn-sm`}>{txt}</button></td>
                                                         </tr>
