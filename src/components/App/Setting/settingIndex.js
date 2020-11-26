@@ -43,6 +43,8 @@ class Setting extends Component{
             invest_max:"",
             wd_min:"",
             wd_max:"",
+            txt_mode:"",
+            maintain_mode:false,
             error:{
                 email:""
             },
@@ -57,9 +59,16 @@ class Setting extends Component{
         this.props.dispatch(FetchPengaturan());
     }
     componentWillReceiveProps(nextProps){
-        console.log(nextProps.data.length)
         if(nextProps.data.length>0||nextProps.data.length==undefined){
+            let txtMode="";
+            if(nextProps.data.maintain_mode===true){
+                txtMode = "disabled maintain mode";
+            }else{
+                txtMode = "enabled maintain mode";
+            }
             this.setState({
+                txt_mode:txtMode,
+                maintain_mode:nextProps.data.maintain_mode===true?true:false,
                 monthly_profit:nextProps.data.monthly_profit,
                 contract:nextProps.data.contract,
                 charge:nextProps.data.charge,
@@ -90,6 +99,7 @@ class Setting extends Component{
                 wd_min:nextProps.data.wd_min,
                 wd_max:nextProps.data.wd_max,
             })
+
         }
 
     }
@@ -98,6 +108,21 @@ class Setting extends Component{
     }
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
+        if(event.target.name==='maintain_mode'){
+            if(event.target.checked){
+                this.setState({
+                    txt_mode:'disabled maintain mode',
+                    maintain_mode:event.target.checked,
+                })
+            }
+            else{
+                this.setState({
+                    txt_mode:'enabled maintain mode',
+                    maintain_mode:event.target.checked,
+                })
+            }
+        }
+
         let err = Object.assign({}, this.state.error, {
             [event.target.name]: ""
         });
@@ -125,6 +150,7 @@ class Setting extends Component{
         parsedata["wd_min"]=this.state.wd_min;
         parsedata["wd_max"]=this.state.wd_max;
         parsedata["deposit_fee"]=this.state.deposit_fee;
+        parsedata["maintain_mode"]=this.state.maintain_mode;
         parsedata["schedule_invest"] =  {
             "days": [this.state.hariInvest1, this.state.hariInvest2],
             "time": [`${this.state.jamInvestFrom1}`, `${this.state.jamInvestTo1}`]
@@ -183,6 +209,26 @@ class Setting extends Component{
                                 {/*START SECTION GENERAL*/}
                                 <TabPanel>
                                     <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="form-group">
+                                                <label>Maintain Mode {this.state.maintain_mode}</label>
+
+                                                {
+                                                    this.props.isLoading?<Skeleton height={30}/>:<div className="input-group mb-2">
+                                                        <input type="text" className="form-control" name="txt_mode" value={this.state.txt_mode} readOnly={true} />
+                                                        <div className="input-group-prepend">
+                                                            <div className="input-group-text"  style={{width:"100px"}}>
+                                                                <input type="checkbox" className={"form-control"} name="maintain_mode" checked={this.state.maintain_mode} value={this.state.maintain_mode} onChange={this.handleChange}/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                {/*<label htmlFor="inputState" className="col-form-label"><input type="checkbox" name="maintain_mode" value={this.state.maintain_mode} onChange={this.handleChange}/> Active maintain mode</label>*/}
+                                                {/*<input type="text" value={this.state.maintain_mode} className="form-control" readOnly={true}/>*/}
+
+                                            </div>
+                                        </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label>App Name</label>
