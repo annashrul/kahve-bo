@@ -224,6 +224,7 @@ class User extends Component{
         let totalPerActiveSlot=0;
         let totalPerPayment=0;
         let totalPerRef=0;
+        let totalPerRemaining=0;
         return (
             <Layout page={"member"}>
                 <div className="row align-items-center">
@@ -325,6 +326,7 @@ class User extends Component{
                                                             totalPerActiveSlot = totalPerActiveSlot+parseFloat(v.active_slot);
                                                             totalPerPayment = totalPerPayment+parseFloat(v.payment);
                                                             totalPerRef = totalPerRef+parseFloat(v.reff);
+                                                            totalPerRemaining = totalPerRemaining+parseFloat(v.investment-v.payment);
                                                             let faIsActive="";
                                                             let isStatus=0;
                                                             let isColor;
@@ -401,6 +403,7 @@ class User extends Component{
                                                                         <td style={columnStyle}>{<Skeleton/>}</td>
                                                                         <td style={columnStyle}>{<Skeleton/>}</td>
                                                                         <td style={columnStyle}>{<Skeleton/>}</td>
+                                                                        <td style={columnStyle}>{<Skeleton/>}</td>
                                                                         <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
                                                                         <td style={columnStyle}>{<Skeleton circle={true} height={30} width={30}/>}</td>
                                                                     </tr>
@@ -419,6 +422,7 @@ class User extends Component{
                                                 <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveBalance.toFixed(8)}</th>
                                                 <th className="text-black" style={rightStyle} colspan={1}>{totalPerActiveSlot}</th>
                                                 <th className="text-black" style={rightStyle} colspan={1}>{totalPerPayment.toFixed(8)}</th>
+                                                <th className="text-black" style={rightStyle} colspan={1}>{totalPerRemaining.toFixed(8)}</th>
                                                 <th className="text-black" style={rightStyle} colspan={1}>{totalPerRef}</th>
                                                 <th className="text-black" colspan={2}/>
                                             </tr>
