@@ -308,6 +308,7 @@ class User extends Component{
                                             <th className="text-black" style={columnStyle}>Active Balance</th>
                                             <th className="text-black" style={columnStyle}>Active Slot</th>
                                             <th className="text-black" style={columnStyle}>Payment</th>
+                                            <th className="text-black" style={columnStyle}>Remaining</th>
                                             <th className="text-black" style={columnStyle}>Total Ref</th>
                                             <th className="text-black" style={columnStyle}>BEP</th>
                                             <th className="text-black" style={columnStyle}>Status</th>
@@ -370,6 +371,7 @@ class User extends Component{
                                                                     <td style={rightStyle}>{parseFloat(v.active_balance).toFixed(8)}</td>
                                                                     <td style={rightStyle}>{v.active_slot}</td>
                                                                     <td style={rightStyle}>{parseFloat(v.payment).toFixed(8)}</td>
+                                                                    <td style={rightStyle}>{parseFloat(v.investment-v.payment).toFixed(8)}</td>
                                                                     <td style={rightStyle}>{parseFloat(v.reff)}</td>
                                                                     <td style={columnStyle}>{statusQ(bep)}</td>
                                                                     <td style={columnStyle}>{statusQ(v.status)}</td>
